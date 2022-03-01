@@ -5,7 +5,7 @@ yum -y install git \
 git clone https://github.com/aws/aws-iot-device-sdk-python.git \
 cd aws-iot-device-sdk-python \
 python setup.py install \
-yum -install mc \
+yum -install mc 
 
 # Download the files
 wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/AirConditioning-FireSprinkler.zip
