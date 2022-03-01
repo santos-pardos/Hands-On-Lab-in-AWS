@@ -23,3 +23,7 @@ wget https://www.amazontrust.com/repository/AmazonRootCA1.pem -O /home/ec2-user/
 python fireSprinkler.py -e a165gvhgdesuha-ats.iot.eu-central-1.amazonaws.com -r certs/root.pem -c certs/certificate.pem.crt  -k certs/private.pem.key
 
 python airConditioning.py -e a165gvhgdesuha-ats.iot.eu-central-1.amazonaws.com -r certs/root.pem -c certs/certificate.pem.crt  -k certs/private.pem.key
+
+# MQTT Topics
+office/kitchen
+office/kitchen/alarm
