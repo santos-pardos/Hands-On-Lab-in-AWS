@@ -10,7 +10,7 @@ yum -install mc
 # Download the files
 wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/AirConditioning-FireSprinkler.zip
 
-# Generarte certs
+# Generate certs
 aws iot create-keys-and-certificate --set-as-active \
   --certificate-pem-outfile=certs/certificate.pem.crt \
   --private-key-outfile=certs/private.pem.key \
