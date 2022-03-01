@@ -25,5 +25,5 @@ python fireSprinkler.py -e a165gvhgdesuha-ats.iot.eu-central-1.amazonaws.com -r 
 python airConditioning.py -e a165gvhgdesuha-ats.iot.eu-central-1.amazonaws.com -r certs/root.pem -c certs/certificate.pem.crt  -k certs/private.pem.key
 
 # MQTT Topics
-office/kitchen
+office/kitchen  \
 office/kitchen/alarm
