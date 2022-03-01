@@ -11,10 +11,10 @@ yum -install mc
 wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/AirConditioning-FireSprinkler.zip
 
 # Generate certs
-aws iot create-keys-and-certificate --set-as-active \
-  --certificate-pem-outfile=certs/certificate.pem.crt \
-  --private-key-outfile=certs/private.pem.key \
-  --public-key-outfile=certs/public.pem.key \
+aws iot create-keys-and-certificate --set-as-active \ \
+  --certificate-pem-outfile=certs/certificate.pem.crt \ \
+  --private-key-outfile=certs/private.pem.key \ \
+  --public-key-outfile=certs/public.pem.key \ \
   --region=eu-central-1
 
 wget https://www.amazontrust.com/repository/AmazonRootCA1.pem -O /home/ec2-user/certs/root.pem
