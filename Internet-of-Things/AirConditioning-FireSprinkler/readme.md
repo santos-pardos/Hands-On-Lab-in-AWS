@@ -10,6 +10,10 @@ yum -install mc
 # Download the files
 wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/AirConditioning-FireSprinkler.zip
 
+# AWS Configure
+AWS Account - User with IoT permissions. 
+AWS Academy - AWS Cli credentials must be copied to credentials file inside of aws folder (Linux or Windows)
+
 # Generate certs
 aws iot create-keys-and-certificate --set-as-active \ \
   --certificate-pem-outfile=certs/certificate.pem.crt \ \
@@ -27,3 +31,6 @@ python airConditioning.py -e a165gvhgdesuha-ats.iot.eu-central-1.amazonaws.com -
 # MQTT Topics
 office/kitchen  \
 office/kitchen/alarm
+
+# Step by Step
+https://www.youtube.com/watch?v=4qL84xdz_tY
