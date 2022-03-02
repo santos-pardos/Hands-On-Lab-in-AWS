@@ -11,7 +11,7 @@ yum -install mc
 wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/AirConditioning-FireSprinkler.zip
 
 # AWS Configure
-AWS Account - User with IoT permissions. 
+AWS Account - User with IoT permissions. \
 AWS Academy - AWS Cli credentials must be copied to credentials file inside of aws folder (Linux or Windows)
 
 # Generate certs
