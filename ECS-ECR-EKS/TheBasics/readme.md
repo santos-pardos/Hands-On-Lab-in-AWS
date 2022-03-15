@@ -1,5 +1,4 @@
-# Basics Dockers
-# Dockerfile example
+# Basics Dockers and Dockerfile example
 
 sudo su \
 yum -y install docker \
