@@ -40,7 +40,7 @@ cat nginx-deployment.yaml  \
 cat nginx-svc.yaml  \
 kubectl apply -f ./nginx-svc.yaml  \
 kubectl get service  \
-           "a06d451f9de2b4dceb100a6fflcb15c2-1122912181.us-east-1.elb.amazonaws.com"  \
+           "a06d451f9de2b4dceb100a6fflcb15c2-1122912181.us-east-1.elb.amazonaws.com"  
 
 kubectl apply -f ./nginx-deployment.yaml  \
 kubectl get deployment  \
@@ -48,7 +48,7 @@ kubectl get pod  \
 kubectl get rs  \
 kubectl get node  
 
-curl "a06d451f9de2b4dceb100a6fflcb15c2-1122912181.us-east-1.elb.amazonaws.com"  \
+curl "a06d451f9de2b4dceb100a6fflcb15c2-1122912181.us-east-1.elb.amazonaws.com"  
 
 
 kubectl get node  \
