@@ -22,4 +22,4 @@ docker ps
 
 docker run -d -p 81:80 --name drinkwater myapache 
 
-curl 172.0.0.1 
+curl localhost
