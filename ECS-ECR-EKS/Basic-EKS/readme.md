@@ -5,7 +5,7 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
 unzip awscliv2.zip
 
 which aws \
-./aws/install --bin-dir /usr/bin --install-dir /usr/bin/aws-cli --update
+./aws/install --bin-dir /usr/bin --install-dir /usr/bin/aws-cli --update \
 aws --version
 
 aws configure
