@@ -46,12 +46,12 @@ kubectl apply -f ./nginx-deployment.yaml  \
 kubectl get deployment  \
 kubectl get pod  \
 kubectl get rs  \
-kubectl get node  \
+kubectl get node  
 
 curl "a06d451f9de2b4dceb100a6fflcb15c2-1122912181.us-east-1.elb.amazonaws.com"  \
 
 
 kubectl get node  \
-kubectl get pod  \
+kubectl get pod  
 
 eksctl delete cluster dev-cluster
