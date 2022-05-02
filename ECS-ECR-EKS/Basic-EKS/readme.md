@@ -1,3 +1,4 @@
+TOOLS INSTALL
 aws --version
 
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -25,6 +26,7 @@ eksctl help
 
 
 ----------------------------------------------------
+K8S CLUSTER on EKS
 
 eksctl create cluster --name dev-cluster --version 1.21 --region us-east-1 --nodegroup-name standard-workers --node-type t3.micro --nodes 3 --nodes-min 1 --nodes-max 4 --managed
 
