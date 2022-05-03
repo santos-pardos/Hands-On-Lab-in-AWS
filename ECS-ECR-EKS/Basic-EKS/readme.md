@@ -62,4 +62,6 @@ kubectl exec -it tetris-86cd7c55c7-8mwtd -- /bin/bash
 
 kubectl delete pod two-containers 
 
+kubectl delete deployment two-containers
+
 eksctl delete cluster dev-cluster
