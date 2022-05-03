@@ -58,6 +58,8 @@ curl "a06d451f9de2b4dceb100a6fflcb15c2-1122912181.us-east-1.elb.amazonaws.com"
 kubectl get node  \
 kubectl get namespaces \
 kubectl get pod  \
-kubectl exec -it tetris-86cd7c55c7-8mwtd -- /bin/bash  
+kubectl exec -it tetris-86cd7c55c7-8mwtd -- /bin/bash   \
+
+kubectl delete pod two-containers \
 
 eksctl delete cluster dev-cluster
