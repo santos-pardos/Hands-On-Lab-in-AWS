@@ -48,9 +48,12 @@ kubectl get service  \
 
 kubectl apply -f ./nginx-deployment.yaml  \
 kubectl get deployment  \
-kubectl get pod  \
+kubectl get pods  \
 kubectl get rs  \
-kubectl get node  
+kubectl get node \ 
+kubectl get service \
+kubectl get replicaset
+
 
 curl "a06d451f9de2b4dceb100a6fflcb15c2-1122912181.us-east-1.elb.amazonaws.com"  
 
