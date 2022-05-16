@@ -22,6 +22,7 @@ THE BASICS
 docker run postgres
 docker pull postgres
 docker run postgres -e POSTGRES_PASSWORD=password postgres
+docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 docker run postgress:9.6
 docker run postgres -e POSTGRES_PASSWORD=password postgres
 
