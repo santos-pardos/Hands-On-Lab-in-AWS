@@ -39,7 +39,7 @@ docker start f2k3k5l6k6
 docker logs containerID 
 docker logs -f containerID 
 
-docker exec -it  contendorit  sh(ejecuta comando dentro del contenedor, docker run ejecuta una imagen y levanta un contenedor)
+docker exec -it  contendorit  sh
 ls
 
 docker ps
