@@ -1,0 +1,211 @@
+https://hub.docker.com/_/postgres
+BASICS
+docker run postgres
+
+docker pull postgres
+
+docker run postgres -e POSTGRES_PASSWORD=password postgres
+(no instalado en mi maquina, abrir otra terminal, correr otra)
+
+docker run postgress:9.6
+(se descarga y ejecuta. set de layers)
+docker run postgres -e POSTGRES_PASSWORD=password postgres
+(2 versiones en mismo servidor sin problemas)
+
+(otra terminal. comandos basicos)
+docker run (corre, si no la hay la baja)
+docker pull (baja pero no corre)
+docker pull ubuntu (aseguras la latest)
+docker images | head (pipe si tienes muchas)
+docker ps (contenedores que corren)
+docker ps -a (los que corrieron, pero tiene un garbage que va borrando los viejos no ejecutados)
+ctrl + C (cerrar un postgress)
+docker ps (solo un postgress)
+docker ps -a (para v
+(docker el que paramos)
+
+(docker son efimeros)
+
+docker start f2k3k5l6k6  (iniciar con el ID, lo recuperas)
+(arranca en backup)
+
+docker logs containerID (o nombre del contenedor generado automatico)
+docker logs -f (sigue esperando el log, tu log escribe en standard output y lo capturamos asi y no en un fichero)
+(docker deamon lo rota)
+
+docker exec -it  contendorit  sh(ejecuta comando dentro del contenedor, docker run ejecuta una imagen y levanta un contenedor)
+(-it  interactivo y t emula terminal)
+ls (vemos ficheros)
+
+docker ps
+docker stop contendorid
+docker ps
+
+docker run -d contenedorid (detach en backgroud)
+docker ps
+docker logs -f contanienrID
+docker ps
+docker stop containerid containerid
+docker ps
+clear
+
+USO APLICACIONES CON DOCKERS 
+wget https://unir-profesantos/    (node.js elige alpine3.11)
+ /app#ll
+ /app#find , 
+ /app#vim Dockerfile  (vemos la imagen con node12.22.1,  imagen ya creada por otros, imagen con dependencias etc)
+ ( https://hub.docker.com/_/node   la 12 con varios tags, explicar alpine, buster, stretch) 
+docker images | grep alpine   (y veriamos las imagenes en el linux y alpine es muy pequeña, problemas con binarios quizas )
+(coger el tag en el from para elegir imagen alpine3.11 en este caso cogido de la web hub.docker.com, explicar el Dockerfile)
+( CMD vs ENTRYPOINT, envias comandos pero con entrypoint pasas parametros)
+
+docker build  -t getting-started .   (tagearlo mejor que no poner nombre)
+
+docker ps (no esta corriendo aun)
+docker run getting-started
+(se queda abierta en el 3000)
+(en otro terminal ejecutamos docker ps)
+localhost:3000 (error no compartida con el host)
+docker run -dp 3000:3000 getting-started
+docker ps
+(ver los puertos redirigidos)
+https://localhost:3000
+(agregamos cosas)
+docker ps
+docker stop containerid
+docker run -dp 3000:3000 getting-started (otro contenedor)
+docker ps
+https://localhost:3000 (perdimos los cambios porque es otro contenedor)
+docker stop containerid
+docker run  -d -v /Users/kbs/ejemplodocker/app/etc:/etc/todos -p 3000:3000 getting-started
+(meter items)
+docker ps
+docker stop contaniner id
+docker run  -d -v /Users/kbs/ejemplodocker/app/etc:/etc/todos -p 3000:3000 getting-started
+(docker run  -d -v $PWD:/etc/todos -p 3000:3000 santospardos/unir:getting-started) SI lo hago bajando mi docker y salvando todo.db en la ruta actual.
+http://localhost:3000 (mantiene los datos, volumen direccional)
+ls 
+le etc/todo.db
+(modificas el codigo de la app al vuelo, vamos a verlo)
+docker stop containerid
+
+vim src/static/js/app.js  (cambiar cosa por Item)
+docker run  -d -v /Users/kbs/ejemplodocker/app/etc:/etc/todos -p 3000:3000  -v /Users/kbs/ejemplodocker/app/src:/app/src getting-started
+http://localhost:3000 (y ver que pone Item)
+vim src/static/js/app.js  (items por item)
+http://localhost:3000 (sale items, modificio el contenedor sin reconstruir la imagen)
+(al finalizar el dia, metemos los cambios en la imagen)
+docker build -t getting-starterd:v2 .     (porque es la version 2, hay lineas cacheadas, dcker sabe que no hay cambios antes)
+
+SUBIR IMAGENES
+(hosting gratuito si son publicas, y pagadas si son privadas, explicar docker hub)
+docker login    (usuario y contraseña)
+(es importante tagearla, y es necesario poner el nombre de usuario)
+docker images | head
+docker tag containerid santospardos/getting-started:v2
+docker images  (dos imagenes que son iguales pero distinto nombre)
+dockier push santospardos/getting-started:v2    (sube la imagen y verla en la web y todo el mundo la puede coger)
+
+VARIOS CONTENEDORES
+ls
+mkdir multi-container
+cd  multi-container
+(uno de bbdd y otro de app, creamos una red de dockers)
+docker network create todo-app
+docker run -d \
+--network todo-app --network-alias mysql \
+-v todo-mysql-data:/var/lib/mysql \
+-e MYSQL_ROOT_PASSWORD=secret \
+-e MYSQL_DATABASE=todos \
+mysql:5.7
+(explicacion del alias, del voluen y de las variables de la imagen mysql en docker hub       https://hub.docker.com/_/mysql )
+docker ps
+docker exec -it containerid mysql -p (del msql, ejecuta el binario de mysql dentro del contendor y comandos dentro)
+show databases;  (todos está creada, el cliente de mysql esta en el contenedor)
+docker run -it --network todo-app nicolaka/netshoot
+dig mysql    (cualquier contenedor se puede conectar a mysql resolviendo con mysql)
+
+docker run -dp 3000:3000 \
+--network todo-app \
+-e MYSQL_HOST=mysql \
+-e MYSQL_USER=root \
+-e MYSQL_PASSWORD=secret \
+-e MYSQL_DB=todos \
+getting-started:v2
+
+docker ps   (dos contenedores corriendo mysql getting V2)
+http://localhost:3000 (no tiene nada, es nueva)
+docker ps
+docker logs containerID (de mi app y me dice que el SQL se ha conectado por el 3306
+http://localhost:3000  (grabamos datos)
+docker stop contaninerid
+
+docker run -dp 3000:3000 \
+--network todo-app \
+-e MYSQL_HOST=mysql \
+-e MYSQL_USER=root \
+-e MYSQL_PASSWORD=secret \
+-e MYSQL_DB=todos \
+getting-started:v2
+
+tambien se conectada y tiene los datos en 
+http://localhost:3000 
+(2 contenedores unidos y persistentes)
+
+DOCKER COMPOSE (forma facild e poner todas las configuraciones y poder modificarlas)
+docker stop containerID containeriD
+docker compose (instlarlo o con el docker desktop ya viene)
+vim docker-compose.yaml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
