@@ -41,7 +41,7 @@ git clone https://github.com/ACloudGuru-Resources/Course_EKS-Basics  \
 ls  \
 cd Course_EKS-Basics/  \
 cat nginx-deployment.yaml  \
-cat nginx-svc.yaml  \
+cat nginx-svc.yaml  
 
 kubectl apply -f ./nginx-svc.yaml  
 
