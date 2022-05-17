@@ -42,7 +42,9 @@ ls  \
 cd Course_EKS-Basics/  \
 cat nginx-deployment.yaml  \
 cat nginx-svc.yaml  \
-kubectl apply -f ./nginx-svc.yaml  \
+
+kubectl apply -f ./nginx-svc.yaml  
+
 kubectl get service  \
            "a06d451f9de2b4dceb100a6fflcb15c2-1122912181.us-east-1.elb.amazonaws.com"  
 
