@@ -65,8 +65,20 @@ kubectl get namespaces \
 kubectl get pod  \
 kubectl exec -it tetris-86cd7c55c7-8mwtd -- /bin/bash   
 
+kubectl exec -ti worker-hello-5bfdf775d7-46f2g sh
+
+aws eks list-clusters \
+aws eks describe-cluster --name <insertclustername> \
+kubectl cluster-info
+
+kubectl config set-context --current --namespace=default
+           
+kubectl get pods --all-namespaces
+
 kubectl delete pod two-containers 
 
 kubectl delete deployment two-containers
 
 eksctl delete cluster dev-cluster
+
+
