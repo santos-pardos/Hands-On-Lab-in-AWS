@@ -38,6 +38,7 @@ aws eks update-kubeconfig --name dev-cluster --region us-east-1
 
 sudo yum install -y git  \
 git clone https://github.com/ACloudGuru-Resources/Course_EKS-Basics  \
+wget https://unir-profesantos.s3.eu-west-1.amazonaws.com/K8s-Basics-Deployments.zip \
 ls  \
 cd Course_EKS-Basics/  \
 cat nginx-deployment.yaml  \
