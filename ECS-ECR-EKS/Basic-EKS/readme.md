@@ -42,9 +42,8 @@ eksctl get cluster
 aws eks update-kubeconfig --name dev-cluster --region us-east-1
 
 sudo yum install -y git  \
-git clone https://github.com/ACloudGuru-Resources/Course_EKS-Basics  \
 wget https://unir-profesantos.s3.eu-west-1.amazonaws.com/K8s-Basics-Deployments.zip \
-ls  \
+
 cd Course_EKS-Basics/  \
 cat nginx-deployment.yaml  \
 cat nginx-svc.yaml  
@@ -52,7 +51,8 @@ cat nginx-svc.yaml
 kubectl apply -f ./nginx-svc.yaml  
 
 kubectl get service  \
-           "a06d451f9de2b4dceb100a6fflcb15c2-1122912181.us-east-1.elb.amazonaws.com"  
+           "xxxxxxxxx.us-east-1.elb.amazonaws.com"  \          
+curl "a06d451f9de2b4dceb100a6fflcb15c2-1122912181.us-east-1.elb.amazonaws.com"  
 
 kubectl apply -f ./nginx-deployment.yaml  \
 kubectl get deployment  \
@@ -60,15 +60,11 @@ kubectl get pods  \
 kubectl get rs  \
 kubectl get node \ 
 kubectl get service \
-kubectl get replicaset
-
-
-curl "a06d451f9de2b4dceb100a6fflcb15c2-1122912181.us-east-1.elb.amazonaws.com"  
-
-
+kubectl get replicaset \
 kubectl get node  \
 kubectl get namespaces \
-kubectl get pod  \
+kubectl get pod  
+
 kubectl exec -it tetris-86cd7c55c7-8mwtd -- /bin/bash   
 
 kubectl exec -ti worker-hello-5bfdf775d7-46f2g sh
