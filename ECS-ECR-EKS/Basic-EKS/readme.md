@@ -71,6 +71,12 @@ kubectl exec -ti worker-hello-5bfdf775d7-46f2g sh
 aws eks list-clusters \
 aws eks describe-cluster --name <insertclustername> \
 kubectl cluster-info
+           
+kubectl scale deployment ecsdemo-nodejs --replicas=3 \
+kubectl scale deployment ecsdemo-crystal --replicas=3
+
+kubectl apply -f kubernetes/deployment.yaml \
+kubectl apply -f kubernetes/service.yaml
 
 kubectl config set-context --current --namespace=default
            
