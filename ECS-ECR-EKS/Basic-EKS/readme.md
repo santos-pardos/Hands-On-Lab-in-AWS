@@ -12,8 +12,6 @@ which aws \
 ./aws/install --bin-dir /usr/bin --install-dir /usr/bin/aws-cli --update \
 aws --version
 
-aws configure
-
 KUBECTL \
 curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/kubectl
 
@@ -29,6 +27,10 @@ sudo mv /tmp/eksctl /usr/bin
 eksctl version \
 eksctl help
 
+Connect AWS \
+In AWS Academy - AWS Details - AWS CLI \
+In AWS, the IAM user with EKS permisions \
+aws configure \
 
 ----------------------------------------------------
 # K8S CLUSTER on EKS
