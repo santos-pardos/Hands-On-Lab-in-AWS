@@ -28,6 +28,16 @@ python fireSprinkler.py -e xxxmyiotendpointxxx.iot.eu-central-1.amazonaws.com -r
 
 python airConditioning.py -e xxxmyiotendpointxxx.iot.eu-central-1.amazonaws.com -r certs/root.pem -c certs/certificate.pem.crt  -k certs/private.pem.key
 
+
+# Cloud 9 (option 2)
+Setup a cloud9 EC2 (with python 3.0, it doesn't matter)
+Change the folder enviroment to ec2-user
+wget https://sanvalero-static-webs.s3.eu-west-1.amazonaws.com/iot_eu-central-1.zip
+unzip iot_eu-central-1.zip
+Change the certs in the certs folder (certs created before)
+./fireSprinkler.sh -e a165gvhgdesuha-ats.iot.eu-central-1.amazonaws.com -r certs/root.pem -c certs/certificate.pem.crt -k certs/private.pem.key \
+./airConditioning.sh -e a165gvhgdesuha-ats.iot.eu-central-1.amazonaws.com -r certs/root.pem -c certs/certificate.pem.crt -k certs/private.pem.key
+
 # MQTT Topics
 office/kitchen  \
 office/kitchen/alarm
