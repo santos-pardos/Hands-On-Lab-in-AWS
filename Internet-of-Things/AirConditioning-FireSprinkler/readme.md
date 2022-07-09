@@ -14,7 +14,7 @@ aws iot create-keys-and-certificate --set-as-active \ \
   --public-key-outfile=certs/public.pem.key \ \
   --region=eu-central-1
   
-./fireSprinkler.sh -e a165gvhgdesuha-ats.iot.eu-central-1.amazonaws.com -r certs/root.pem -c certs/certificate.pem.crt -k certs/private.pem.key \
+./fireSprinkler.sh -e a165gvhgdesuha-ats.iot.eu-central-1.amazonaws.com -r certs/root.pem -c certs/certificate.pem.crt -k certs/private.pem.key 
 
 ./airConditioning.sh -e a165gvhgdesuha-ats.iot.eu-central-1.amazonaws.com -r certs/root.pem -c certs/certificate.pem.crt -k certs/private.pem.key
 
