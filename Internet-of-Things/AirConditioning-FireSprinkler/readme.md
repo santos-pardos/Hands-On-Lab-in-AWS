@@ -3,7 +3,7 @@ Setup a cloud9 EC2 (with python 3.0, it doesn't matter) \
 Change the folder enviroment to ec2-user \
 wget https://sanvalero-static-webs.s3.eu-west-1.amazonaws.com/iot_eu-central-1.zip \
 unzip iot_eu-central-1.zip \
-(before generate certs, enter in the certs folder and delete all certs except root.pem)
+(before generate certs, enter in the certs folder and delete all certs except root.pem) \
 aws iot create-keys-and-certificate --set-as-active \ \
   --certificate-pem-outfile=certs/certificate.pem.crt \ \
   --private-key-outfile=certs/private.pem.key \ \
