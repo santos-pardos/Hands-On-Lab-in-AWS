@@ -19,6 +19,7 @@ aws iot create-keys-and-certificate --set-as-active \ \
 ./airConditioning.sh -e a165gvhgdesuha-ats.iot.eu-central-1.amazonaws.com -r certs/root.pem -c certs/certificate.pem.crt -k certs/private.pem.key
 
 
+
 # (Option 2, install EC2, Python, pip,...)
 # Install Python - Git - IotSDK
 yum install -y python3-pip python3 python3-setuptools \
