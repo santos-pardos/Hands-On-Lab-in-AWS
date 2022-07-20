@@ -25,6 +25,7 @@ aws iot create-keys-and-certificate --set-as-active \ \
 yum install -y python3-pip python3 python3-setuptools \
 sudo yum -y install python-pip \
 pip3 install boto3 \
+pip install AWSIoTPythonSDK \
 yum -y install git \
 git clone https://github.com/aws/aws-iot-device-sdk-python.git \
 cd aws-iot-device-sdk-python \
