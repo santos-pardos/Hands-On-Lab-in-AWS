@@ -3,6 +3,8 @@ Setup a cloud9 EC2 (with python 3.0, it doesn't matter)
 
 Change the folder enviroment to ec2-user 
 
+pip3 install boto3 \
+
 wget https://sanvalero-static-webs.s3.eu-west-1.amazonaws.com/iot_eu-central-1.zip 
 
 unzip iot_eu-central-1.zip 
@@ -32,7 +34,7 @@ cd aws-iot-device-sdk-python \
 python setup.py install 
 
 # Download the files
-wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/AirConditioning-FireSprinkler.zip
+wget https://sanvalero-static-webs.s3.eu-west-1.amazonaws.com/AirConditioning-FireSprinkler.zip
 
 # AWS Configure
 AWS Account - User with IoT permissions. \
