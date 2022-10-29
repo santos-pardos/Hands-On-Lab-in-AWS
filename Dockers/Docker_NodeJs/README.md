@@ -3,40 +3,43 @@
 # Install Cloud9
 
 If you use AWS Cloud9. You have docker, node, npm, git , python installed
+(when you enter in sudo su in cloud9 , you need to install nodejs to run npm with the root account)
 
 If you use LINUX AMI 2
 
-$ sudo yum install -y gcc-c++ make 
+$ sudo su
 
-$ curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
+yum install -y gcc-c++ make 
 
-$ sudo yum install -y nodejs 
+curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
 
-$ sudo yum install -y git
+yum install -y nodejs 
 
-$ sudo yum intall -y python
+sudo yum install -y git
+
+sudo yum intall -y python
 
 # Test the NodeJS Server
 
 Upload the file: check_server.js
 
-$ node --inspect check server.js 
+node --inspect check server.js 
 
 http://myPublicIP:3000/
 
 # Docker the NodeJS App
 
-$ sudo mkdir expapp
+mkdir expapp
 
-$ npm init -y
+npm init -y
 
 Review the package.json file
 
 Add the express extension
 
-$ sudo npm install express --save
+sudo npm install express --save
 
-$ node app.js
+node app.js
 
 http://myPublicIP:3002/
 
