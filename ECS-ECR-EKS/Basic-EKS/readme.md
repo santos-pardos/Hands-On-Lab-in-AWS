@@ -29,8 +29,10 @@ eksctl version \
 eksctl help
 
 Connect AWS \
-In AWS Academy - AWS Details - AWS CLI \
-In AWS, the IAM user with EKS permisions \
+In AWS Academy - AWS Details - AWS CLI (copy all data in ~/.aws/credentials)
+
+In AWS, the IAM user with EKS permisions 
+
 aws configure 
 
 
@@ -43,7 +45,7 @@ eksctl create cluster --name dev-cluster --version 1.21 --region us-east-1 --nod
 
 In an AWS Academy
 
-eksctl create cluster --name dev-cluster --version 1.21 --az-list=us-east-1a,us-east-1b,us-east-1c --nodegroup-name standard-workers --node-type t3.micro --nodes 3 --nodes-min 1 --nodes-max 4 --managed
+eksctl create cluster --name dev-cluster --version 1.21 --region us-east-1 --zones=us-east-1a,us-east-1b,us-east-1c --nodegroup-name standard-workers --node-type t3.micro --nodes 3 --nodes-min 1 --nodes-max 4 --managed
 
 eksctl get cluster
 
