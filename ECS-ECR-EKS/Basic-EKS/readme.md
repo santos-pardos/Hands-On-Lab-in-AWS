@@ -31,7 +31,8 @@ eksctl help
 Connect AWS \
 In AWS Academy - AWS Details - AWS CLI \
 In AWS, the IAM user with EKS permisions \
-aws configure \
+aws configure 
+
 
 ----------------------------------------------------
 # K8S CLUSTER on EKS
