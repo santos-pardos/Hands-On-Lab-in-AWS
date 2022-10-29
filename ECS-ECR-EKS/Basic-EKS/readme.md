@@ -35,7 +35,11 @@ aws configure \
 ----------------------------------------------------
 # K8S CLUSTER on EKS
 
+In an AWS Account
 eksctl create cluster --name dev-cluster --version 1.21 --region us-east-1 --nodegroup-name standard-workers --node-type t3.micro --nodes 3 --nodes-min 1 --nodes-max 4 --managed
+
+In an AWS Academy
+eksctl create cluster --name dev-cluster --version 1.21 --az-list=us-east-1a,us-east-1b,us-east-1c --nodegroup-name standard-workers --node-type t3.micro --nodes 3 --nodes-min 1 --nodes-max 4 --managed
 
 eksctl get cluster
 
