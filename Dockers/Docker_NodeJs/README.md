@@ -37,11 +37,16 @@ Review the package.json file
 
 Add the express extension
 
-sudo npm install express --save
+npm install express --save
 
 node app.js
 
 http://myPublicIP:3002/
 
+Upload Dockerfile
 
+docker build -t express-app .
 
+docker images
+
+docker run -p 3002:3002 express-app
