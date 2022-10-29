@@ -31,6 +31,9 @@ http://myPublicIP:3000/
 
 Create a folder with Cloud9, for example, Lab01
 
+Upload app.js and Dockerfile
+(you can create the files too)
+
 npm init -y
 
 Review the package.json file
@@ -39,14 +42,18 @@ Add the express extension
 
 npm install express --save
 
+Test the app
+
 node app.js
 
 http://myPublicIP:3002/
 
-Upload Dockerfile
+Create the image
 
 docker build -t express-app .
 
 docker images
+
+Run the docker
 
 docker run -p 3002:3002 express-app
