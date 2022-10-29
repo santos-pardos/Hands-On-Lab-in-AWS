@@ -29,7 +29,7 @@ http://myPublicIP:3000/
 
 # Docker the NodeJS App
 
-mkdir expapp
+Create a folder with Cloud9, for example, Lab01
 
 npm init -y
 
