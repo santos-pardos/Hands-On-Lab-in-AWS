@@ -50,6 +50,21 @@ chmod 700 get_helm.sh
 
 helm version --short | cut -d + -f 1
 
+# Upload docker to ECR
+
+(I have a docker, builted or downloaded)
+docker run -dp 80:80 2048
+
+aws configure
+
+aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin xxxxxxxx.dkr.ecr.eu-west-1.amazonaws.com
+
+docker tag jupyter/minimal-notebook:latest xxxxxxxx.dkr.ecr.eu-west-1.amazonaws.com/demo-sv:2048
+
+docker push xxxxxx.dkr.ecr.eu-west-1.amazonaws.com/demo-sv:2048
+
+
+
 ----------------------------------------------------
 # K8S CLUSTER on EKS
 
