@@ -13,22 +13,28 @@ which aws \
 ./aws/install --bin-dir /usr/bin --install-dir /usr/bin/aws-cli --update \
 aws --version
 
-KUBECTL \
+# Install KUBECTL 
+
 curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/kubectl
 
-chmod +x ./kubectl \
-mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin \
+chmod +x ./kubectl 
+
+mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin 
+
 kubectl version --short --client
 
-EKSCTL \
+# Install EKSCTL 
+
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 
 sudo mv /tmp/eksctl /usr/bin
 
-eksctl version \
+eksctl version 
+
 eksctl help
 
-Connect AWS \
+Connect AWS 
+
 In AWS Academy - AWS Details - AWS CLI (copy all data in ~/.aws/credentials)
 
 In AWS, the IAM user with EKS permisions 
@@ -52,42 +58,59 @@ eksctl get cluster
 
 aws eks update-kubeconfig --name dev-cluster --region us-east-1
 
-sudo yum install -y git  \
-wget https://unir-profesantos.s3.eu-west-1.amazonaws.com/K8s-Basics-Deployments.zip \
+sudo yum install -y git  
 
-cd Course_EKS-Basics/  \
-cat nginx-deployment.yaml  \
+wget https://unir-profesantos.s3.eu-west-1.amazonaws.com/K8s-Basics-Deployments.zip 
+
+cd Course_EKS-Basics/  
+
+cat nginx-deployment.yaml  
+
 cat nginx-svc.yaml  
 
 kubectl apply -f ./nginx-svc.yaml  
 
-kubectl get service  \
+kubectl get service  
            "xxxxxxxxx.us-east-1.elb.amazonaws.com"         
+           
 curl "a06d451f9de2b4dceb100a6fflcb15c2-1122912181.us-east-1.elb.amazonaws.com"  
 
-kubectl apply -f ./nginx-deployment.yaml  \
-kubectl get deployment  \
-kubectl get pods  \
-kubectl get rs  \
-kubectl get node \ 
-kubectl get service \
-kubectl get replicaset \
-kubectl get node  \
-kubectl get namespaces \
+kubectl apply -f ./nginx-deployment.yaml  
+
+kubectl get deployment  
+
+kubectl get pods  
+
+kubectl get rs  
+
+kubectl get node 
+
+kubectl get service 
+
+kubectl get replicaset 
+
+kubectl get node  
+
+kubectl get namespaces 
+
 kubectl get pod  
 
 kubectl exec -it tetris-86cd7c55c7-8mwtd -- /bin/bash   
 
 kubectl exec -ti worker-hello-5bfdf775d7-46f2g sh
 
-aws eks list-clusters \
-aws eks describe-cluster --name <insertclustername> \
+aws eks list-clusters 
+
+aws eks describe-cluster --name <insertclustername> 
+
 kubectl cluster-info
            
-kubectl scale deployment ecsdemo-nodejs --replicas=3 \
+kubectl scale deployment ecsdemo-nodejs --replicas=3 
+
 kubectl scale deployment ecsdemo-crystal --replicas=3
 
-kubectl apply -f kubernetes/deployment.yaml \
+kubectl apply -f kubernetes/deployment.yaml 
+
 kubectl apply -f kubernetes/service.yaml
 
 kubectl config set-context --current --namespace=default
