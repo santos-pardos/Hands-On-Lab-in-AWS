@@ -36,7 +36,7 @@ curl localhost
 
 # OR
 
-wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/2048.zip
+wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/code/2048.zip
 
 unzip 2048.zip.zip 
 
