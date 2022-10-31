@@ -50,3 +50,9 @@ COPY . /usr/share/nginx/html
 
 EXPOSE 80
 
+# Upload to ECR
+
+docker tag 2048:latest xxxxx.dkr.ecr.us-east-1.amazonaws.com/dockers-unir:2048
+
+docker push  xxxxx.dkr.ecr.us-east-1.amazonaws.com/dockers-unir:2048
+
