@@ -83,7 +83,9 @@ aws eks update-kubeconfig --name dev-cluster --region us-east-1
 
 sudo yum install -y git  
 
-wget https://unir-profesantos.s3.eu-west-1.amazonaws.com/K8s-Basics-Deployments.zip 
+wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/code/EKS-SVCs-Deployments.zip
+
+(wget https://unir-profesantos.s3.eu-west-1.amazonaws.com/K8s-Basics-Deployments.zip)
 
 cd Course_EKS-Basics/  
 
