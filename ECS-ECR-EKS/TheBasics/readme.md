@@ -14,15 +14,6 @@ unzip Drink-Water.zip
 
 rm Drink-Water.zip 
 
-OR
-
-wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/2048.zip
-
-unzip 2048.zip.zip 
-
-rm 2048.zip.zip 
-
-
 vim Dockerfile 
 
 FROM php:7.0-apache 
@@ -42,3 +33,20 @@ docker ps
 docker run -d -p 81:80 --name drinkwater myapache 
 
 curl localhost
+
+# OR
+
+wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/2048.zip
+
+unzip 2048.zip.zip 
+
+rm 2048.zip.zip 
+
+vim Dockerfile 
+
+FROM nginx:latest
+
+COPY . /usr/share/nginx/html
+
+EXPOSE 80
+
