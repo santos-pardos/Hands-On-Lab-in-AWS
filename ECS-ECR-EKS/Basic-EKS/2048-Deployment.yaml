@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 2048-game
+  labels:
+    env: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      env: dev
+  template:
+    metadata:
+      labels:
+        env: dev
+    spec:
+      containers:
+      - name: 2048-game
+        image: 348991307536.dkr.ecr.us-east-1.amazonaws.com/dockers-unir:2048
+        ports:
+        - containerPort: 80
