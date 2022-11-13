@@ -1,0 +1,13 @@
+#!/bin/bash
+# Install Apache Web Server and PHP
+yum install -y httpd mysql
+amazon-linux-extras install -y php7.2
+# Download Lab files
+wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/HoL/Inventory/inventory-app.zip
+unzip inventory-app.zip -d /var/www/html/
+# Download and install the AWS SDK for PHP
+wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/HoL/Inventory/aws.zip
+unzip aws -d /var/www/html
+# Turn on web server
+chkconfig httpd on
+service httpd start
