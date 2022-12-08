@@ -1,0 +1,8 @@
+
+ping x.x.x.x -c 4
+
+Capture packets:
+sudo tcpdump -i eth0 port not 22 -w tcpdump.pcap
+
+Read File:
+sudo tcpdump -ttttnnr tcpdump.pcap
