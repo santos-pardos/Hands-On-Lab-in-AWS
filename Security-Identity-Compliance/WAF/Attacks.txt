@@ -1,0 +1,19 @@
+export JUICESHOP_URL=d9mwq8hr9fsj3.cloudfront.net
+
+ 
+
+ 
+
+curl -X POST  $JUICESHOP_URL -F "user='<script><alert>Hello></alert></script>'"
+ 
+
+ 
+
+curl -X POST $JUICESHOP_URL -F "user='AND 1=1;"
+ 
+
+ 
+
+ 
+
+https://catalog.us-east-1.prod.workshops.aws/workshops/c2f03000-cf61-42a6-8e62-9eaf04907417/en-US/00-introduction
