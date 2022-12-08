@@ -1,4 +1,0 @@
-$ service network restart
-S chkconfig ipsec on
-S service ipsec start
-S service ipsec status
