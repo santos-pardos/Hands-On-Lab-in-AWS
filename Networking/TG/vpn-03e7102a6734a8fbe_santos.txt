@@ -1,0 +1,123 @@
+Amazon Web Services
+Virtual Private Cloud
+
+AWS utilizes unique identifiers to manipulate the configuration of
+a VPN Connection. Each VPN Connection is assigned an identifier and is
+associated with two other identifiers, namely the
+Customer Gateway Identifier and Virtual Private Gateway Identifier.
+
+Your VPN Connection ID                  : vpn-03e7102a6734a8fbe
+Your Virtual Private Gateway ID         : 
+Your Customer Gateway ID                : cgw-01ce161329ac42ae1
+
+
+This configuration consists of two tunnels. Both tunnels must be
+configured on your Customer Gateway, but only one of those tunnels should be up at any given time.
+
+At this time this configuration has only been tested for Openswan 2.6.38 or later, but may work with earlier versions.
+
+
+--------------------------------------------------------------------------------------------------------------------
+IPSEC Tunnel #1
+--------------------------------------------------------------------------------------------------------------------
+
+This configuration assumes that you already have a default openswan installation in place on the Amazon Linux operating system (but may also work with other distros as well)
+
+1) Open /etc/sysctl.conf and ensure that its values match the following:
+   net.ipv4.ip_forward = 1
+   net.ipv4.conf.default.rp_filter = 0
+   net.ipv4.conf.default.accept_source_route = 0
+
+2) Apply the changes in step 1 by executing the command 'sysctl -p'
+
+3) Open /etc/ipsec.conf and look for the line below. Ensure that the # in front of the line has been removed, then save and exit the file.
+    #include /etc/ipsec.d/*.conf
+
+4) Create a new file at /etc/ipsec.d/aws.conf if doesn't already exist, and then open it. Append the following configuration to the end in the file:
+ #leftsubnet= is the local network behind your openswan server, and you will need to replace the <LOCAL NETWORK> below with this value (don't include the brackets). If you have multiple subnets, you can use 0.0.0.0/0 instead.
+ #rightsubnet= is the remote network on the other side of your VPN tunnel that you wish to have connectivity with, and you will need to replace <REMOTE NETWORK> with this value (don't include brackets).
+
+conn Tunnel1
+	authby=secret
+	auto=start
+	left=%defaultroute
+	leftid=54.205.206.199
+	right=34.248.71.203
+	type=tunnel
+	ikelifetime=8h
+	keylife=1h
+	phase2alg=aes128-sha1;modp1024
+	ike=aes128-sha1;modp1024
+	auth=esp
+	keyingtries=%forever
+	keyexchange=ike
+      	leftsubnet=172.16.0.0/16
+       	rightsubnet=10.0.0.0/16
+	dpddelay=10
+	dpdtimeout=30
+	dpdaction=restart_by_peer
+
+5) Create a new file at /etc/ipsec.d/aws.secrets if it doesn't already exist, and append this line to the file (be mindful of the spacing!):
+54.205.206.199 34.248.71.203: PSK "KAQU16lkyEWGlK1cxzcpRhHAoBtarRPr"
+
+
+--------------------------------------------------------------------------------------------------------------------
+IPSEC Tunnel #2
+--------------------------------------------------------------------------------------------------------------------
+
+This configuration assumes that you already have a default openswan installation in place on the Amazon Linux operating system (but may also work with other distros as well)
+
+1) Open /etc/sysctl.conf and ensure that its values match the following:
+   net.ipv4.ip_forward = 1
+   net.ipv4.conf.default.rp_filter = 0
+   net.ipv4.conf.default.accept_source_route = 0
+
+2) Apply the changes in step 1 by executing the command 'sysctl -p'
+
+3) Open /etc/ipsec.conf and look for the line below. Ensure that the # in front of the line has been removed, then save and exit the file.
+    #include /etc/ipsec.d/*.conf
+
+4) Create a new file at /etc/ipsec.d/aws.conf if doesn't already exist, and then open it. Append the following configuration to the end in the file:
+ #leftsubnet= is the local network behind your openswan server, and you will need to replace the <LOCAL NETWORK> below with this value (don't include the brackets). If you have multiple subnets, you can use 0.0.0.0/0 instead.
+ #rightsubnet= is the remote network on the other side of your VPN tunnel that you wish to have connectivity with, and you will need to replace <REMOTE NETWORK> with this value (don't include brackets).
+
+conn Tunnel2
+	authby=secret
+	auto=start
+	left=%defaultroute
+	leftid=54.205.206.199
+	right=52.16.63.166
+	type=tunnel
+	ikelifetime=8h
+	keylife=1h
+	phase2alg=aes128-sha1;modp1024
+	ike=aes128-sha1;modp1024
+	auth=esp
+	keyingtries=%forever
+	keyexchange=ike
+	leftsubnet=<LOCAL NETWORK>
+	rightsubnet=<REMOTE NETWORK>
+	dpddelay=10
+	dpdtimeout=30
+	dpdaction=restart_by_peer
+
+5) Create a new file at /etc/ipsec.d/aws.secrets if it doesn't already exist, and append this line to the file (be mindful of the spacing!):
+54.205.206.199 52.16.63.166: PSK "CE7avgm7edGiP6oVPKX3qJpZU1QohEdc"
+
+
+--------------------------------------------------------------------------------------------------------------------
+(OPTIONAL CONFIG) Tunnel Healthcheck and Failover
+--------------------------------------------------------------------------------------------------------------------
+
+Openswan does not provide a built-in tunnel failover functionality. However, there are some third-party workarounds to this.
+
+=== DISCLAIMER ===
+Please be aware that AWS is in no way responsible for any of the use, management, maintenance, or potential issues you may encounter with the third-party workarounds. It is strongly recommended that you thoroughly test any failover solution prior to implementing it into your production environment
+
+
+
+  Additional Notes and Questions
+  - Amazon Virtual Private Cloud Getting Started Guide:
+        http://docs.amazonwebservices.com/AmazonVPC/latest/GettingStartedGuide
+  - Amazon Virtual Private Cloud Network Administrator Guide:
+        http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide
