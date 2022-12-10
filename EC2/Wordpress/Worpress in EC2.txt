@@ -5,13 +5,14 @@ Step-By-Step Instructions For Creating A WordPress Blog Running on An EC2 Instan
 # 2. Configuration
 STEP 1 — Configure the required environment variables
 
-DBName='testwordpress'
+DBName='wordpress'
 
-DBUser='testwordpress'
+DBUser='wordpress'
 
-DBPassword='Str0n5P@55!'
+DBPassword='Wordpr3ss-pass'
 
-DBRootPassword='Str0n5P@55!'
+DBRootPassword='Wordpr3ss-pass'
+
 
 STEP 2 — Install the required components
 
@@ -31,9 +32,11 @@ sudo systemctl start httpd
 
 sudo systemctl start mariadb
 
+
 STEP 4 — Configure MariaDB Password
 
 mysqladmin -u root password $DBRootPassword
+
 
 STEP 5 — Install WordPress
 
@@ -62,6 +65,7 @@ sudo sed -i "s/'password_here'/'$DBPassword'/g" wp-config.php
 
 sudo chown apache:apache * -R
 
+
 STEP 7 Create the WordPress database
 
 echo "CREATE DATABASE $DBName;" >> /tmp/db.setup
@@ -79,6 +83,7 @@ sudo rm /tmp/db.setup
 Next, we need to run the below command to find out the DNS name of the EC2 instance, so we can access our blog and finish configuring it:
 
 curl http://169.254.169.254/latest/meta-data/public-hostname
+
 
 # Config Wordpress
 Open Public IP or DNS Name
