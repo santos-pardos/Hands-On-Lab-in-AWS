@@ -9,9 +9,9 @@ DBName='wordpress'
 
 DBUser='wordpress'
 
-DBPassword='Wordpr3ss-pass'
+DBPassword='Wordpr3ss-pass!'
 
-DBRootPassword='Wordpr3ss-pass'
+DBRootPassword='Wordpr3ss-pass!'
 
 
 STEP 2 — Install the required components
