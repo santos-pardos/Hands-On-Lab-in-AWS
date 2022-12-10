@@ -85,5 +85,5 @@ Next, we need to run the below command to find out the DNS name of the EC2 insta
 curl http://169.254.169.254/latest/meta-data/public-hostname
 
 
-# Config Wordpress
+# 3. Config Wordpress
 Open Public IP or DNS Name
