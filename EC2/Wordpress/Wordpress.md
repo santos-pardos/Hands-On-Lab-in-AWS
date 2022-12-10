@@ -2,7 +2,7 @@ Step-By-Step Instructions For Creating A WordPress Blog Running on An EC2 Instan
 
 # 1. Install EC2
 
-# 2. Configuration
+# 2. EC2 Configuration 
 STEP 1 — Configure the required environment variables
 
 DBName='wordpress'
