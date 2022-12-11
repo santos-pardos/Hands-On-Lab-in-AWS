@@ -1,0 +1,30 @@
+{
+	"Version": "2012-10-17",
+	"Id": "PutObjPolicy",
+	"Statement": [
+		{
+			"Sid": "RequireKMSEncryption",
+			"Effect": "Deny",
+			"Principal": "*",
+			"Action": "s3:PutObject",
+			"Resource": "arn:aws:s3:::01-sanvalero-profesantos.cloud/*",
+			"Condition": {
+				"StringNotEquals": {
+					"s3:x-amz-server-side-encryption": "aws:kms"
+				}
+			}
+		},
+		{
+			"Sid": "RequireSpecificKMSKey",
+			"Effect": "Deny",
+			"Principal": "*",
+			"Action": "s3:PutObject",
+			"Resource": "arn:aws:s3:::01-sanvalero-profesantos.cloud/*",
+			"Condition": {
+				"StringNotLikeIfExists": {
+					"s3:x-amz-server-side-encryption-aws-kms-key-id": "arn:aws:kms:eu-south-2:337984217794:key/4acebd16-70fd-411d-858b-ff082ae2fd08"
+				}
+			}
+		}
+	]
+}
