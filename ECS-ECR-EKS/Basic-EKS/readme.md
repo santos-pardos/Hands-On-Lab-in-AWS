@@ -41,6 +41,13 @@ In AWS, the IAM user with EKS permisions
 
 aws configure 
 
+# Install HELM
+
+curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
+helm version --short
+
+
 # Install HELM (just in case)
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
 
