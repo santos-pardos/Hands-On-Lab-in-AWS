@@ -1,1 +1,0 @@
-# Dockers and K8s examples
