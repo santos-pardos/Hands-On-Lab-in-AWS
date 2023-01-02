@@ -1,0 +1,13 @@
+Hands On Lab - EFS
+https://www.eksworkshop.com/beginner/190_efs/deploying-services/
+(quitado el namespace storage y realizado en default)
+
+Abrir los SG del EFS
+
+sudo yum install -y amazon-efs-utils
+
+sudo mount -t efs fs-09d8395cbf7d9bf1c efs2/
+
+df -h
+
+sudo umount /home/ec2-user/environment/efs2

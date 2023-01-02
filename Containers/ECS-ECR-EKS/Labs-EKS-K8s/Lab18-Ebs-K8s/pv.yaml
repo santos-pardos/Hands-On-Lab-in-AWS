@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mipv
+spec:
+  accessModes:
+  - ReadWriteOnce
+  awsElasticBlockStore:
+    fsType: xfs
+    volumeID: aws://us-east-1c/vol-06c91e1e2210b3024
+  capacity:
+    storage: 3Gi
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: gp2-retain
+  volumeMode: Filesystem

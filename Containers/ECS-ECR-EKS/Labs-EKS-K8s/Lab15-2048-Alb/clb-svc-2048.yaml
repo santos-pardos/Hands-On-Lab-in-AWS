@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: game-2048
+  labels:
+    env: game-2048
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    env: game-2048
