@@ -1,5 +1,7 @@
 # Docker Python (flask)
 
+pip freeze > requirements.txt
+(but we write down the requirements only with 7 lines, see file)
 
 # Install Docker compose
 
