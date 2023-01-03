@@ -3,7 +3,7 @@ https://cloudbytes.dev/aws-academy/mount-amazon-efs-drive-on-ec2-ubuntu-linux-us
 https://docs.aws.amazon.com/efs/latest/ug/wt1-getting-started.html
 
 
-#Install User Data
+# Install User Data
 
 #!/bin/bash
 
@@ -18,11 +18,11 @@ systemctl enable httpd
 yum -y install nfs-utils
 
 
-#Mount folder
+# Mount folder
 
 sudo mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport fs-09d8395cbf7d9bf1c.efs.us-east-1.amazonaws.com:/   efs-mount
 
-@Modify the Apache root document
+# Modify the Apache root document
 
 /etc/httpd/conf/httpd.conf
 
