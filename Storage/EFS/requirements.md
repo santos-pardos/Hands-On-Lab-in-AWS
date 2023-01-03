@@ -1,8 +1,3 @@
-https://cloudbytes.dev/aws-academy/mount-amazon-efs-drive-on-ec2-ubuntu-linux-using-nfs-utils
-
-https://docs.aws.amazon.com/efs/latest/ug/wt1-getting-started.html
-
-
 # Install User Data
 
 #!/bin/bash
@@ -30,7 +25,10 @@ DocumentRoot "/var/www/html/efs-mount"
 
 
 
-#GUIA OFICIAL
+
+
+
+# GUIA OFICIAL
 
 https://docs.aws.amazon.com/es_es/efs/latest/ug/wt2-apache-web-server.html
 
@@ -46,4 +44,9 @@ runcmd:
 - touch /var/www/html/efs-mount-point/test.html
 - service httpd start
 - chkconfig httpd on
+
+# Other Links
+https://cloudbytes.dev/aws-academy/mount-amazon-efs-drive-on-ec2-ubuntu-linux-using-nfs-utils
+
+https://docs.aws.amazon.com/efs/latest/ug/wt1-getting-started.html
 
