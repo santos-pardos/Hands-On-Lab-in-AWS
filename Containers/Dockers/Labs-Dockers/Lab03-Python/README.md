@@ -12,3 +12,6 @@ sudo chmod +x /usr/local/bin/docker-compose
 docker-compose version
 
 
+# Links
+
+https://www.section.io/engineering-education/how-to-containerize-a-python-application/
