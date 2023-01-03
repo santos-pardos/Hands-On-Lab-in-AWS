@@ -1,7 +1,6 @@
 # Requirements
 
-SGWeb for EC2 (22 port)
-SGEfs for Efs (2049 port)
+SGWeb for EC2 (22 port) and  SGEfs for Efs (2049 port)
 
 # Install User Data
 
