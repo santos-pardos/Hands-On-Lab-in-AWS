@@ -10,6 +10,8 @@ node app.js
 
 .dockerignore
 
+docker run -d -p 3002:3002 mynodejs . 
+
 
 # Links
 
