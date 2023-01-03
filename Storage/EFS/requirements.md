@@ -1,3 +1,8 @@
+# Requirements
+
+SGWeb for EC2 (22 port)
+SGEfs for Efs (2049 port)
+
 # Install User Data
 
 #!/bin/bash
@@ -24,6 +29,7 @@ sudo mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retr
 DocumentRoot "/var/www/html/efs-mount"
 
 
+# Clean Up
 
 umount -a
 
