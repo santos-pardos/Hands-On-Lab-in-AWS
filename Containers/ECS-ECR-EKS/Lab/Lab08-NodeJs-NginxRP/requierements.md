@@ -4,3 +4,4 @@ NGINX (this one)
 
 https://www.bogotobogo.com/DevOps/Docker/Docker-Compose-Nginx-Reverse-Proxy-Multiple-Containers.php
 https://blog.logrocket.com/how-to-run-a-node-js-server-with-nginx/
+https://techblog.geekyants.com/aws-and-ec2-deploying-a-nodejs-application-using-nginx-and-pm2
