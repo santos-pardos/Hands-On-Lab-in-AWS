@@ -1,0 +1,33 @@
+# Deploy the pods
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-router
+spec:
+  selector:
+    matchLabels:
+      app: nginx-router
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: nginx-router
+    spec:
+      containers:
+      - name: nginx-router
+        image: 258843735930.dkr.ecr.us-east-1.amazonaws.com/demo-fp:nginx-router
+        ports:
+        - containerPort: 80
+---
+# This service is used to expose the router using a load balancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-router
+spec:
+  selector:
+    app: nginx-router
+  ports:
+    - port: 80
+      targetPort: 80
+  type: LoadBalancer

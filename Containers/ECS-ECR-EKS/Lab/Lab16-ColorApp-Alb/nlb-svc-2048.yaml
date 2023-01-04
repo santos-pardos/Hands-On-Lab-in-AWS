@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service 
+metadata:
+  namespace: game-2048
+  name: game-2048
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb    # To create Network Load Balancer  
+spec:
+  type: LoadBalancer # ClusterIp, # NodePort
+  selector:
+    app: game-2048
+  ports: 
+    - name: http
+      port: 80 # Service Port
+      targetPort: 80 # Container Port

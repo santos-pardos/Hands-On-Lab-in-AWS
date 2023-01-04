@@ -1,0 +1,46 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+   name: my-namespace
+   labels:
+      app: container-info
+---
+apiVersion: v1
+kind: Service
+metadata:
+   name: container-info-svc
+   namespace: my-namespace
+   labels:
+      app: container-info
+spec:
+   type: LoadBalancer
+   ports:
+      - protocol: TCP
+        port: 3000
+        nodePort: 30300
+        targetPort: 80
+   selector:
+      app: container-info
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: container-info-deploy
+  namespace: my-namespace
+  labels:
+    app: container-info
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: container-info
+  template:
+    metadata:
+      labels:
+        app: container-info
+    spec:
+      containers:
+      - name: container-info
+        image: clarusway/container-info:1.0
+        ports:
+        - containerPort: 80

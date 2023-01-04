@@ -1,0 +1,17 @@
+Link EBS - https://asvignesh.in/mysql-pod-with-persistent-ebs-volume-in-eks/
+Link EFS - https://www.eksworkshop.com/beginner/190_efs/efs-csi-driver/
+
+Add-on AWS console (EBS)
+Volume in same AZ node
+
+
+kubectl get pods -o wide
+
+kubectl describe pod xxxxx 
+
+Link expose
+https://kubernetes.io/docs/tutorials/stateless-application/expose-external-ip-address/
+
+kubectl expose deployment mysql --type=LoadBalancer --name=my-service     
+
+kubectl get services my-service

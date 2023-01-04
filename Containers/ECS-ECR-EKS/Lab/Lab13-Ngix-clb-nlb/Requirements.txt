@@ -1,0 +1,5 @@
+kubectl create namespace eks-sample-app
+
+
+guia
+https://docs.aws.amazon.com/eks/latest/userguide/sample-deployment.html
