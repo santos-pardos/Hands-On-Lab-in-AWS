@@ -7,7 +7,7 @@ https://kubernetes.io/docs/tutorials/stateless-application/expose-external-ip-ad
 
 kubectl expose deployment characters-deployment --type=LoadBalancer --name=my-service
 
-kubectl port-forward aqua-csp-766689745b-4ln7q 8080:8080
+kubectl port-forward mypod 8080:8080
 
 https://github.com/nathanpeck/nodejs-aws-workshop/tree/master/6%20-%20Kubernetes%20(kops)
 
