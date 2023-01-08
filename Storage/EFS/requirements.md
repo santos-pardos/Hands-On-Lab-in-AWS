@@ -21,6 +21,10 @@ yum -y install nfs-utils
 
 sudo mount -t nfs -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport fs-09d8395cbf7d9bf1c.efs.us-east-1.amazonaws.com:/   efs-mount
 
+# Neflix Website
+
+wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Netflix.zip 
+
 # Modify the Apache root document
 
 /etc/httpd/conf/httpd.conf
