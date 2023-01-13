@@ -16,7 +16,7 @@ systemctl enable httpd
 
 yum -y install nfs-utils
 
-# Linux 
+# Linux Commands
 
 cd /var/www/html
 
