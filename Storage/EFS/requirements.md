@@ -16,6 +16,12 @@ systemctl enable httpd
 
 yum -y install nfs-utils
 
+# Linux 
+
+cd /var/www/html
+
+mkdir efs-mount
+
 
 # Mount folder
 
