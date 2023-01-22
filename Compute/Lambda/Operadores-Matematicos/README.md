@@ -1,4 +1,4 @@
-# Payload in JSON
+# Payload
 
 {
   "a": 2,
