@@ -12,4 +12,4 @@ def lambda_handler(event, context):
         TopicArn = snsArn,
         Message = message ,
         Subject='Hello ' + name
-    ))
+    )
