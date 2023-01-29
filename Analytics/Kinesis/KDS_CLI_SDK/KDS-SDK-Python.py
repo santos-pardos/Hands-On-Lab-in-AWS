@@ -14,7 +14,7 @@ def send_data_record(crypto="BTC"):
     data = r.json()
     data["timestamp"] = int(time.time())
     data["crypto"] = crypto
-    result = client.put_record(StreamName="demo",
+    result = client.put_record(StreamName="demo-kds",
                                Data=json.dumps(data),
                                PartitionKey=crypto)
     print(result)
