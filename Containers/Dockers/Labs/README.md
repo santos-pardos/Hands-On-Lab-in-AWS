@@ -31,12 +31,6 @@ EXPOSE 80
 
 # Upload to ECR
 
-Validation in AWS
-
-AWS Configure  (Academy credentials)
-
-Validation in ECR
-
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin xxxxxxx.dkr.ecr.us-east-1.amazonaws.com
 
 docker tag 2048:latest xxxxx.dkr.ecr.us-east-1.amazonaws.com/dockers-unir:2048
