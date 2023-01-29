@@ -15,7 +15,7 @@ aws kinesis put-record --stream-name demo-kds --partition-key user1 --data "user
 # CONSUMER 
 
 # describe the stream
-aws kinesis describe-stream --stream-name test
+aws kinesis describe-stream --stream-name demo-kds
 
 # Consume some data
 aws kinesis get-shard-iterator --stream-name demo-kds --shard-id shardId-000000000000 --shard-iterator-type TRIM_HORIZON
