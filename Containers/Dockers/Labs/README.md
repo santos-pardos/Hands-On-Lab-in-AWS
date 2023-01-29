@@ -1,11 +1,9 @@
 
 # Install Docker (not in Cloud9)
 
-sudo su 
+sudo yum -y install docker 
 
-yum -y install docker 
-
-systemctl start docker
+sudo systemctl start docker
 
 # Install Docker-Compose (yes in Cloud9)
 
@@ -14,7 +12,6 @@ sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-c
 sudo chmod +x /usr/local/bin/docker-compose
 
 docker-compose version
-
 
 # Netflix
 
