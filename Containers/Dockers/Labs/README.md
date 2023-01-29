@@ -1,11 +1,13 @@
 
-# Basics Dockers and Dockerfile example. (not in Cloud9)
+# Install Docker (not in Cloud9)
 
 sudo su 
 
 yum -y install docker 
 
 systemctl start docker
+
+# Install Docker-Compose (yes in Cloud9)
 
 
 # Netflix
