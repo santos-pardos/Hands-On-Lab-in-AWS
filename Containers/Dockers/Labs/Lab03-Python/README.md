@@ -6,4 +6,10 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 docker-compose version
 
+# Flash error
 
+pip install --upgrade pip
+
+pip install flask
+
+python3 -m pip install -U Flask
