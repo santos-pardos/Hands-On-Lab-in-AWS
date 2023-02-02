@@ -1,7 +1,7 @@
 Información general
 En este laboratorio, creará un microservicio de preguntas frecuentes simples. El microservicio devolverá un objeto JSON que contiene un par de pregunta y respuesta aleatorio que utiliza un punto de enlace de Amazon API Gateway que invoca una función de AWS Lambda. Este es el patrón de arquitectura de este microservicio:
 
-micro-service.png
+![alt text](API_GW_FAQ.png)
 
 TEMAS
 Al final de este laboratorio, podrá hacer lo siguiente:
