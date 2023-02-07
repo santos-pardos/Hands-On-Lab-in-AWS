@@ -1,2 +1,5 @@
 # Simple Data Lake
+
+SELECT * FROM "movies_data" limit l0;
+
 ![Alt text](datalake-lab1.png?raw=true "Simple Data Lake")
