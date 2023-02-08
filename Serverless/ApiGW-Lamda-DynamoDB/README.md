@@ -1,5 +1,8 @@
 # LevelUp! Lab for Serverless
 
+https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-dynamo-db.html
+
+
 ## Lab Overview And High Level Design
 
 Let's start with the High Level Design.
