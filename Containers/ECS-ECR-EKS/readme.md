@@ -2,6 +2,8 @@
 
 https://github.com/stacksimplify/kubernetes-fundamentals/tree/master/02-PODs-with-kubectl
 
+https://www.stacksimplify.com/aws-eks/kubernetes-for-absolute-beginners/kubernetes-for-absolute-beginners/
+
 AWS Doc
 
 https://docs.aws.amazon.com/eks/latest/userguide/sample-deployment.html
