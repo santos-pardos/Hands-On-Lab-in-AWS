@@ -1,12 +1,16 @@
 # Dockers and K8s examples
 
+https://github.com/stacksimplify/kubernetes-fundamentals/tree/master/02-PODs-with-kubectl
+
+AWS Doc
+
+https://docs.aws.amazon.com/eks/latest/userguide/sample-deployment.html
+
 kubectl get --all-namespaces pods
 
 kubectl get pods
 
 kubectl get deployments
-
-https://github.com/stacksimplify/kubernetes-fundamentals/tree/master/02-PODs-with-kubectl
 
 kubectl run my-first-pod --image stacksimplify/kubenginx:1.0.0
 
@@ -65,12 +69,6 @@ Buxybox (arrancar y parada)
 
 kubectl run -i --tty busybox --image=busybox --restart=Never -- sh
 
-Hello World
 
-https://joachim8675309.medium.com/building-eks-with-eksctl-799eeb3b0efd
 
-https://github.com/darkn3rd/blog_tutorials/tree/master/kubernetes/eks_1_provision_eksctl
 
-AWS Doc
-
-https://docs.aws.amazon.com/eks/latest/userguide/sample-deployment.html
