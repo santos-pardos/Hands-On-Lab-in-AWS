@@ -14,6 +14,8 @@ kubectl expose pod my-first-pod  --type=NodePort --port=80 --name=my-first-servi
 
 kubectl expose pod my-first-pod  --type=NodePort --port=80 --target-port=80 --name=my-first-service3
 
+kubectl port-forward my-first-pod 80:80
+
 kubectl get pods -o wide
 
 kubectl get service
