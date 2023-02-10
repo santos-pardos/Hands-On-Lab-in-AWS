@@ -36,6 +36,7 @@ kubectl exec -it my-first-pod -- /bin/bash
   
   exit
   
+  
 kubectl exec -it my-first-pod ls
 
 
