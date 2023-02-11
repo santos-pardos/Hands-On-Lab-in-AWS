@@ -3,6 +3,8 @@
 
 https://kubernetes.io/docs/tutorials/stateless-application/guestbook/
 
+https://github.com/kubernetes/examples
+
 
 kubectl apply -f readis-leader-deployment.yaml
 
