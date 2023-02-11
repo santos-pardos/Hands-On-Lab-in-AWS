@@ -11,4 +11,7 @@ Create an secrets.yaml or lauch this command before apply both deployments
 
 kubectl create secret generic mysql-pass --from-literal=password=SKYNETSECRETKEY
 
+kubectl get secrets
+
+
 
