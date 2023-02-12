@@ -70,6 +70,7 @@ kubectl logs deployment/nginx-deploy
 Buxybox (arrancar y parada)
 
 kubectl run -i --tty busybox --image=busybox --restart=Never -- sh
+
 kubectl run -i --rm --tty debug --image=busybox -- sh
 
 
