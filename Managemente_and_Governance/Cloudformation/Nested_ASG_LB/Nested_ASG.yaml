@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: AWS CloudFormation Sample Template for creating EC2 instance
+Parameters:
+  WebInstanceType:
+    Description: WebServer EC2 instance type
+    Type: String
+    Default: t2.micro
+    ConstraintDescription: must be a valid EC2 instance type.
+  KeyName:
+    Description: Key pair name
+    Type: 'AWS::EC2::KeyPair::KeyName'
+    Default: whizlabs-key
+  AMIid:
+    Description: Image ID
+    Type: 'AWS::EC2::Image::Id'
+    Default: ami-00eb20669e0990cb4
+  LoadBalancerName:
+    Description: Name of LoadBalancer
+    Type: String
+  SSHLocation:
+    Description: The IP address range that can be used to SSH to the EC2 instances
+    Type: String
+    MinLength: '9'
+    MaxLength: '18'
+    Default: 0.0.0.0/0
+Resources:
+  WebserverASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+        AvailabilityZones: !GetAZs ''
+        LoadBalancerNames:
+              - !Ref LoadBalancerName           
+        LaunchConfigurationName: 
+              Ref: LaunchConfig
+        MaxSize: "3"
+        MinSize: "2"
+        Tags:
+          - Key: Name
+            Value: Nested_webserver
+            PropagateAtLaunch: True
+  LaunchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      KeyName:
+        Ref: KeyName
+      ImageId: !Ref AMIid
+      InstanceType: !Ref WebInstanceType
+      LaunchConfigurationName: LaunchConfig  
+      SecurityGroups: 
+        - Fn::GetAtt: [ WebsecGroup, GroupId ]
+      UserData:
+         'Fn::Base64': !Sub |
+           #!/bin/bash
+           # install apache
+           yum install httpd24 -y
+           time=`date`  
+           # start server
+           service httpd start
+           chkconfig httpd on
+           echo "Test page of server created at  "$time"" > /var/www/html/index.html            
+  WebsecGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Security Group for Autoscaling
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: !Ref SSHLocation
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !Ref SSHLocation 
+      Tags:
+        - Key: Name 
+          Value: WEBSERVER_SG

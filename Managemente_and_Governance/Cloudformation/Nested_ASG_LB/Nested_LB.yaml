@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: AWS CloudFormation Sample Template for creating LoadBalancer
+Resources:
+  ElasticLoadBalancer:
+    Type: AWS::ElasticLoadBalancing::LoadBalancer
+    Properties:
+      SecurityGroups:
+        - Fn::GetAtt: [ Elbsg, GroupId ]
+      AvailabilityZones: !GetAZs ''
+      CrossZone: 'true'
+      Listeners:
+      - LoadBalancerPort: '80'
+        InstancePort: '80'
+        Protocol: HTTP
+      HealthCheck:
+        Target: TCP:80
+        HealthyThreshold: '3'
+        UnhealthyThreshold: '5'
+        Interval: '30'
+        Timeout: '5'
+      ConnectionDrainingPolicy:
+        Enabled: 'true'
+        Timeout: '300'  
+      Tags:
+        - Key: Name 
+          Value: ELB_Nested
+  Elbsg:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupName: ELB-sg
+      GroupDescription: Security group for Load balancer
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          FromPort: '80'
+          IpProtocol: tcp
+          ToPort: '80'
+      Tags:
+        - Key: Name 
+          Value: ELB_SG
+Outputs:
+  LoadBalancerName:
+    Value:
+      Ref: ElasticLoadBalancer
+    Description: Name of ElasticLoadBalancer

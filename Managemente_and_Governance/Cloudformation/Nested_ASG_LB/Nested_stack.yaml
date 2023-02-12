@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Template for Nested stack
+Resources:
+ MyWebserverstack1:
+   Type: AWS::CloudFormation::Stack
+   Properties:
+       TemplateURL: https://whizlabs28607810.s3.amazonaws.com/Nested_ASG.yaml
+       TimeoutInMinutes: '5'
+       Parameters:
+         LoadBalancerName: !GetAtt 'Elbstack.Outputs.LoadBalancerName'
+ Elbstack:
+   Type: AWS::CloudFormation::Stack
+   Properties:
+      TemplateURL: https://whizlabs28607810.s3.amazonaws.com/Nested_LB.yaml
+Outputs:
+  StackRef:
+    Value: !Ref Elbstack 
+  OutputFromNestedStack:
+    Value: !GetAtt Elbstack.Outputs.LoadBalancerName
