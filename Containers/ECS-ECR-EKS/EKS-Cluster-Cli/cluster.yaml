@@ -1,0 +1,22 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: cluster3
+  region: us-east-1
+
+vpc:
+  subnets:
+    private:
+      eu-north-1a: { id: subnet-0f9677e8641995a5f }
+      eu-north-1b: { id: subnet-090cd48a6c70b7075 }
+      eu-north-1c: { id: subnet-0e40b66d38ee9a3dc }
+
+iam: 
+  serviceRoleARN: "arn:aws:iam::370123034774:role/LabRole"
+
+managedNodeGroups :
+  - name: managed-node-group-1
+    instanceType: t2.micro
+    minSize: 3
+    maxSize: 4
