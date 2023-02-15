@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: cluster3
+  name: cluster-demo
   region: us-east-1
 
 vpc:
@@ -13,10 +13,10 @@ vpc:
       eu-north-1c: { id: subnet-0e40b66d38ee9a3dc }
 
 iam: 
-  serviceRoleARN: "arn:aws:iam::370123034774:role/LabRole"
+  serviceRoleARN: "arn:aws:iam::370144434774:role/LabRole"
 
 managedNodeGroups :
-  - name: managed-node-group-1
+  - name: worker-nodes
     instanceType: t2.micro
     minSize: 3
     maxSize: 4
