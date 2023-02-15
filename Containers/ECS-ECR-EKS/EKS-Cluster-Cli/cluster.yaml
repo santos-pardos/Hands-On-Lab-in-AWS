@@ -15,8 +15,3 @@ vpc:
 iam: 
   serviceRoleARN: "arn:aws:iam::370144434774:role/LabRole"
 
-managedNodeGroups :
-  - name: worker-nodes
-    instanceType: t2.micro
-    minSize: 3
-    maxSize: 4
