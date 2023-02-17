@@ -16,7 +16,7 @@ kubectl get pv
 
 kubectl apply -f efs-writer.yaml
 
-kubectl exec -it efs-writer -n storage -- tail /shared/out.txt
+kubectl exec -it efs-writer -- tail /shared/out.txt
 
 kubectl apply -f efs-reader.yaml
 
