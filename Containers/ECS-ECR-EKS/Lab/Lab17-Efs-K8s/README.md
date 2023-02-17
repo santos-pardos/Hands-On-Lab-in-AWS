@@ -10,11 +10,13 @@ kubectl get pods -n kube-system
 
 kubectl apply -f efs-pvc.yaml
 
-kubectl get pvc -n storage
+kubectl get pvc 
 
 kubectl get pv
 
 kubectl apply -f efs-writer.yaml
+
+kubectl exec -it efs-writer -n storage -- tail /shared/out.txt
 
 kubectl apply -f efs-reader.yaml
 
