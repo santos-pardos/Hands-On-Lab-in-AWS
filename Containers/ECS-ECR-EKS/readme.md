@@ -75,6 +75,8 @@ kubectl run -i --rm --tty debug --image=busybox -- sh
 
 kubectl run -i --tty utils --image=arunvelsriram/utils --restart=Never -- sh
 
+sudo amazon-linux-extras install epel -y
 
+sudo yum install stress -y
 
 
