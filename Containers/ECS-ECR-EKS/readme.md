@@ -73,6 +73,8 @@ kubectl run -i --tty busybox --image=busybox --restart=Never -- sh
 
 kubectl run -i --rm --tty debug --image=busybox -- sh
 
+kubectl run -i --tty utils --image=arunvelsriram/utils --restart=Never -- sh
+
 
 
 
