@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcatinfra
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tomcatinfra
+  template:
+    metadata:
+      labels:
+        app: tomcatinfra
+    spec:
+      containers:
+        - name: tomcatinfra
+          image: saravak/tomcat8
+          ports:
+            - containerPort: 8080
