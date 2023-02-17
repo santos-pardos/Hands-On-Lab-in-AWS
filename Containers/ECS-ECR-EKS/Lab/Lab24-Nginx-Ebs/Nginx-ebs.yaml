@@ -1,0 +1,45 @@
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv-ebs
+  labels:
+    type: amazonEBS
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  awsElasticBlockStore:
+    volumeID: aws://us-east-1b/vol-09083ad3de2deeadd
+    fsType: ext4
+  persistentVolumeReclaimPolicy: Recycle
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-ebs
+  labels:
+    type: amazonEBS
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: nginx
+spec:
+  containers:
+    - name: myfrontend
+      image: nginx
+      volumeMounts:
+      - mountPath: "/var/www/html"
+        name: ebs
+  volumes:
+    - name: ebs
+      persistentVolumeClaim:
+        claimName: pvc-ebs
