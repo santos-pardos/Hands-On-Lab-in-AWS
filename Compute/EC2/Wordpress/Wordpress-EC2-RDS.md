@@ -101,8 +101,12 @@ sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
 cd /home/ec2-user
 	
 sudo cp -r wordpress/* /var/www/html/
+
+sudo chown -R apache:apache /var/www/html
 	
 sudo service httpd restart
+
+sudo systemctl restart php-fpm
 	
 Open the public IP of the EC2 to start Wordpress
 	
