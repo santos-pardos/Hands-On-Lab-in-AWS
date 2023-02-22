@@ -8,7 +8,7 @@ https://aws.amazon.com/es/getting-started/hands-on/deploy-wordpress-with-amazon-
 
 # 3. Configuration 
 
-New User in database: 
+----------------------New User in database: 
 
 sudo yum install -y mysql
 
@@ -25,15 +25,13 @@ FLUSH PRIVILEGES;
 Exit
 	
 	
-Apache
+-----------------------Apache
 	
 sudo yum install -y httpd
 	
 sudo service httpd start
-	
-sudo service httpd start
 
-Wordpress
+------------------------Wordpress
 	
 wget https://wordpress.org/latest.tar.gz
 	
@@ -51,7 +49,8 @@ vim wp-config.php
 
 	
 	
-Change de data in this section:
+----------------------------Change de data in this section:
+
 // ** MySQL settings - You can get this info from your web host ** //
 	
 /** The name of the database for WordPress */
@@ -73,9 +72,9 @@ define( 'DB_HOST', 'localhost' );
 
 
 
-Change the define in the file for the define keys generate in this link:
+-----------------Change the define in the file for the define keys generate in this link:
 	
-https://api.wordpress.org/secret-key/1.1/salt/
+-----------------https://api.wordpress.org/secret-key/1.1/salt/
 
 
 define( 'AUTH_KEY',         'put your unique phrase here' );
@@ -93,6 +92,7 @@ define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
 define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
 	
 define( 'NONCE_SALT',       'put your unique phrase here' );
+
 
 # 4. Config Wordpress
 	
