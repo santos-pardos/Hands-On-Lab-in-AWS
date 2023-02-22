@@ -14,7 +14,7 @@ sudo yum install -y mysql
 
 export MYSQL_HOST= your-endpoint
 	
-mysql --user=<user> --password=<password> wordpress
+mysql --user=your-user --password=your-password wordpress
 	
 CREATE USER 'wordpress' IDENTIFIED BY 'wordpress-pass';
 	
