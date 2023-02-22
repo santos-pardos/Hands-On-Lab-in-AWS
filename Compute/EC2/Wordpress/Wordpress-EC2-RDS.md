@@ -12,7 +12,7 @@ New User in database:
 
 sudo yum install -y mysql
 
-export MYSQL_HOST=<your-endpoint>
+export MYSQL_HOST= your-endpoint
 	
 mysql --user=<user> --password=<password> wordpress
 	
