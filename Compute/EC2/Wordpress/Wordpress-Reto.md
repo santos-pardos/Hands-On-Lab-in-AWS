@@ -12,7 +12,7 @@ sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
 
 # MySQL Config 
 
-mysql -h wordpress.crmvoqdjozf6.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
+mysql -h wordpress.xxxxxxxxxx.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
 
 CREATE USER 'wordpress' IDENTIFIED BY 'wordpress-pass';
 
