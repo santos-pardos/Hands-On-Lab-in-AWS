@@ -29,7 +29,6 @@ wget https://wordpress.org/latest.tar.gz
 
 tar -xzf latest.tar.gz
 
-cd wordpress
 
 # Ec2-user Permissions
 
