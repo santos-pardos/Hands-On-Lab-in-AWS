@@ -2,7 +2,7 @@
 
 sudo yum install -y mysql
 
-sudo yum install httpd
+sudo yum install -y httpd
 
 sudo systemctl start httpd
 
