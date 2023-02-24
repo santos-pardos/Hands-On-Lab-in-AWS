@@ -31,7 +31,7 @@ tar -xzf latest.tar.gz
 
 cd wordpress
 
-# ec2-user Permissions
+# Ec2-user Permissions
 
 sudo usermod -a -G apache ec2-user
 
@@ -52,5 +52,7 @@ sudo chown -R apache:apache /var/www/html
 sudo service httpd restart
 
 sudo systemctl restart php-fpm
+
+# Wordpress Initial Config
 
 http://public-ip/
