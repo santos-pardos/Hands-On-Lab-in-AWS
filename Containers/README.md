@@ -2,7 +2,7 @@
 
 # Docker CE Install
 
-sudo amazon-linux-extras install docker
+sudo yum install docker -y
 
 sudo service docker start
 
