@@ -1,6 +1,7 @@
 # Hands-On-Lab-in-AWS about containers and dockers
 
 # Docker CE Install
+
 sudo amazon-linux-extras install docker
 
 sudo service docker start
