@@ -26,7 +26,7 @@ sudo systemctl status docker.service
 
 sudo dnf -y install wget
 
-curl -s https://api.github.com/repos/docker/compose/releases/latest
+sudo curl -s https://api.github.com/repos/docker/compose/releases/latest
 
 sudo chmod +x docker-compose-linux-x86_64
 
