@@ -26,18 +26,11 @@ Close the ssh sessión and enter again to execute docker with your user (ec2-use
 
 Copy the appropriate docker-compose binary from GitHub:
 
-sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-
-sudo curl -L https://github.com/docker/compose/releases/download/1.3.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-
-
-NOTE: to get the latest version (thanks @spodnet): sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
-
+sudo curl -L https://github.com/docker/compose/releases/download/1.3.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 
 Fix permissions after download:
 
 sudo chmod +x /usr/local/bin/docker-compose
-
 
 Verify success:
 
