@@ -22,7 +22,20 @@ sudo systemctl status docker.service
 
 # docker-compose install
 
-## Option 1
+## Option 1 (Linux AMI 2023)
+
+sudo dnf -y install wget
+
+curl -s https://api.github.com/repos/docker/compose/releases/latest
+
+chmod +x docker-compose-linux-x86_64
+
+sudo mv docker-compose-linux-x86_64 /usr/local/bin/docker-compose
+
+docker-compose --version
+
+
+## Option 2 (Linux AMI 2)
 sudo yum install python3-pip
 
 sudo pip3 install docker-compose
@@ -31,7 +44,7 @@ sudo systemctl enable docker.service
 
 sudo systemctl start docker.service
 
-## Option 2 
+## Option 3
 Copy the appropriate docker-compose binary from GitHub:
 
 sudo curl -L https://github.com/docker/compose/releases/download/1.3.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
@@ -58,5 +71,7 @@ https://floatingcloud.io/how-to-install-docker-and-compose-on-amazon-linux-2/
 https://gist.github.com/npearce/6f3c7826c7499587f00957fee62f8ee9
 
 https://www.adictosaltrabajo.com/2022/12/19/despliegue-de-aplicaciones-con-docker-compose/
+
+https://computingforgeeks.com/install-and-use-docker-compose-on-fedora/
 
 
