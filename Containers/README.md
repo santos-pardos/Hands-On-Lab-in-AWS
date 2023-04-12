@@ -19,7 +19,7 @@ Because you always need it....
 sudo yum install -y git
 
 
-Close the ssh sessión and enter again to execute docker with your user (ec2-user)
+Close the ssh session and enter again to execute docker with your user (ec2-user)
 
 
 # docker-compose install
