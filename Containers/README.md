@@ -50,3 +50,7 @@ docker-compose version
 https://floatingcloud.io/how-to-install-docker-and-compose-on-amazon-linux-2/
 
 https://gist.github.com/npearce/6f3c7826c7499587f00957fee62f8ee9#file-install-docker-md
+
+https://floatingcloud.io/how-to-install-docker-and-compose-on-amazon-linux-2/
+
+https://gist.github.com/npearce/6f3c7826c7499587f00957fee62f8ee9
