@@ -19,9 +19,7 @@ Because you always need it....
 sudo yum install -y git
 
 
-Reboot to verify it all loads fine on its own.
-
-sudo reboot
+Close the ssh sessión and enter again to execute docker with your user (ec2-user)
 
 
 # docker-compose install
