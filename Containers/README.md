@@ -28,7 +28,7 @@ sudo dnf -y install wget
 
 curl -s https://api.github.com/repos/docker/compose/releases/latest
 
-chmod +x docker-compose-linux-x86_64
+sudo chmod +x docker-compose-linux-x86_64
 
 sudo mv docker-compose-linux-x86_64 /usr/local/bin/docker-compose
 
