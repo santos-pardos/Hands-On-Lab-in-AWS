@@ -1,7 +1,5 @@
 ## Swarm commands 
 
-https://upcloud.com/resources/tutorials/docker-swarm-orchestration
-
 sudo yum install docker -y
 
 sudo service docker start
@@ -58,4 +56,7 @@ docker service create --name busybox --network services busybox sleep 3000
 docker service ps busybox
 
 docker service scale busybox=0
+  
+### Links
+https://upcloud.com/resources/tutorials/docker-swarm-orchestration
 
