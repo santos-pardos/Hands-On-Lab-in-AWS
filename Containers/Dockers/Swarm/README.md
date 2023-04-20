@@ -60,5 +60,8 @@ docker service ps busybox
 docker service scale busybox=0
   
 ### Links
+  
+https://docs.docker.com/engine/swarm/swarm-tutorial/
+  
 https://upcloud.com/resources/tutorials/docker-swarm-orchestration
 
