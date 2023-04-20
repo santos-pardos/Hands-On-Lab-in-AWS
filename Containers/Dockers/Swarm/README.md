@@ -20,10 +20,6 @@ docker swarm leave
 
 docker node ls
 
-(docker network create --driver overlay --subnet 10.0.0.0/12 --opt encrypted services) Only if I use networks
-
-(docker network create --driver overlay --subnet 10.0.0.0/12 --opt encrypted services) Only if I use networks
-
 docker service create --replicas 2 --name nginx  --publish 80:80 nginx
 
 docker service ls
@@ -69,4 +65,10 @@ docker service scale busybox=0
 https://docs.docker.com/engine/swarm/swarm-tutorial/
   
 https://upcloud.com/resources/tutorials/docker-swarm-orchestration
+  
+### Networking
+  
+(docker network create --driver overlay --subnet 10.0.0.0/12 --opt encrypted services) Only if I use networks
+
+(docker network create --driver overlay --subnet 10.0.0.0/12 --opt encrypted services) Only if I use networks
 
