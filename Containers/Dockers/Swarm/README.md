@@ -14,15 +14,17 @@ docker swarm init --advertise-addr manager_private_ip
 
 docker swarm join --token SWMTKN_token manager_private_ip
 
-(docker swarm join --token SWMTKN-1-0umz9m4m6109ddm4qkate0wbz9n9uq4h7e6j1uous53t0saabz-evd4avwxrecruuntxs2xipyzk 172.31.83.127:2377)
+(docker swarm join --token SWMTKN-1-0umz9m4m6109ddm4qkate0wbz9n9uq4h7e6j1uous53t0saabz-evd4avwxrecruuntxs2xipyzk 172.31.83.127:2377) Example to know the 2377 port
 
 docker swarm leave
 
 docker node ls
 
-docker network create --driver overlay --subnet 10.0.0.0/12 --opt encrypted services
+(docker network create --driver overlay --subnet 10.0.0.0/12 --opt encrypted services) Only if I use networks
 
-docker service create --replicas 2 --name nginx --network services --publish 80:80 nginx
+(docker network create --driver overlay --subnet 10.0.0.0/12 --opt encrypted services) Only if I use networks
+
+docker service create --replicas 2 --name nginx  --publish 80:80 nginx
 
 docker service ls
 
