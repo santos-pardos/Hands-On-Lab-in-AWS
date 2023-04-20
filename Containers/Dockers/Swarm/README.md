@@ -46,7 +46,10 @@ docker service rm nginx
 
 
 
+docker service create --replicas 2 --name tools --publish 80:80 wbitt/network-multitool sleep 3000
 
+docker service ps tools
+  
 
 docker service create --name tools services wbitt/network-multitool
 
