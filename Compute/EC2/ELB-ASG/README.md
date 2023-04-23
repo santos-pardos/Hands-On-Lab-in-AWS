@@ -10,9 +10,9 @@ service docker start
 
 systemctl enable docker.service
 
-docker pull santospardos/upc:netflix
+docker pull santospardos/upc:juiceshop
 
-docker run -d -p 80:80 santospardos/upc:netflix
+docker run -d -p 80:3000 santospardos/upc:juiceshop
 
 
 ## User Data for AMI Linux 2023 - Neflix
