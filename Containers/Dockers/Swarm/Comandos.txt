@@ -1,0 +1,73 @@
+https://upcloud.com/resources/tutorials/docker-swarm-orchestration
+sudo yum install docker -y
+sudo service docker start
+ sudo usermod -a -G docker ec2-user
+ sudo chkconfig docker on
+ systemctl status docker
+ docker swarm init --advertise-addr 172.31.83.127
+ docker ps
+ docker swarm
+ docker service create --replicas 2 --name nginx --publish 80:80 nginx
+ docker service ls
+ docker service ps nginx
+ docker service create --replicas 3 --name nginx  --publish 80:80 nginx
+ docker service create --name busybox  busybox sleep 3000
+ docker service ps
+ docker service ls
+ docker service ps -a
+ docker service ps busybox
+ docker exec -it busybox.1 /bin/sh
+ docker exec -it b0z3ztby11ak  /bin/sh
+ docker exec -it nginx:latest bash
+ docker exec -it b2b0b852fdea bash
+ docker service inspect --pretty nginx
+ docker service scale nginx=3
+ docker service ps nginx
+ docker node ls
+ docker service ps nginx
+ docker node update --availability=drain ip-172-31-92-163.ec2.internal
+ docker service ps nginx
+ docker node ls
+ docker service ps nginx
+ docker node update --availability=active ip-172-31-92-163.ec2.internal
+ docker service ps nginx
+ docker service scale nginx=2
+ docker service ps nginx
+ docker service scale busybox=0
+ docker service ps busybox
+ docker ps
+ docker service ps nginx
+ docker service scale nginx=3
+ docker service ps nginx
+ docker service scale nginx=1 
+ docker pull wbitt/network-multitool
+ docker images
+ docker service create --name tools services wbitt/network-multitool
+ docker service ps tools
+ docker service rm tools
+ docker service inspect nginx
+ docker service rm nginx
+ docker ps
+ docker node ls
+ docker service create --replicas 2 --name nginx --publish 80:80 wbitt/network-multitool
+ docker service ps tools
+ docker exec -it 1jwck7ms9li9  bash
+ docker service create --replicas 2 --name tools --publish 80:80 wbitt/network-multitool sleep 3000
+ docker exec -it ht4l6cjjdh5m bash
+ 
+Node 1: 
+sudo yum install docker -y
+sudo service docker start
+sudo usermod -a -G docker ec2-user
+sudo chkconfig docker on
+docker swarm join --token SWMTKN-1-0umz9m4m6109ddm4qkate0wbz9n9uq4h7e6j1uous53t0saabz-evd4avwxrecruuntxs2xipyzk 172.31.83.127:2377
+docker ps
+docker exec -it 7ccc5c8c3102 bash
+Hostname
+docker node update --availability=drain ip-172-31-92-163.ec2.internal
+
+
+ 
+ 
+ 
+ 
