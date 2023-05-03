@@ -85,7 +85,7 @@ ls
 docker stop containerid
 
 vim src/static/js/app.js  (cambiar cosa por Item)
-docker run  -d -v app/etc:/etc/todos -p 3000:3000  -v app/src:/app/src getting-started
+docker run  -d -v $PWD/app/etc:/etc/todos -p 3000:3000  -v $PWD/app/src:/app/src getting-started
 http://localhost:3000 
 vim app/src/static/js/app.js  
 http://localhost:3000
