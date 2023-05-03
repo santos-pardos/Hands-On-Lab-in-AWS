@@ -184,7 +184,7 @@ docker container --help | grep -E "(export|import|load|save)"
 docker image --help | grep -E "(export|import|load|save)"
 
 
-
+docker system prune -a
 
 Docker Command Dictionary
 # Remove Images 
