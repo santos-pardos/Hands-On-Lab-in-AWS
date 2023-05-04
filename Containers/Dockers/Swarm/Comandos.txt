@@ -66,7 +66,7 @@ docker ps
 docker exec -it 7ccc5c8c3102 bash
 Hostname
 docker node update --availability=drain ip-172-31-92-163.ec2.internal
-docker swarm leave id
+docker swarm leave
 
 
  
