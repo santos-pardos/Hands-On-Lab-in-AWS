@@ -54,7 +54,7 @@ sudo service docker start
  docker exec -it 1jwck7ms9li9  bash
  docker service create --replicas 2 --name tools --publish 80:80 wbitt/network-multitool sleep 3000
  docker exec -it ht4l6cjjdh5m bash
-docker node leave --force
+ docker swsarm leave --force
  
 Node 1: 
 sudo yum install docker -y
@@ -66,7 +66,7 @@ docker ps
 docker exec -it 7ccc5c8c3102 bash
 Hostname
 docker node update --availability=drain ip-172-31-92-163.ec2.internal
-docker node leave id
+docker swarm leave id
 
 
  
