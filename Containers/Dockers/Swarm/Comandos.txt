@@ -54,7 +54,7 @@ sudo service docker start
  docker exec -it 1jwck7ms9li9  bash
  docker service create --replicas 2 --name tools --publish 80:80 wbitt/network-multitool sleep 3000
  docker exec -it ht4l6cjjdh5m bash
- docker swsarm leave --force
+ docker swarm leave --force
  
 Node 1: 
 sudo yum install docker -y
