@@ -127,6 +127,14 @@ kubectl get namespaces
 
 kubectl get pod  
 
+kubectl -n kube-system get all
+
+kubectl -n kube-system get pods
+
+ kubectl run nginx --image=nginx
+
+kubectl port-forward my-service 8000:80
+
 kubectl exec -it tetris-86cd7c55c7-8mwtd -- /bin/bash   
 
 kubectl exec -ti worker-hello-5bfdf775d7-46f2g sh
