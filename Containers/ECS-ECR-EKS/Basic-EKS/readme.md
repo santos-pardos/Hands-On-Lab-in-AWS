@@ -77,11 +77,11 @@ docker push xxxxxx.dkr.ecr.eu-west-1.amazonaws.com/demo-sv:2048
 
 In an AWS Account
 
-eksctl create cluster --name dev-cluster --version 1.21 --region us-east-1 --nodegroup-name standard-workers --node-type t3.micro --nodes 3 --nodes-min 1 --nodes-max 4 --managed
+eksctl create cluster --name dev-cluster --version 1.26 --region us-east-1 --nodegroup-name standard-workers --node-type t3.micro --nodes 3 --nodes-min 1 --nodes-max 4 --managed
 
 In an AWS Academy (only in the zones a b c work the cluster)
 
-eksctl create cluster --name dev-cluster --version 1.21 --region us-east-1 --zones us-east-1a,us-east-1b,us-east-1c --nodegroup-name standard-workers --node-type t3.micro --nodes 3 --nodes-min 1 --nodes-max 4 --managed
+eksctl create cluster --name dev-cluster --version 1.26 --region us-east-1 --zones us-east-1a,us-east-1b,us-east-1c --nodegroup-name standard-workers --node-type t3.micro --nodes 3 --nodes-min 1 --nodes-max 4 --managed
 
 
 eksctl get cluster
