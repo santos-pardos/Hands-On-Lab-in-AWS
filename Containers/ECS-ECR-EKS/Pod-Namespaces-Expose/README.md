@@ -19,15 +19,18 @@ kubectl get namespace
 
 kubectl delete ns test
 
+```
 kind: Namespace
 apiVersion: v1
 metadata:
   name: test
   labels:
     name: test
+```
 
 kubectl apply -f test.yaml
 
+```
 apiVersion: v1
 kind: Pod
 metadata:
@@ -38,10 +41,11 @@ spec:
   containers:
   - name: mypod
     image: nginx
+```
 
 kubectl apply -f pod.yaml --namespace=test
 
-
+```
 apiVersion: v1
 kind: Pod
 metadata:
@@ -54,15 +58,20 @@ spec:
   - name: mypod
     image: nginx
 
+```
 
 $ kubectl get pods
+
 No resources found.
 
 $ kubectl get pods --namespace=test
+
 NAME      READY     STATUS    RESTARTS   AGE
+
 mypod     1/1       Running   0          10s
 
  kubectl exec -it  mypod --namespace=test bash  
+ 
 root@mypod:/usr/share/nginx# ls
 
 
