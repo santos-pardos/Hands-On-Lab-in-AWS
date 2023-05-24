@@ -68,26 +68,39 @@ root@mypod:/usr/share/nginx# ls
 
 
 kubectl run nginx-dev --image=nginx
+
 kubectl delete deployment nginx-dev
+
 kubectl create -f pod.yaml
+
 kubectl delete pod mypod
 
 kubectl apply -f netshoot.yaml 
 
 
 kubectl create ns express-nodejs
+
 kubectl apply -f https://raw.githubusercontent.com/LukeMwila/setting-up-eks-cluster-dojo/master/manifests/pod.yaml
+
 kubectl get pods -o wide --namespace=express-nodejs
+
 kubectl port-forward express-test 8080:8080 --namespace=express-nodejs
+
 http://localhost:8080/test
 
 kubectl run -it utils --image=arunvelsriram/utils -- sh
+
 kubectl run -it utils2 --image=arunvelsriram/utils  -- sh
+
 Ifconfig y ping de una a otra
 
 
 kubectl run my-first-pod --image stacksimplify/kubenginx:1.0.0
+
 kubectl expose pod my-first-pod --type=NodePort --port=80 --target-port=80 --name=my-first-service3
+
 kubectl get pods -o wide
+
 kubectl get all -o wide
+
 http:ipdondeestaelnodo:puertoefimero
