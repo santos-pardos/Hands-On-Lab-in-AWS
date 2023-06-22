@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod-configmap-demo
+spec:
+  containers:
+    - name: my-container-configmap-demo
+      image: k8s.gcr.io/busybox
+      command: [ "/bin/sh", "-c", "echo $(variable_one_env) $(variable_two_env)" ]
+      env:
+        - name: variable_one_env
+          valueFrom:
+            configMapKeyRef:
+              name: my-configmap-demo1
+              key: variable_one
+        - name: variable_two_env
+          valueFrom:
+            configMapKeyRef:
+              name: my-configmap-demo1
+              key: variable_two
+  restartPolicy: Never

@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: simple-job-1
+spec:
+  template:
+    spec:
+      containers:
+        - name: job-1
+          image: busybox
+          args:
+            - /bin/sh
+            - -c
+            - date; echo sleeping....; sleep 30s; echo exiting!; date
+      restartPolicy: Never

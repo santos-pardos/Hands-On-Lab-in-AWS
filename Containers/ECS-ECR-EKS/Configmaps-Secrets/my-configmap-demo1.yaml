@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-configmap-demo1
+data:
+  variable_one: one
+  variable_two: two
