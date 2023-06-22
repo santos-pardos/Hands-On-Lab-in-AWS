@@ -16,3 +16,10 @@ https://bobcares.com/blog/kubernetes-statefulset-mysql/
 
 https://www.eiximenis.dev/posts/2020-11-15-de-statefulsets-y-headless-services/
 
+https://docs.dennisokeeffe.com/kubernetes/eks-deploy-stateful-ebs-app#the-ebs-volumes
+
+https://levelup.gitconnected.com/easy-baking-with-aws-eks-95554ec34755
+
+https://keepcoding.io/blog/que-es-statefulset-kubernetes/
+
+
