@@ -4,6 +4,7 @@ https://kubernetes.io/es/docs/concepts/workloads/controllers/jobs-run-to-complet
 
 https://howtoforge.es/trabajos-en-kubernetes/
 
+
 ## Commands
 
 kubectl apply -f https://k8s.io/examples/controllers/job.yaml
