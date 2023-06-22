@@ -2,6 +2,7 @@
 
 https://kubernetes.io/es/docs/concepts/workloads/controllers/jobs-run-to-completion/
 
+https://howtoforge.es/trabajos-en-kubernetes/
 
 ## Commands
 
