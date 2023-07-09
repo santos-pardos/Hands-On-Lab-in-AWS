@@ -7,7 +7,7 @@ https://grouplens.org/datasets/movielens/
 Create Cluster:  Spark Spark 1.6.2 Hadoop 2.7.2 YARN with Ganglia 3.7.2.  Switch on logs options in the cluster.
 
 
-Connect EC2 
+Connect EC2  (open de 22 port into SG EMC EC2)
 
 ```
     ls
