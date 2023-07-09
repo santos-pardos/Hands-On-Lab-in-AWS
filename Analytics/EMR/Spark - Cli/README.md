@@ -9,10 +9,13 @@ Create Cluster:  Spark Spark 1.6.2 Hadoop 2.7.2 YARN with Ganglia 3.7.2.  Switch
 
 Connect EC2  (open de 22 port into SG EMC EC2)
 
+Go to node master
+
 ```
     ls
  
     pwd
+    cd /home/hadoop
 
     aws s3 cp s3://sundog-spark/MovieSimilarities1M.jar ./    
 ```
