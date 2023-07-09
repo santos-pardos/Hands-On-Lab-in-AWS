@@ -9,11 +9,11 @@ Create Cluster:  Spark Spark 1.6.2 Hadoop 2.7.2 YARN with Ganglia 3.7.2.  Switch
 
 Connect EC2 
 
-   ls
+    ls
  
-   pwd
+    pwd
 
-   aws s3 cp s3://sundog-spark/MovieSimilarities1M.jar ./
+    aws s3 cp s3://sundog-spark/MovieSimilarities1M.jar ./
 
     ls
 
@@ -21,4 +21,4 @@ Connect EC2
 
     ls
 
-  spark-submit MovieSimilarities1M.jar 260
+    spark-submit MovieSimilarities1M.jar 260
