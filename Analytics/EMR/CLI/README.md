@@ -13,16 +13,12 @@ Connect EC2
  
     pwd
 
-    aws s3 cp s3://sundog-spark/MovieSimilarities1M.jar ./
-
-    
+    aws s3 cp s3://sundog-spark/MovieSimilarities1M.jar ./    
 
     ls
 
     aws s3 cp s3://sundog-spark/ml-1m/movies.dat ./
 
-    ls
-
-    
+    ls    
 
     spark-submit MovieSimilarities1M.jar 260
