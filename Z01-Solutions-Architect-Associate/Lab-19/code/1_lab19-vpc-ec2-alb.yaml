@@ -1,0 +1,468 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: '1_lab17-vpc-ec2-alb'
+
+#Pre-requisitos
+
+#Crear un "Key Pair"
+
+Parameters:
+
+  VPCCIDR:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.0.0/16
+     Description: CIDR Block for the VPC
+     Type: String
+     
+  SubnetCIDR1:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.1.0/24
+     Description: CIDR Block for the Public Subnet (Load Balancer)
+     Type: String
+     
+  SubnetCIDR2:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.2.0/24
+     Description: CIDR Block for the Public Subnet (Load Balancer)
+     Type: String
+     
+  SubnetCIDR3:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.3.0/24
+     Description: CIDR Block for the Public Subnet (Load Balancer)
+     Type: String
+     
+  SubnetCIDR4:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.4.0/24
+     Description: CIDR Block for the Public Subnet (Load Balancer)
+     Type: String
+
+  InstancesFamily: 
+     Description: The Instances Family
+     Type: CommaDelimitedList
+     Default: "t2.micro,t2.medium,t2.large,t2.xlarge"
+    
+  KeyPair: 
+     Description: "Ingresar el nombre de un Key Pair"
+     Type: AWS::EC2::KeyPair::KeyName
+
+Mappings: 
+
+  RegionAndNATInstanceToAMIID: 
+    us-east-1: 
+      "NATInstancesID": "ami-00a9d4a05375b2763"
+    eu-west-3: 
+      "NATInstancesID": "ami-0050bb60cea70c5b3"
+  RegionAndInstanceEC2TypeToAMIID: 
+    us-east-1: 
+      "HVM64": "ami-0c2b8ca1dad447f8a"
+    eu-west-3: 
+      "HVM64": "ami-0d49cec198762b78c"
+  RegionAndAvailabilityZoneToSubnet:
+    us-east-1:
+      "AZa": "us-east-1a"
+      "AZb": "us-east-1b"
+    eu-west-3:
+      "AZa": "eu-west-3a"
+      "AZb": "eu-west-3b"
+
+
+Resources:
+
+# Creacion del recurso VPC
+
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VPCCIDR
+      EnableDnsHostnames: 'true'
+      EnableDnsSupport: 'true'
+      InstanceTenancy: default
+      Tags:
+      - Key: Name
+        Value: 'VPC'
+      - Key: Enviroment
+        Value: PROD
+        
+# Creacion del recurso Internet Gateway
+
+  VpcInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: 'IG'
+      - Key: Enviroment
+        Value: PROD
+            
+# Asociacion del recurso VPC e Internet Gateway
+                  
+  VpcInternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref VpcInternetGateway
+      VpcId: !Ref Vpc
+
+# Creacion del recurso Subnet (Publicas y Privadas)
+
+  VpcSubnetPublicAZa:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZa]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref SubnetCIDR1
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: 'SUBNET PUBLIC AZ A'
+      - Key: Enviroment
+        Value: PROD
+
+  VpcSubnetPublicAZb:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZb]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref SubnetCIDR2
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: 'SUBNET PUBLIC AZ B'
+      - Key: Enviroment
+        Value: PROD
+
+  VpcSubnetPrivateAZa:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZa]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref SubnetCIDR3
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: 'SUBNET PRIVATE AZ A'
+      - Key: Enviroment
+        Value: PROD
+
+  VpcSubnetPrivateAZb:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZb]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref SubnetCIDR4
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: 'SUBNET PRIVATE AZ B'
+      - Key: Enviroment
+        Value: PROD
+
+# Creacion del recurso Route Table
+
+  VpcRouteTablePublic:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+      - Key: Name
+        Value: 'RT PUBLIC'
+      - Key: Enviroment
+        Value: PROD
+        
+  VpcRouteTablePrivate:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+      - Key: Name
+        Value: 'RT PRIVATE'
+      - Key: Enviroment
+        Value: PROD
+              
+# Asociacion del recurso VPC Internet Gateway y Public Route Table
+
+  VpcInternetRoutePublicAttachment:
+    Type: AWS::EC2::Route
+    DependsOn: VpcInternetGatewayAttachment
+    Properties:
+        DestinationCidrBlock: 0.0.0.0/0
+        GatewayId: !Ref VpcInternetGateway
+        RouteTableId: !Ref VpcRouteTablePublic
+
+# Asociacion del recurso EC2 NAT Instances y Private Route Table
+        
+  VpcNatRoutePrivateAttachment:
+    Type: AWS::EC2::Route
+    Properties:
+        DestinationCidrBlock: 0.0.0.0/0
+        InstanceId: !Ref Ec2NATInstance
+        #NatGatewayId: !Ref VpcNATGateway
+        RouteTableId: !Ref VpcRouteTablePrivate
+
+# Creación del recurso EC2 NAT Instances
+
+  Ec2NATInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Select [0, !Ref InstancesFamily]
+      ImageId:  !FindInMap [RegionAndNATInstanceToAMIID, !Ref "AWS::Region", NATInstancesID]
+      IamInstanceProfile: !Ref IAMServerProfile
+      KeyName: !Ref KeyPair
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            cd /tmp
+            sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+            sudo systemctl enable amazon-ssm-agent
+            sudo systemctl start amazon-ssm-agent
+      SecurityGroupIds:
+      - !Ref EC2SecurityGroupInstances
+      SourceDestCheck: false
+      SubnetId: !Ref VpcSubnetPublicAZb
+      Tags:
+      - Key: Name
+        Value: 'EC2 NAT Instances'     
+      - Key: Enviroment
+        Value: PROD
+
+
+# Creación del recurso EC2 Instances
+
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Select [0, !Ref InstancesFamily]
+      ImageId:  !FindInMap [RegionAndInstanceEC2TypeToAMIID, !Ref "AWS::Region", HVM64]
+      IamInstanceProfile: !Ref IAMServerProfile
+      KeyName: !Ref KeyPair
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            yum update -y
+            yum install -y httpd php
+            systemctl start httpd
+            systemctl enable httpd
+            usermod -a -G apache ec2-user
+            chown -R ec2-user:apache /var/www
+            chmod 2775 /var/www
+            find /var/www -type d -exec chmod 2775 {} \;
+            find /var/www -type f -exec chmod 0664 {} \;
+            
+            # PHP script to display Instance ID and Availability Zone
+            cat << 'EOF' > /var/www/html/index.php
+              <!DOCTYPE html>
+              <html>
+              <body>
+                <center>
+                  <?php
+                  # Get the instance ID from meta-data and store it in the $instance_id variable
+                  $url = "http://169.254.169.254/latest/meta-data/instance-id";
+                  $instance_id = file_get_contents($url);
+                  # Get the instance's availability zone from metadata and store it in the $zone variable
+                  $url = "http://169.254.169.254/latest/meta-data/placement/availability-zone";
+                  $zone = file_get_contents($url);
+                  ?>
+                  <h2>EC2 Instance ID: <?php echo $instance_id ?></h2>
+                  <h2>Availability Zone: <?php echo $zone ?></h2>
+                </center>
+              </body>
+              </html>
+            EOF
+
+      SecurityGroupIds:
+      - !Ref EC2SecurityGroupInstances
+      SourceDestCheck: true
+      SubnetId: !Ref VpcSubnetPrivateAZa
+      Tags:
+      - Key: Name
+        Value: 'EC2 Instances'     
+      - Key: Enviroment
+        Value: PROD
+
+
+# Security Group EC2 Instances
+
+  EC2SecurityGroupInstances:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow Internal Connection' 
+        VpcId: !Ref Vpc
+        SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+          
+# Asociacion del recurso Subnet y Route Table
+
+  VpcSubnetPublicAZaRouteTableAttachment:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePublic
+        SubnetId: !Ref VpcSubnetPublicAZa
+  VpcSubnetPublicAZbRouteTableAttachment:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePublic
+        SubnetId: !Ref VpcSubnetPublicAZb
+  VpcSubnetPrivateAZaRouteTableAttachment:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePrivate
+        SubnetId: !Ref VpcSubnetPrivateAZa
+  VpcSubnetPrivateAZbRouteTableAttachment:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePrivate
+        SubnetId: !Ref VpcSubnetPrivateAZb
+
+#Creacion del recurso IAM Role
+
+  IAMPolicySSM:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 'ssm:ResumeSession'
+                  - 'ssm:UpdateInstanceInformation'
+                  - 'ssm:DescribeSessions'
+                  - 'ssm:TerminateSession'
+                  - 'ssm:StartSession'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'ssmmessages:CreateControlChannel'
+                  - 'ssmmessages:CreateDataChannel'
+                  - 'ssmmessages:OpenControlChannel'
+                  - 'ssmmessages:OpenDataChannel'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'cloudwatch:PutMetricData'
+                  - 'cloudwatch:GetMetricStatistics'
+                  - 'cloudwatch:ListMetrics'
+                  - 'ec2:DescribeTags'
+                  Resource: '*'
+
+  IAMPolicyAccessS3FromEC2:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 's3:*'
+                  Resource: '*'
+
+  IAMPolicyAccessSecurityGroupFromEC2:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 'ec2:*'
+                  Resource: '*'
+
+  IAMServerProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+        Path: /
+        Roles:
+            - !Ref IAMRoleEC2
+                    
+  IAMRoleEC2:
+    Type: AWS::IAM::Role
+    Properties:
+        Path: "/"  
+        AssumeRolePolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Principal:
+                    Service:
+                    - ec2.amazonaws.com
+                  Action:
+                    - 'sts:AssumeRole'
+        ManagedPolicyArns:
+          - !Ref IAMPolicySSM
+          - !Ref IAMPolicyAccessS3FromEC2
+          - !Ref IAMPolicyAccessSecurityGroupFromEC2
+        Tags: 
+        - Key: Enviroment
+          Value: PROD
+
+ 
+#Creacion del Recurso Application Load Balancer (ALB)
+
+  EC2ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties: 
+        IpAddressType: ipv4
+        Name: EC2ApplicationLoadBalancer
+        Scheme: internet-facing
+        SecurityGroups: 
+          - !Ref EC2SecurityGroupInstances
+        Subnets: 
+          - !Ref VpcSubnetPublicAZa
+          - !Ref VpcSubnetPublicAZb
+        Tags:
+          - Key: Name
+            Value: 'ALB'
+          - Key: Enviroment
+            Value: PROD
+        Type: application 
+
+
+#Creacion del Recurso Listener HTTP de AutoScaling
+
+  EC2ALBListenerApp01:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:    
+        - Type: forward
+          TargetGroupArn: !Ref EC2LoadBalancerTargetGroupApp
+      LoadBalancerArn: !Ref EC2ApplicationLoadBalancer
+      Port: 80
+      Protocol: HTTP
+
+#Creacion del Recurso Target Group
+
+  EC2LoadBalancerTargetGroupApp:
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      Name: EC2LoadBalancerTargetGroupApp
+      TargetType: instance
+      HealthCheckIntervalSeconds: 5
+      HealthCheckPath: '/index.php'
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 2
+      HealthyThresholdCount: 3
+      UnhealthyThresholdCount: 2
+      Matcher:
+        HttpCode: '200'
+      Port: 80
+      Protocol: HTTP
+      VpcId: !Ref Vpc
+      TargetGroupAttributes:
+      - Key: deregistration_delay.timeout_seconds
+        Value: 10
+      Targets:
+      - Id: !Ref EC2Instance
+        Port: 80
