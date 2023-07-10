@@ -1,0 +1,90 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: '3_lab48-alb-targetgroup'
+  
+Mappings: 
+
+  RegionAndInstanceEC2TypeToAMIID: 
+    us-east-1: 
+      "HVM64": "ami-02fe94dee086c0c37"
+
+  RegionAndInstanceNATTypeToAMIID: 
+    us-east-1: 
+      "HVM64": "ami-01623d7b"
+
+  RegionAndAvailabilityZoneToSubnet: 
+    us-east-1: 
+      "AZa": "us-east-1a"
+      "AZb": "us-east-1b"
+
+
+Resources:
+
+ 
+#Creacion del Recurso Application Load Balancer (ALB)
+
+  EC2ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties: 
+        IpAddressType: ipv4
+        Name: EC2ApplicationLoadBalancer
+        Scheme: internet-facing
+        SecurityGroups: 
+          - !ImportValue EC2SecurityWeb
+        Subnets: 
+          - !ImportValue VpcSubnetPublicAZa
+          - !ImportValue VpcSubnetPublicAZb
+        Tags:
+          - Key: Name
+            Value: 'PROD ALB'
+          - Key: Enviroment
+            Value: PROD
+        Type: application 
+
+
+#Creacion del Recurso Listener HTTP
+
+  EC2ALBListenerApp01:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:    
+        - Type: forward
+          TargetGroupArn: !Ref EC2LoadBalancerTargetGroupApp
+      LoadBalancerArn: !Ref EC2ApplicationLoadBalancer
+      Port: 80
+      Protocol: HTTP
+
+#Creacion del Recurso Target Group
+
+  EC2LoadBalancerTargetGroupApp:
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      Name: EC2LoadBalancerTargetGroupApp
+      TargetType: instance
+      HealthCheckIntervalSeconds: 5
+      HealthCheckPath: '/index.php'
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 2
+      HealthyThresholdCount: 3
+      UnhealthyThresholdCount: 2
+      Matcher:
+        HttpCode: '200'
+      Port: 80
+      Protocol: HTTP
+      VpcId: !ImportValue Vpc
+      TargetGroupAttributes:
+      - Key: deregistration_delay.timeout_seconds
+        Value: 10
+      Targets:
+      - Id: !ImportValue Ec2InstanceA
+        Port: 80
+
+Outputs: 
+
+  EC2ApplicationLoadBalancer: 
+    Value: !Ref "EC2ApplicationLoadBalancer"
+    Export:
+      Name: !Sub "EC2ApplicationLoadBalancer"
+  EC2LoadBalancerTargetGroupApp:
+    Value: !Ref EC2LoadBalancerTargetGroupApp
+    Export:
+      Name: !Sub "EC2LoadBalancerTargetGroupApp"

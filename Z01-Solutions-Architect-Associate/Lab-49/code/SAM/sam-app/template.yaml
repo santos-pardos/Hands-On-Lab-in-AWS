@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Example template for an REST API that creates, updates, and deletes items in DynamoDB
+  
+Globals:
+  Function:
+    Timeout: 10
+
+Resources:
+  DDBHandlerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dynamo-handler/
+      Handler: app.handler
+      Runtime: nodejs12.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ItemsTable
+      Events:
+        GetAllItems:
+          Type: HttpApi
+          Properties:
+            Path: /items
+            Method: GET
+        GetAnItem:
+          Type: HttpApi
+          Properties:
+            Path: /items/{id}
+            Method: GET
+        DeleteAnItem:
+          Type: HttpApi
+          Properties:
+            Path: /items/{id}
+            Method: DELETE
+        CreateOrUpdateItem:
+          Type: HttpApi
+          Properties:
+            Path: /items
+            Method: PUT
+
+  ItemsTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      TableName: http-crud-tutorial-items
+
+Outputs:
+  ApiEndpoint:
+    Description: "The invoke URL for our HTTP API"
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/items"
+  Function:
+    Description: "DynamoDB handler function ARN"
+    Value: !GetAtt DDBHandlerFunction.Arn
