@@ -1,0 +1,146 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: '1_lab25-ebs-cloudwatch-metrics'
+
+#Pre-requisitos
+
+#Crear un "Key Pair"
+
+Parameters:
+
+  VPC:
+    Description: Choose the VPC for this EC2
+    Type: AWS::EC2::VPC::Id
+
+  Subnet:
+    Description: Choose the subnet for this EC2
+    Type: AWS::EC2::Subnet::Id
+
+  InstancesFamily: 
+     Description: The Instances Family
+     Type: CommaDelimitedList
+     Default: "t2.micro,t2.medium,t2.large,t2.xlarge"
+    
+  KeyPair: 
+     Description: "Ingresar el nombre de un Key Pair"
+     Type: AWS::EC2::KeyPair::KeyName
+
+Mappings: 
+
+  RegionAndInstanceEC2TypeToAMIID: 
+    us-east-1: 
+      "HVM64": "ami-0729e439b6769d6ab"
+  RegionAndAvailabilityZoneToSubnet:
+    us-east-1:
+      "AZa": "us-east-1a"
+      "AZb": "us-east-1b"
+
+
+Resources:
+
+#Creacion del recurso IAM Role
+
+  IAMPolicySSM:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 'ssm:ResumeSession'
+                  - 'ssm:UpdateInstanceInformation'
+                  - 'ssm:DescribeSessions'
+                  - 'ssm:TerminateSession'
+                  - 'ssm:StartSession'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'ssmmessages:CreateControlChannel'
+                  - 'ssmmessages:CreateDataChannel'
+                  - 'ssmmessages:OpenControlChannel'
+                  - 'ssmmessages:OpenDataChannel'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'cloudwatch:PutMetricData'
+                  - 'cloudwatch:GetMetricStatistics'
+                  - 'cloudwatch:ListMetrics'
+                  - 'ec2:DescribeTags'
+                  Resource: '*'
+
+  IAMServerProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+        Path: /
+        Roles:
+            - !Ref IAMRoleEC2
+                    
+  IAMRoleEC2:
+    Type: AWS::IAM::Role
+    Properties:
+        Path: "/"  
+        AssumeRolePolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Principal:
+                    Service:
+                    - ec2.amazonaws.com
+                  Action:
+                    - 'sts:AssumeRole'
+        ManagedPolicyArns:
+          - !Ref IAMPolicySSM
+        Tags: 
+        - Key: Enviroment
+          Value: PROD
+
+
+# Creación del recurso EC2 Instances
+
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Select [0, !Ref InstancesFamily]
+      ImageId:  !FindInMap [RegionAndInstanceEC2TypeToAMIID, !Ref "AWS::Region", HVM64]
+      IamInstanceProfile: !Ref IAMServerProfile
+      KeyName: !Ref KeyPair
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+
+            #Install Tool stress-ng
+            sudo su
+            sudo apt-get update
+            sudo snap install stress-ng
+            mkdir /home/ubuntu/tmp
+            chmod 777 /home/ubuntu/tmp
+            cd /home/ubuntu/tmp
+            stress-ng --hdd 8 --timeout 900s
+
+      SecurityGroupIds:
+      - !Ref EC2SecurityGroupInstances
+      SourceDestCheck: true
+      SubnetId: !Ref Subnet
+      Tags:
+      - Key: Name
+        Value: 'EBS Performance'     
+      - Key: Enviroment
+        Value: PROD
+
+
+# Security Group EC2 Instances
+
+  EC2SecurityGroupInstances:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow Internal Connection' 
+        VpcId: !Ref VPC
+        SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+          
