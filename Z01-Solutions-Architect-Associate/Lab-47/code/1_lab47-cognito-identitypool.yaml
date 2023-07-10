@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:
+  Pool:
+    Type: AWS::Cognito::UserPool
+  PoolClient:
+    Type: "AWS::Cognito::UserPoolClient"
+    Properties:
+      UserPoolId: !Ref Pool
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+  IdPool:
+    Type: AWS::Cognito::IdentityPool
+    Properties:
+      CognitoIdentityProviders:
+        -
+          ClientId: !Ref PoolClient
+          ProviderName: !GetAtt Pool.ProviderName
+      AllowUnauthenticatedIdentities: false
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Action:
+              - sts:AssumeRoleWithWebIdentity
+            Principal:
+              Federated: cognito-identity.amazonaws.com
+            Condition:
+              StringEquals:
+                cognito-identity.amazonaws.com:aud:
+                  - !Ref IdPool
+              ForAnyValue:StringLike:
+                cognito-identity.amazonaws.com:amr:
+                  - "authenticated"
+  Group:
+    Type: AWS::Cognito::UserPoolGroup
+    Properties:
+      RoleArn: !GetAtt Role.Arn
+      UserPoolId: !Ref Pool
+  IdPoolRoleAttachment:
+    Type: AWS::Cognito::IdentityPoolRoleAttachment
+    Properties:
+      IdentityPoolId: !Ref IdPool
+      Roles:
+        authenticated: !GetAtt Role.Arn

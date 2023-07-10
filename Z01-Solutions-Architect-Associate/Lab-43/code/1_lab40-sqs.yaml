@@ -1,0 +1,173 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: '1_lab40-sqs'
+
+#Se deberá crear un "Key Pair"
+
+Parameters:
+
+
+  InstancesFamily: 
+     Description: The Instances Family
+     Type: CommaDelimitedList
+     Default: "t2.micro,t2.medium,t2.large,t2.xlarge"
+    
+  KeyPair: 
+     Description: "Seleccionar Key Pair"
+     Type: AWS::EC2::KeyPair::KeyName
+
+  Vpc: 
+     Description: "Seleccionar VPC"
+     Type: AWS::EC2::VPC::Id
+
+  Subnet: 
+     Description: "Seleccionar Subnet"
+     Type: AWS::EC2::Subnet::Id
+
+  
+Mappings: 
+
+  RegionAndInstanceEC2TypeToAMIID: 
+    us-east-1: 
+      "HVM64": "ami-02fe94dee086c0c37"
+
+  RegionAndAvailabilityZoneToSubnet: 
+    us-east-1: 
+      "AZa": "us-east-1a"
+      "AZb": "us-east-1b"
+
+
+Resources:
+
+#Creacion del recurso IAM Role
+
+  BackendIAMPolicySSM:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 'ssm:ResumeSession'
+                  - 'ssm:UpdateInstanceInformation'
+                  - 'ssm:DescribeSessions'
+                  - 'ssm:TerminateSession'
+                  - 'ssm:StartSession'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'ssmmessages:CreateControlChannel'
+                  - 'ssmmessages:CreateDataChannel'
+                  - 'ssmmessages:OpenControlChannel'
+                  - 'ssmmessages:OpenDataChannel'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'cloudwatch:PutMetricData'
+                  - 'cloudwatch:GetMetricStatistics'
+                  - 'cloudwatch:ListMetrics'
+                  - 'ec2:DescribeTags'
+                  Resource: '*'
+
+  BackendIAMServerProfileSQS:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+        Path: /
+        Roles:
+            - !Ref BackendIAMRoleEC2
+                    
+  BackendIAMRoleEC2:
+    Type: AWS::IAM::Role
+    Properties:
+        Path: "/"  
+        AssumeRolePolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Principal:
+                    Service:
+                    - ec2.amazonaws.com
+                  Action:
+                    - 'sts:AssumeRole'
+        ManagedPolicyArns:
+          - !Ref BackendIAMPolicySSM
+          - "arn:aws:iam::aws:policy/AmazonSQSFullAccess"
+        Tags: 
+        - Key: Enviroment
+          Value: PROD
+
+          
+#Creacion de la Instancia BACKEND
+
+  Ec2InstanceSQS:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Select [ 0, !Ref InstancesFamily]
+      ImageId: !FindInMap [RegionAndInstanceEC2TypeToAMIID, !Ref "AWS::Region", HVM64]
+      IamInstanceProfile: !Ref BackendIAMServerProfileSQS
+      KeyName: !Ref KeyPair
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            
+            #Instalación de aplicaciones
+            sudo su
+            sudo apt-get update
+
+            sudo su
+            sudo apt-get update
+            sudo apt-get install awscli -y
+            sudo apt-get install jq -y
+            sudo apt-get install nodejs npm git -y
+            cd /home/ubuntu
+            git clone https://github.com/Einsteinish/aws-sqs-node-js-example.git
+            cd /home/ubuntu/aws-sqs-node-js-example
+            npm install
+            cp config-sample.json config.json
+
+      SecurityGroupIds:
+      - !Ref EC2SecurityWebSQS
+      SourceDestCheck: true
+      BlockDeviceMappings:
+      - DeviceName: "/dev/sda1"
+        Ebs:
+          VolumeSize: "8"
+          VolumeType: "gp2"
+          DeleteOnTermination: "true"
+          Encrypted: "false"
+      SubnetId: !Ref Subnet
+      Tags:
+      - Key: Name
+        Value: 'Lab40 EC2 SQS'   
+      - Key: Enviroment
+        Value: PROD
+
+ 
+  EC2SecurityWebSQS:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow Internal Connection' 
+        VpcId: !Ref Vpc
+        SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+          
+Outputs: 
+
+  BackendIAMServerProfileSQS: 
+    Value: !Ref "BackendIAMServerProfileSQS"
+    Export:
+      Name: !Sub "BackendIAMServerProfileSQS"
+  Ec2InstanceSQS:
+    Value: !Ref Ec2InstanceSQS
+    Export:
+      Name: !Sub "Ec2InstanceSQS"
+  EC2SecurityWebSQS:
+    Value: !Ref EC2SecurityWebSQS
+    Export:
+      Name: !Sub "EC2SecurityWebSQS"
