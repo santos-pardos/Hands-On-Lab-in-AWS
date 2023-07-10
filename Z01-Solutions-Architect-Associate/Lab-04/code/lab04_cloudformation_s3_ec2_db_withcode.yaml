@@ -1,0 +1,628 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lab04_cloudformation_s3_ec2_db_withcode.yaml'
+
+#Pre-requisitos
+
+#Crear un "Key Pair"
+
+
+Parameters:
+
+  S3BucketName:
+    Type: String
+    Description: The name for the S3 bucket - must be unique across all of AWS (3-63 lowercase letters,numbers or character(_,-))
+    Default: "minombre-miapellido-aws-solutionsarchitectassociate"
+    AllowedPattern: '^[a-zA-Z0-9][a-zA-Z0-9_-]{5,80}$'
+    ConstraintDescription: 3-63 characters; must contain only lowercase letters or numbers
+    
+  VPCCIDR:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.0.0/16
+     Description: CIDR Block for the VPC
+     Type: String
+     
+  SubnetCIDR1:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.1.0/24
+     Description: CIDR Block for the Subnet 
+     Type: String
+     
+  SubnetCIDR2:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.2.0/24
+     Description: CIDR Block for the Subnet 
+     Type: String
+
+  SubnetCIDR3:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.3.0/24
+     Description: CIDR Block for the Subnet 
+     Type: String
+     
+  SubnetCIDR4:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.4.0/24
+     Description: CIDR Block for the Subnet 
+     Type: String
+
+  InstancesFamily: 
+     Description: The Instances Family
+     Type: CommaDelimitedList
+     Default: "t2.micro,t2.medium,t2.large,t2.xlarge"
+    
+  KeyPair: 
+     Description: "Ingresar el nombre de un Key Pair"
+     Type: AWS::EC2::KeyPair::KeyName
+
+
+      
+Mappings: 
+
+  RegionAndInstanceEC2TypeToAMIID: 
+    us-east-1: 
+      "HVM64": "ami-0263e4deb427da90e"
+      #"HVM64": "ami-02fe94dee086c0c37"
+
+  RegionAndNATInstanceToAMIID: 
+    us-east-1: 
+      "NATInstancesID": "ami-0cc6fa590dc4d36eb"
+      #"NATInstancesID": "ami-00a9d4a05375b2763"
+
+  RegionAndAvailabilityZoneToSubnet: 
+    us-east-1: 
+      "AZa": "us-east-1a"
+      "AZb": "us-east-1b"
+
+
+Resources:
+
+#REDES Y CONECTIVIDAD
+
+# Creacion del recurso VPC
+
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VPCCIDR
+      EnableDnsHostnames: 'true'
+      EnableDnsSupport: 'true'
+      InstanceTenancy: default
+      Tags:
+      - Key: Name
+        Value: 'VPC'
+      - Key: Enviroment
+        Value: PROD
+        
+# Creacion del recurso Internet Gateway
+
+  VpcInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: 'IG'
+      - Key: Enviroment
+        Value: PROD
+            
+# Asociacion del recurso VPC e Internet Gateway
+                  
+  VpcInternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref VpcInternetGateway
+      VpcId: !Ref Vpc
+
+# Creacion del recurso Subnet (Publicas y Privadas)
+
+  VpcSubnetPublicAZa:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZa]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref SubnetCIDR1
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: 'PROD SUBNET PUBLIC AZ A'
+      - Key: Enviroment
+        Value: PROD
+
+  VpcSubnetPublicAZb:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZb]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref SubnetCIDR2
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: 'PROD SUBNET PUBLIC AZ B'
+      - Key: Enviroment
+        Value: PROD
+
+  VpcSubnetPrivateAZa:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZa]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref SubnetCIDR3
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: 'PROD SUBNET PRIVATE AZ A'
+      - Key: Enviroment
+        Value: PROD
+
+  VpcSubnetPrivateAZb:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZb]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref SubnetCIDR4
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: 'PROD SUBNET PRIVATE AZ B'
+      - Key: Enviroment
+        Value: PROD
+
+# Creacion del recurso Route Table
+
+  VpcRouteTablePublic:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+      - Key: Name
+        Value: 'PROD RT PUBLIC'
+      - Key: Enviroment
+        Value: PROD
+
+  VpcRouteTablePrivate:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+      - Key: Name
+        Value: 'PROD RT PRIVATE'
+      - Key: Enviroment
+        Value: PROD
+
+# Asociacion del recurso VPC Internet Gateway y Route Table
+
+  VpcInternetRoutePublicAttachment:
+    Type: AWS::EC2::Route
+    DependsOn: VpcInternetGatewayAttachment
+    Properties:
+        DestinationCidrBlock: 0.0.0.0/0
+        GatewayId: !Ref VpcInternetGateway
+        RouteTableId: !Ref VpcRouteTablePublic
+        
+# Asociacion del recurso EC2 NAT Instances y Private Route Table
+        
+  VpcNatRoutePrivateAttachment:
+    Type: AWS::EC2::Route
+    Properties:
+        DestinationCidrBlock: 0.0.0.0/0
+        InstanceId: !Ref Ec2NATInstance
+        #NatGatewayId: !Ref VpcNATGateway
+        RouteTableId: !Ref VpcRouteTablePrivate
+
+
+# Creación del recurso EC2 NAT Instances
+
+  Ec2NATInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Select [0, !Ref InstancesFamily]
+      ImageId:  !FindInMap [RegionAndNATInstanceToAMIID, !Ref "AWS::Region", NATInstancesID]
+      KeyName: !Ref KeyPair
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            cd /tmp
+            sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+            sudo systemctl enable amazon-ssm-agent
+            sudo systemctl start amazon-ssm-agent
+      SecurityGroupIds:
+      - !Ref EC2SecurityGroupNATInstances
+      SourceDestCheck: false
+      SubnetId: !Ref VpcSubnetPublicAZb
+      Tags:
+      - Key: Name
+        Value: 'PROD EC2 NAT Instances'     
+      - Key: Enviroment
+        Value: PROD
+
+# Security Group NAT Instances
+
+  EC2SecurityGroupNATInstances:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow External Connection'
+        GroupName: 'sg_nat' 
+        VpcId: !Ref Vpc
+        SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+          
+# Asociacion del recurso Subnet y Route Table
+
+  VpcSubnetPublicAZaRouteTableAttachment:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePublic
+        SubnetId: !Ref VpcSubnetPublicAZa
+  VpcSubnetPublicAZbRouteTableAttachment:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePublic
+        SubnetId: !Ref VpcSubnetPublicAZb
+
+  VpcSubnetPrivateAZaRouteTableAttachment:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePrivate
+        SubnetId: !Ref VpcSubnetPrivateAZa
+  VpcSubnetPrivateAZbRouteTableAttachment:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePrivate
+        SubnetId: !Ref VpcSubnetPrivateAZb
+
+
+#Creación del bucket que contendrá los archivos estáticos
+
+  MyS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Join
+        - '-'
+        - - !Ref S3BucketName
+          - !Ref 'AWS::Region'
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+    DeletionPolicy: Retain
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Join 
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref MyS3Bucket
+                - /*
+      Bucket: !Ref MyS3Bucket
+
+
+#Creacion del recurso IAM Role
+
+  BackendIAMPolicySSM:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        ManagedPolicyName: 'BackendIAMPolicySSM'
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 'ssm:ResumeSession'
+                  - 'ssm:UpdateInstanceInformation'
+                  - 'ssm:DescribeSessions'
+                  - 'ssm:TerminateSession'
+                  - 'ssm:StartSession'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'ssmmessages:CreateControlChannel'
+                  - 'ssmmessages:CreateDataChannel'
+                  - 'ssmmessages:OpenControlChannel'
+                  - 'ssmmessages:OpenDataChannel'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'cloudwatch:PutMetricData'
+                  - 'cloudwatch:GetMetricStatistics'
+                  - 'cloudwatch:ListMetrics'
+                  - 'ec2:DescribeTags'
+                  Resource: '*'
+
+
+  BackendIAMPolicyAccessS3FromEC2:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        ManagedPolicyName: 'BackendIAMPolicyAccessS3FromEC2'
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 's3:*'
+                  Resource: '*'
+
+  BackendIAMPolicyAccessSecurityGroupFromEC2:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        ManagedPolicyName: 'BackendIAMPolicyAccessSecurityGroupFromEC2'
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 'ec2:*'
+                  Resource: '*'
+
+
+  BackendIAMServerProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+        InstanceProfileName: 'ec2-profile-s3-ssm'
+        Path: /
+        Roles:
+            - !Ref BackendIAMRoleEC2
+                    
+  BackendIAMRoleEC2:
+    Type: AWS::IAM::Role
+    Properties:
+        Path: "/"
+        RoleName: 'ec2-role-s3-ssm'  
+        AssumeRolePolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Principal:
+                    Service:
+                    - ec2.amazonaws.com
+                  Action:
+                    - 'sts:AssumeRole'
+        ManagedPolicyArns:
+          - !Ref BackendIAMPolicySSM
+          - !Ref BackendIAMPolicyAccessS3FromEC2
+          - !Ref BackendIAMPolicyAccessSecurityGroupFromEC2
+          - "arn:aws:iam::aws:policy/IAMFullAccess"
+        Tags: 
+        - Key: Enviroment
+          Value: PROD
+
+
+#Creacion de la Instancia Backend
+
+  Ec2Instance:
+    Type: AWS::EC2::Instance
+    DependsOn: 
+     - MyS3Bucket
+     - Ec2InstanceDB
+     - BackendIAMServerProfile
+    Properties:
+      InstanceType: !Select [ 0, !Ref InstancesFamily]
+      ImageId: !FindInMap [RegionAndInstanceEC2TypeToAMIID, !Ref "AWS::Region", HVM64]
+      IamInstanceProfile: !Ref BackendIAMServerProfile
+      KeyName: !Ref KeyPair
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            
+            #Ubuntu 18.04
+            sudo su
+            sudo apt-get update
+            sudo apt-get install awscli -y
+            sudo apt-get install jq -y
+
+            #Mount disk (EBS)
+            sudo mkdir /opt
+            sudo mkfs -t ext4 /dev/xvdf
+            sudo mount /dev/xvdf /opt
+            export UUID=$(lsblk -fm | grep xvdb | awk '{print $3}')
+            echo "UUID=$UUID  /opt  ext4  defaults,nofail  0  2" >> /etc/fstab
+            sudo mount -a 
+
+            #Descarga del proyecto e Instalación Nodejs
+            cd /opt
+            git clone https://github.com/jbarreto7991/aws-solutionsarchitectassociate.git
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt install nodejs -y
+            #node --version
+            #npm --version
+
+            #Obteniendo IP Pública de la instancia EC2 y almacenarla como variable
+            PUBLIC_IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
+            echo $PUBLIC_IP
+
+            #Reemplazando parámetro en archivo de configuración de la carpeta frontend del proyecto
+            sed 's+http://$PUBLIC_IP/v1+http://'"$PUBLIC_IP"'/v1+g' /opt/aws-solutionsarchitectassociate/App/frontend/src/config/axios.js >> /opt/aws-solutionsarchitectassociate/App/frontend/src/config/bk_axios.js
+            rm /opt/aws-solutionsarchitectassociate/App/frontend/src/config/axios.js
+            mv /opt/aws-solutionsarchitectassociate/App/frontend/src/config/bk_axios.js /opt/aws-solutionsarchitectassociate/App/frontend/src/config/axios.js
+            cat /opt/aws-solutionsarchitectassociate/App/frontend/src/config/axios.js
+
+            #Compilar Frontend
+            cd /opt/aws-solutionsarchitectassociate/App/frontend
+            npm install
+            npm run build
+
+            REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/')
+
+            #Carga de archivos al Bucket S3
+            cd /opt/aws-solutionsarchitectassociate/App/frontend/build/
+            BUCKET=$(aws s3 ls | sort -r | awk 'NR ==1 { print $3 }')
+            echo $BUCKET
+            aws s3 sync . s3://$BUCKET
+            
+            #Instalación del Backend
+            cd /opt/aws-solutionsarchitectassociate/App/backend/
+
+            REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/')
+
+            #Identificando la IP Privada de la instancia "PROD DB" y almacenarla como variable
+            DB_IP=$(aws ec2 describe-instances --filters "Name=tag:Type,Values=DB" --query 'Reservations[*].Instances[*].[PrivateIpAddress]' --region $REGION --output text)
+            echo $DB_IP
+
+            #Reemplazando parámetro en archivo de configuración de la carpeta backend del proyecto
+            sed 's+DB_URI=127.0.0.1+DB_URI='"$DB_IP"'+g' /opt/aws-solutionsarchitectassociate/App/backend/.env >> /opt/aws-solutionsarchitectassociate/App/backend/bk_env
+            rm /opt/aws-solutionsarchitectassociate/App/backend/.env
+            mv /opt/aws-solutionsarchitectassociate/App/backend/bk_env /opt/aws-solutionsarchitectassociate/App/backend/.env
+            cat /opt/aws-solutionsarchitectassociate/App/backend/.env
+
+            #Inicio del servicio
+            npm install
+            npm start &
+            
+      SecurityGroupIds:
+      - !Ref EC2SecurityWeb
+      SourceDestCheck: true
+      BlockDeviceMappings:
+      - DeviceName: "/dev/sda1"
+        Ebs:
+          VolumeSize: "8"
+          VolumeType: "gp2"
+          DeleteOnTermination: "true"
+          Encrypted: "true"
+      - DeviceName: "/dev/sdf"
+        Ebs:
+          VolumeSize: "8"
+          VolumeType: "gp2"
+          DeleteOnTermination: "true"
+          Encrypted: "true"
+      SubnetId: !Ref VpcSubnetPublicAZa
+      Tags:
+      - Key: Name
+        Value: 'PROD EC2 BACKEND'   
+      - Key: Enviroment
+        Value: PROD
+
+#Creacion de la Instancia DB
+
+  Ec2InstanceDB:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Select [ 0, !Ref InstancesFamily]
+      ImageId: !FindInMap [RegionAndInstanceEC2TypeToAMIID, !Ref "AWS::Region", HVM64]
+      KeyName: !Ref KeyPair
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            
+            #Ubuntu 18.04
+            sudo su
+            sudo apt-get update
+
+            #Instalación Servidor MySQL
+            sudo apt-get update
+            sudo apt-get install mysql-server -y
+            sudo service mysql status
+            sed -i -e '43s/^/# /' /etc/mysql/mysql.conf.d/mysqld.cnf
+            echo "bind-address            = 0.0.0.0" >> /etc/mysql/mysql.conf.d/mysqld.cnf
+            sudo service mysql restart
+
+            #Creación de usuario "admin"
+            cat << EOF | mysql
+            CREATE USER 'admin'@'%' IDENTIFIED BY 'admin'; 
+            GRANT ALL PRIVILEGES ON * . * TO 'admin'@'%' IDENTIFIED BY 'admin';
+            FLUSH PRIVILEGES;
+            SELECT User, Host FROM mysql.user;
+            quit
+            EOF
+
+            #Crear archivo que contiene usuario y contraseña de la base de datos
+            touch /opt/mysql_access
+            chmod 400 /opt/mysql_access
+            echo "[client]" >> /opt/mysql_access
+            echo "user=admin" >> /opt/mysql_access
+            echo "password=admin" >> /opt/mysql_access
+
+            #Crear de tabla "task" para la aplicación
+            mysql --defaults-extra-file=/opt/mysql_access --batch << "EOF"
+            create database test;
+            use test;
+            CREATE TABLE tasks
+            (
+                id MEDIUMINT NOT NULL AUTO_INCREMENT,
+                `name` VARCHAR(255),
+                description VARCHAR(255),
+                PRIMARY KEY (id)
+            );
+            quit
+            EOF
+
+      SecurityGroupIds:
+      - !Ref EC2SecurityWeb
+      SourceDestCheck: true
+      BlockDeviceMappings:
+      - DeviceName: "/dev/sda1"
+        Ebs:
+          VolumeSize: "8"
+          VolumeType: "gp2"
+          DeleteOnTermination: "true"
+          Encrypted: "true"
+      SubnetId: !Ref VpcSubnetPrivateAZa
+      Tags:
+      - Key: Name
+        Value: 'PROD EC2 DB'   
+      - Key: Enviroment
+        Value: PROD
+      - Key: Type
+        Value: DB
+
+  EC2SecurityWeb:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow External Connection'
+        GroupName: 'sg_app'
+        VpcId: !Ref Vpc
+        SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+
+
+          
+Outputs: 
+
+  Vpc: 
+    Value: !Ref Vpc
+    Export:
+      Name: !Sub "${AWS::StackName}-Vpc"
+  VpcSubnetPublicAZa: 
+    Value: !Ref VpcSubnetPublicAZa
+    Export:
+      Name: !Sub "${AWS::StackName}-VpcSubnetPublicAZa"
+  VpcSubnetPublicAZb: 
+    Value: !Ref VpcSubnetPublicAZb
+    Export:
+      Name: !Sub "${AWS::StackName}-VpcSubnetPublicAZb"
+  VpcSubnetPrivateAZa: 
+    Value: !Ref VpcSubnetPrivateAZa
+    Export:
+      Name: !Sub "VpcSubnetPrivateAZa"
+  VpcSubnetPrivateAZb: 
+    Value: !Ref VpcSubnetPrivateAZb
+    Export:
+      Name: !Sub "VpcSubnetPrivateAZb"
+  MyS3Bucket: 
+    Value: !Ref MyS3Bucket
+    Export:
+      Name: !Sub "MyS3Bucket"
