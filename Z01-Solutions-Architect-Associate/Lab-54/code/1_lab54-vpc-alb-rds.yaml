@@ -1,0 +1,685 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: '1_lab54-vpc-alb-rds'
+
+#Pre-requisitos
+
+#Crear un "Key Pair"
+
+Parameters:
+
+  VPCCIDR:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.0.0/16
+     Description: CIDR Block for the VPC
+     Type: String
+     
+  SubnetCIDR1:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.1.0/24
+     Description: CIDR Block for the Public Subnet (Load Balancer)
+     Type: String
+     
+  SubnetCIDR2:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.2.0/24
+     Description: CIDR Block for the Public Subnet (Load Balancer)
+     Type: String
+     
+  SubnetCIDR3:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.3.0/24
+     Description: CIDR Block for the Public Subnet (Load Balancer)
+     Type: String
+     
+  SubnetCIDR4:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.4.0/24
+     Description: CIDR Block for the Public Subnet (Load Balancer)
+     Type: String
+     
+  SubnetCIDR5:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.5.0/24
+     Description: CIDR Block for the Public Subnet (Load Balancer)
+     Type: String
+     
+  SubnetCIDR6:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.6.0/24
+     Description: CIDR Block for the Public Subnet (Load Balancer)
+     Type: String
+
+  InstancesFamily: 
+     Description: The Instances Family
+     Type: CommaDelimitedList
+     Default: "t2.micro,t2.medium,t2.large,t2.xlarge"
+    
+  KeyPair: 
+     Description: "Ingresar el nombre de un Key Pair"
+     Type: AWS::EC2::KeyPair::KeyName
+
+  InstancesDBFamily: 
+     Description: The Instances DB Family
+     Type: CommaDelimitedList
+     Default: "db.t2.micro,db.t2.medium,db.t2.large,db.t2.xlarge"
+
+  DBInstanceIdentifier:
+     Description: The DB Instance Identifier
+     Type: String
+     Default: "mydb"
+     
+  DBName:
+     Description: The DB table name
+     Type: String
+     Default: "tasks" 
+     
+  DBUser:
+     Default: "coffee"
+     Description: DB User
+     Type: String
+
+  DBPassword:
+     NoEcho: "true"
+     Default: "12345678-Aa"
+     Description: DB Password
+     Type: String
+
+
+Mappings: 
+
+  RegionAndNATInstanceToAMIID: 
+    us-east-1: 
+      "NATInstancesID": "ami-00a9d4a05375b2763"
+
+  RegionAndInstanceEC2TypeToAMIID: 
+    us-east-1: 
+      "HVM64": "ami-061dbd1209944525c"
+
+  RegionAndAvailabilityZoneToSubnet:
+    us-east-1:
+      "AZa": "us-east-1a"
+      "AZb": "us-east-1b"
+
+
+Resources:
+
+# Creacion del recurso VPC
+
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VPCCIDR
+      EnableDnsHostnames: 'true'
+      EnableDnsSupport: 'true'
+      InstanceTenancy: default
+      Tags:
+      - Key: Name
+        Value: 'VPC'
+      - Key: Enviroment
+        Value: PROD
+        
+# Creacion del recurso Internet Gateway
+
+  VpcInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: 'IG'
+      - Key: Enviroment
+        Value: PROD
+            
+# Asociacion del recurso VPC e Internet Gateway
+                  
+  VpcInternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref VpcInternetGateway
+      VpcId: !Ref Vpc
+
+# Creacion del recurso Subnet (Publicas y Privadas)
+
+  VpcSubnetPublicAZa:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZa]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref SubnetCIDR1
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: 'SUBNET PUBLIC AZ A'
+      - Key: Enviroment
+        Value: PROD
+
+  VpcSubnetPublicAZb:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZb]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref SubnetCIDR2
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: 'SUBNET PUBLIC AZ B'
+      - Key: Enviroment
+        Value: PROD
+
+  VpcSubnetPrivateAZa:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZa]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref SubnetCIDR3
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: 'SUBNET PRIVATE AZ A'
+      - Key: Enviroment
+        Value: PROD
+
+  VpcSubnetPrivateAZb:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZb]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref SubnetCIDR4
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: 'SUBNET PRIVATE AZ B'
+      - Key: Enviroment
+        Value: PROD
+
+
+  VpcSubnetPrivateDBAZa:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZa]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref SubnetCIDR5
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: 'SUBNET PRIVATE DB AZ A'
+      - Key: Enviroment
+        Value: PROD
+
+  VpcSubnetPrivateDBAZb:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZb]
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref SubnetCIDR6
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: 'SUBNET PRIVATE DB AZ B'
+      - Key: Enviroment
+        Value: PROD
+
+# Creacion del recurso Route Table
+
+  VpcRouteTablePublic:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+      - Key: Name
+        Value: 'RT PUBLIC'
+      - Key: Enviroment
+        Value: PROD
+        
+  VpcRouteTablePrivate:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+      - Key: Name
+        Value: 'RT PRIVATE'
+      - Key: Enviroment
+        Value: PROD
+              
+# Asociacion del recurso VPC Internet Gateway y Public Route Table
+
+  VpcInternetRoutePublicAttachment:
+    Type: AWS::EC2::Route
+    DependsOn: VpcInternetGatewayAttachment
+    Properties:
+        DestinationCidrBlock: 0.0.0.0/0
+        GatewayId: !Ref VpcInternetGateway
+        RouteTableId: !Ref VpcRouteTablePublic
+
+# Asociacion del recurso EC2 NAT Instances y Private Route Table
+        
+  VpcNatRoutePrivateAttachment:
+    Type: AWS::EC2::Route
+    Properties:
+        DestinationCidrBlock: 0.0.0.0/0
+        InstanceId: !Ref Ec2NATInstance
+        #NatGatewayId: !Ref VpcNATGateway
+        RouteTableId: !Ref VpcRouteTablePrivate
+
+# Creación del recurso EC2 NAT Instances
+
+  Ec2NATInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Select [0, !Ref InstancesFamily]
+      ImageId:  !FindInMap [RegionAndNATInstanceToAMIID, !Ref "AWS::Region", NATInstancesID]
+      IamInstanceProfile: !Ref IAMServerProfile
+      KeyName: !Ref KeyPair
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            cd /tmp
+            sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+            sudo systemctl enable amazon-ssm-agent
+            sudo systemctl start amazon-ssm-agent
+      SecurityGroupIds:
+      - !Ref EC2SecurityGroupInstances
+      SourceDestCheck: false
+      SubnetId: !Ref VpcSubnetPublicAZb
+      Tags:
+      - Key: Name
+        Value: 'EC2 NAT Instances'     
+      - Key: Enviroment
+        Value: PROD
+
+# Security Group EC2 Instances
+
+  EC2SecurityGroupInstances:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow Internal Connection' 
+        VpcId: !Ref Vpc
+        SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+          
+# Asociacion del recurso Subnet y Route Table
+
+  VpcSubnetPublicAZaRouteTableAttachment:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePublic
+        SubnetId: !Ref VpcSubnetPublicAZa
+  VpcSubnetPublicAZbRouteTableAttachment:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePublic
+        SubnetId: !Ref VpcSubnetPublicAZb
+  VpcSubnetPrivateAZaRouteTableAttachment:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePrivate
+        SubnetId: !Ref VpcSubnetPrivateAZa
+  VpcSubnetPrivateAZbRouteTableAttachment:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePrivate
+        SubnetId: !Ref VpcSubnetPrivateAZb
+  VpcSubnetPrivateDBAZaRouteTableAttachment:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePrivate
+        SubnetId: !Ref VpcSubnetPrivateDBAZa
+  VpcSubnetPrivateDBAZbRouteTableAttachment:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePrivate
+        SubnetId: !Ref VpcSubnetPrivateDBAZb
+
+#Creacion del recurso IAM Role
+
+  IAMPolicySSM:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 'ssm:ResumeSession'
+                  - 'ssm:UpdateInstanceInformation'
+                  - 'ssm:DescribeSessions'
+                  - 'ssm:TerminateSession'
+                  - 'ssm:StartSession'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'ssmmessages:CreateControlChannel'
+                  - 'ssmmessages:CreateDataChannel'
+                  - 'ssmmessages:OpenControlChannel'
+                  - 'ssmmessages:OpenDataChannel'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'cloudwatch:PutMetricData'
+                  - 'cloudwatch:GetMetricStatistics'
+                  - 'cloudwatch:ListMetrics'
+                  - 'ec2:DescribeTags'
+                  Resource: '*'
+
+  IAMPolicyAccessS3FromEC2:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 's3:*'
+                  Resource: '*'
+
+  IAMPolicyAccessSecurityGroupFromEC2:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 'ec2:*'
+                  Resource: '*'
+
+  IAMServerProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+        Path: /
+        Roles:
+            - !Ref IAMRoleEC2
+                    
+  IAMRoleEC2:
+    Type: AWS::IAM::Role
+    Properties:
+        Path: "/"  
+        AssumeRolePolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Principal:
+                    Service:
+                    - ec2.amazonaws.com
+                  Action:
+                    - 'sts:AssumeRole'
+        ManagedPolicyArns:
+          - !Ref IAMPolicySSM
+          - !Ref IAMPolicyAccessS3FromEC2
+          - !Ref IAMPolicyAccessSecurityGroupFromEC2
+          - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
+          - "arn:aws:iam::aws:policy/AmazonElasticFileSystemFullAccess"
+        Tags: 
+        - Key: Enviroment
+          Value: PROD
+
+ 
+#Creacion del Recurso Application Load Balancer (ALB)
+
+  EC2ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties: 
+        IpAddressType: ipv4
+        Name: EC2ApplicationLoadBalancer
+        Scheme: internet-facing
+        SecurityGroups: 
+          - !Ref EC2SecurityGroupInstances
+        Subnets: 
+          - !Ref VpcSubnetPublicAZa
+          - !Ref VpcSubnetPublicAZb
+        Tags:
+          - Key: Name
+            Value: 'ALB'
+          - Key: Enviroment
+            Value: PROD
+        Type: application 
+
+
+#Creacion del Recurso Listener HTTP de AutoScaling
+
+  EC2ALBListenerApp01:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:    
+        - Type: forward
+          TargetGroupArn: !Ref EC2LoadBalancerTargetGroupApp
+      LoadBalancerArn: !Ref EC2ApplicationLoadBalancer
+      Port: 80
+      Protocol: HTTP
+
+#Creacion del Recurso Target Group
+
+  EC2LoadBalancerTargetGroupApp:
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      Name: EC2LoadBalancerTargetGroupApp
+      TargetType: instance
+      HealthCheckIntervalSeconds: 5
+      HealthCheckPath: '/index.php'
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 2
+      HealthyThresholdCount: 3
+      UnhealthyThresholdCount: 2
+      Matcher:
+        HttpCode: '200'
+      Port: 80
+      Protocol: HTTP
+      VpcId: !Ref Vpc
+      TargetGroupAttributes:
+      - Key: deregistration_delay.timeout_seconds
+        Value: 10
+
+#Creacion del Recurso RDS Subnet Group (Base de Datos)
+
+  RDSSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: For Launching RDS
+      DBSubnetGroupName: rds-subnet-group
+      SubnetIds:
+      - !Ref VpcSubnetPrivateDBAZa
+      - !Ref VpcSubnetPrivateDBAZb
+
+# Creacion del recurso RDS Security Group
+
+  RDSSecurityGroupMySQL:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: For RDS MySQL
+      VpcId: !Ref Vpc
+      Tags:
+      - Key: Name
+        Value: RDSSecurityGroupMySQL
+
+#Creacion de la asociacion RDS Security Group y EC2 Security Group
+
+  RDSIngressMySQL:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref RDSSecurityGroupMySQL
+      IpProtocol: tcp
+      FromPort: 3306
+      ToPort: 3306
+      CidrIp: "0.0.0.0/0"
+ 
+# Creacion del recurso RDS MySQL
+
+  RDSMySQL:
+    Type: "AWS::RDS::DBInstance"
+    Properties:
+      AllocatedStorage: 20
+      StorageType: gp2
+#      StorageEncrypted: false
+#      AllowMajorVersionUpgrade: false
+#      AutoMinorVersionUpgrade: false
+#      BackupRetentionPeriod: 0
+      DeletionProtection: false
+#      AvailabilityZone: us-east-1a
+      DBInstanceClass: !Select [ 0, !Ref InstancesDBFamily]
+      DBInstanceIdentifier: !Ref DBInstanceIdentifier
+      DBName: !Ref DBName
+      DBSubnetGroupName: !Ref RDSSubnetGroup
+      Engine: mysql
+#      EngineVersion: 8.0.23
+      MasterUsername: !Ref DBUser
+#     MasterUserPassword: !Join ['', ['{{resolve:secretsmanager:', !Ref MySecretRDS, ':SecretString:password}}' ]]
+      MasterUserPassword: !Ref DBPassword
+#      MultiAZ: false
+      Port: 3306
+      PubliclyAccessible: false
+#      PreferredBackupWindow: 13:00-13:30
+#      PreferredMaintenanceWindow: mon:13:30-mon:14:00
+#      DBSnapshotIdentifier: arn:aws:rds:us-east-1:account_numer:snapshot:snapshot      
+      VPCSecurityGroups:
+        - !Ref RDSSecurityGroupMySQL      
+      Tags:
+        - Key: Name
+          Value: RDSMySQL
+        - Key: Enviroment
+          Value: PROD        
+
+#Creación de un Security Group EFS
+
+  EC2SecurityEFS:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow External Connection'
+        GroupName: 'sg_efs'
+        VpcId: !Ref Vpc
+        SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+
+#Creación de un Security Group ECS
+
+  EC2SecurityECS:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow External Connection'
+        GroupName: 'sg_ecs'
+        VpcId: !Ref Vpc
+        SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+
+#Creacion de la Instancia Admin - Insertará datos en la base de datos RDS
+
+  Ec2Instance:
+    Type: AWS::EC2::Instance
+    DependsOn: RDSMySQL
+    Properties:
+      InstanceType: !Select [ 0, !Ref InstancesFamily]
+      ImageId: !FindInMap [RegionAndInstanceEC2TypeToAMIID, !Ref "AWS::Region", HVM64]
+      IamInstanceProfile: !Ref IAMServerProfile
+      KeyName: !Ref KeyPair
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            
+            #Lanzar el siguiente script desde un servidor EC2 Ubuntu 18.04
+            
+            #Instalación Servidor MySQL
+            sudo apt-get update
+            sudo apt-get install awscli -y
+            sudo apt-get install jq -y
+
+            #Instalador Driver EFS
+            sudo apt-get -y install git binutils
+
+            #Instalador soporte EFS en Ubuntu 18.04
+            cd /home/ubuntu         
+            git clone https://github.com/aws/efs-utils
+            cd /home/ubuntu/efs-utils
+            ./build-deb.sh
+            sudo apt-get -y install ./build/amazon-efs-utils*deb
+
+            #Mount EFS (Elastic File System)
+            sudo mkdir /mnt/efs
+            #REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/')
+            #EFS=$(aws efs describe-file-systems --region $REGION | jq -r '.FileSystems[] | .FileSystemId')
+            #echo "$EFS.efs.$REGION.amazonaws.com:/ /mnt/efs nfs4 defaults,_netdev 0 0" >> /etc/fstab
+            #sudo mount -a
+            
+            #Instalador MySQL
+            sudo apt-get install mysql-server -y
+            #sudo service mysql status
+            
+            #Obtener el endpoint del RDS (base de datos)
+            REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/')
+            RDS_HOST=$(aws rds describe-db-instances --region $REGION | jq -r '.DBInstances[] | .Endpoint | .Address')
+            
+            #Crear archivo que contiene usuario y contraseña de la base de datos
+            touch /opt/mysql_access
+            chmod 400 /opt/mysql_access
+            echo "[client]" >> /opt/mysql_access
+            echo "user=coffee" >> /opt/mysql_access
+            echo "password=12345678-Aa" >> /opt/mysql_access
+            echo "host=$RDS_HOST" >> /opt/mysql_access
+            
+            #Crear de tabla "task" para la aplicación
+            mysql --defaults-extra-file=/opt/mysql_access --batch << "EOF"
+            CREATE DATABASE coffee;
+            USE coffee;
+            CREATE TABLE IF NOT EXISTS `coffee` (
+              `id` int(11) NOT NULL AUTO_INCREMENT,
+              `name` varchar(255) DEFAULT NULL,
+              `type` varchar(255) DEFAULT NULL,
+              `price` double DEFAULT NULL,
+              `roast` varchar(255) DEFAULT NULL,
+              `country` varchar(255) DEFAULT NULL,
+              `image` varchar(255) DEFAULT NULL,
+              `review` text,
+              PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+            INSERT INTO `coffee` (`id`, `name`, `type`, `price`, `roast`, `country`, `image`, `review`) VALUES
+            (1, 'Cafe au Lait', 'Classic', 2.25, 'Medium', 'France', 'Images/Coffee/Cafe-Au-Lait.jpg', 'A coffee beverage consisting strong or bold coffee (sometimes espresso) mixed with scalded milk in approximately a 1:1 ratio.'')'),
+            (2, 'Caffe Americano', 'Espresso', 3.25, 'Medium', 'Italy', 'Images/coffee/caffe_americano.jpg', 'Similar in strength and taste to American-style brewed coffee, there are subtle differences achieved by pulling a fresh shot of espresso for the beverage base.'),
+            (3, 'Peppermint White Chocolate Mocha', 'Espresso', 3.25, 'Medium', 'Italy', 'Images/coffee/white-chocolate-peppermint-mocha.jpg', 'Espresso with white chocolate and peppermint flavored syrups and steamed milk. Topped with sweetened whipped cream and dark chocolate curls.'),
+            (4, 'Galao', 'Latte', 4.2, 'Light', 'Portugal', 'Images/Coffee/galao_kaffee_portugal.jpg', 'Galao is a hot drink from Portugal made of espresso and foamed milk');
+            quit
+            EOF
+ 
+            #Eliminando la instancia generada
+            sleep 10
+            REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/')
+            INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
+            #aws ec2 terminate-instances --instance-ids $INSTANCE_ID --region $REGION
+
+
+      SecurityGroupIds:
+      - !Ref EC2SecurityGroupInstances
+      SourceDestCheck: true
+      BlockDeviceMappings:
+      - DeviceName: "/dev/sda1"
+        Ebs:
+          VolumeSize: "8"
+          VolumeType: "gp2"
+          DeleteOnTermination: "true"
+      SubnetId: !Ref VpcSubnetPublicAZa
+      Tags:
+      - Key: Name
+        Value: 'EC2 TOOL'   
+      - Key: Enviroment
+        Value: PROD
+        
