@@ -1,0 +1,322 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lab10_cloudformation_ec2_db_ohio'
+
+#Pre-requisitos
+
+#Crear un "Key Pair"
+
+Parameters:
+
+  VPCCIDRD:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 10.0.0.0/16
+     Description: CIDR Block for the VPC
+     Type: String
+     
+  SubnetCIDR1D:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 10.0.1.0/24
+     Description: CIDR Block for the Public Subnet (Load Balancer)
+     Type: String
+
+  InstancesFamily: 
+     Description: The Instances Family
+     Type: CommaDelimitedList
+     Default: "t2.micro,t2.medium,t2.large,t2.xlarge"
+    
+  KeyPair: 
+     Description: "Ingresar el nombre de un Key Pair"
+     Type: AWS::EC2::KeyPair::KeyName
+
+
+Mappings: 
+#  KeyPair:
+#    us-east-1: 
+#      "key": "key-virginia"
+
+  RegionAndInstanceEC2TypeToAMIID: 
+    us-east-2: 
+      "HVM64": "ami-03a5def6b0190cef7"
+
+#  RegionAndNATInstanceToAMIID: 
+#    us-east-1: 
+#      "NATInstancesID": "ami-00a9d4a05375b2763"
+
+  RegionAndAvailabilityZoneToSubnet: 
+    us-east-2: 
+      "AZa": "us-east-2a"
+      "AZb": "us-east-2b"
+
+
+Resources:
+
+# Creacion del recurso VPC
+
+  VpcD:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VPCCIDRD
+      EnableDnsHostnames: 'true'
+      EnableDnsSupport: 'true'
+      InstanceTenancy: default
+      Tags:
+      - Key: Name
+        Value: 'VPC QA'
+      - Key: Enviroment
+        Value: QA
+        
+# Creacion del recurso Internet Gateway
+
+  VpcInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: 'IG QA'
+      - Key: Enviroment
+        Value: QA
+            
+# Asociacion del recurso VPC e Internet Gateway
+                  
+  VpcInternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref VpcInternetGateway
+      VpcId: !Ref VpcD
+
+# Creacion del recurso Subnet (Publicas y Privadas)
+
+  VpcSubnetPublicAZaD:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZa]
+      VpcId: !Ref VpcD
+      CidrBlock: !Ref SubnetCIDR1D
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: 'QA SUBNET PUBLIC AZ A'
+      - Key: Enviroment
+        Value: QA
+
+# Creacion del recurso Route Table
+
+  VpcRouteTablePublic:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VpcD
+      Tags:
+      - Key: Name
+        Value: 'QA RT PUBLIC'
+      - Key: Enviroment
+        Value: QA
+              
+# Asociacion del recurso VPC Internet Gateway y Public Route Table
+
+  VpcInternetRoutePublicAttachment:
+    Type: AWS::EC2::Route
+    DependsOn: VpcInternetGatewayAttachment
+    Properties:
+        DestinationCidrBlock: 0.0.0.0/0
+        GatewayId: !Ref VpcInternetGateway
+        RouteTableId: !Ref VpcRouteTablePublic
+
+# Creación del recurso EC2 MySQL Instances
+
+  EC2MySQL:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Select [0, !Ref InstancesFamily]
+      ImageId: !FindInMap [RegionAndInstanceEC2TypeToAMIID, !Ref "AWS::Region", HVM64]
+      IamInstanceProfile: !Ref IAMServerProfileD
+      KeyName: !Ref KeyPair
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+
+            #Ubuntu 18.04
+            sudo su
+            sudo apt-get update
+            sudo apt-get install awscli -y
+            
+            #Instalación Servidor MySQL
+            sudo apt-get install mysql-server -y
+            sudo service mysql status
+            sed -i -e '43s/^/# /' /etc/mysql/mysql.conf.d/mysqld.cnf
+            echo "bind-address            = 0.0.0.0" >> /etc/mysql/mysql.conf.d/mysqld.cnf
+            sudo service mysql restart
+            
+            #Creación de usuario "admin"
+            cat << EOF | mysql
+            CREATE USER 'admin'@'%' IDENTIFIED BY 'admin'; 
+            GRANT ALL PRIVILEGES ON * . * TO 'admin'@'%' IDENTIFIED BY 'admin';
+            FLUSH PRIVILEGES;
+            SELECT User, Host FROM mysql.user;
+            quit
+            EOF
+
+            #Crear archivo que contiene usuario y contraseña de la base de datos
+            touch /home/ubuntu/mysql_access
+            chmod 400 /home/ubuntu/mysql_access
+            echo "[client]" >> /home/ubuntu/mysql_access
+            echo "user=admin" >> /home/ubuntu/mysql_access
+            echo "password=admin" >> /home/ubuntu/mysql_access
+            #echo "host=localhost" >> /home/ubuntu/mysql_access
+            
+            #Crear de tabla "task" para la aplicación
+            mysql --defaults-extra-file=/home/ubuntu/mysql_access --batch << "EOF"
+            create database test;
+            use test;
+            CREATE TABLE tasks
+            (
+                id MEDIUMINT NOT NULL AUTO_INCREMENT,
+                `name` VARCHAR(255),
+                description VARCHAR(255),
+                PRIMARY KEY (id)
+            );
+            quit
+            EOF
+
+
+      SecurityGroupIds:
+      - !Ref EC2SecurityGroupMySQLInstances
+      SourceDestCheck: true
+      SubnetId: !Ref VpcSubnetPublicAZaD
+      Tags:
+      - Key: Name
+        Value: 'QA DB'     
+      - Key: Enviroment
+        Value: QA
+
+# Security Group MySQL Instances
+
+  EC2SecurityGroupMySQLInstances:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow Internal Connection' 
+        VpcId: !Ref VpcD
+        SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+          
+# Asociacion del recurso Subnet y Route Table
+
+  VpcSubnetPublicAZaDRouteTableAttachment:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePublic
+        SubnetId: !Ref VpcSubnetPublicAZaD
+
+#Creacion del recurso IAM Role
+
+  IAMPolicySSM:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 'ssm:ResumeSession'
+                  - 'ssm:UpdateInstanceInformation'
+                  - 'ssm:DescribeSessions'
+                  - 'ssm:TerminateSession'
+                  - 'ssm:StartSession'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'ssmmessages:CreateControlChannel'
+                  - 'ssmmessages:CreateDataChannel'
+                  - 'ssmmessages:OpenControlChannel'
+                  - 'ssmmessages:OpenDataChannel'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'cloudwatch:PutMetricData'
+                  - 'cloudwatch:GetMetricStatistics'
+                  - 'cloudwatch:ListMetrics'
+                  - 'ec2:DescribeTags'
+                  Resource: '*'
+
+
+  IAMPolicyAccessS3FromEC2:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 's3:*'
+                  Resource: '*'
+
+  IAMPolicyAccessSecurityGroupFromEC2:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 'ec2:*'
+                  Resource: '*'
+
+
+  IAMServerProfileD:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+        Path: /
+        Roles:
+            - !Ref IAMRoleEC2
+                    
+  IAMRoleEC2:
+    Type: AWS::IAM::Role
+    Properties:
+        Path: "/"  
+        AssumeRolePolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Principal:
+                    Service:
+                    - ec2.amazonaws.com
+                  Action:
+                    - 'sts:AssumeRole'
+        ManagedPolicyArns:
+          - !Ref IAMPolicySSM
+          - !Ref IAMPolicyAccessS3FromEC2
+          - !Ref IAMPolicyAccessSecurityGroupFromEC2
+        Tags: 
+        - Key: Enviroment
+          Value: QA
+          
+Outputs: 
+
+  VpcD: 
+    Value: !Ref VpcD
+    Export:
+      Name: !Sub "VpcD"
+  VpcSubnetPublicAZaD: 
+    Value: !Ref VpcSubnetPublicAZaD
+    Export:
+      Name: !Sub "VpcSubnetPublicAZaD"
+  VPCCIDRDBlock:
+    Value:
+      Fn::GetAtt:
+        - VpcD
+        - CidrBlock
+    Export:
+      Name: VPCCIDRDBlock
+  IAMServerProfileD: 
+    Value: !Ref IAMServerProfileD
+    Export:
+      Name: !Sub "IAMServerProfileD"
