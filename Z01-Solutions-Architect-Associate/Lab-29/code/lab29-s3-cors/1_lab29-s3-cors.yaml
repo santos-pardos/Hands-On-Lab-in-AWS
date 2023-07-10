@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lab29-s3-cors'
+
+Resources:
+
+
+  MyS3Bucket1:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'lab29-aws-solutionsarchitectassociate-bucket1-${AWS::AccountId}'
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+    DeletionPolicy: Retain
+    
+  BucketPolicy1:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Join 
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref MyS3Bucket1
+                - /*
+      Bucket: !Ref MyS3Bucket1
+
+
+  MyS3Bucket2:
+    Type: AWS::S3::Bucket
+    DependsOn: MyS3Bucket1
+    Properties:
+      BucketName: !Sub 'lab29-aws-solutionsarchitectassociate-bucket2-${AWS::AccountId}'
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: loadpage.html
+        ErrorDocument: error.html
+    DeletionPolicy: Retain
+    
+  BucketPolicy2:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Join 
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref MyS3Bucket2
+                - /*
+      Bucket: !Ref MyS3Bucket2
+
