@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lab31-s3-glue'
+
+Resources:
+  MyRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "glue.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        -
+          PolicyName: "root"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action: "*"
+                Resource: "*"
+ 
+  MyDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      #CatalogId: !Sub 'lab31-aws-solutionsarchitectassociate-glue-catalog-${AWS::AccountId}'
+      DatabaseInput:
+        Name: "lab31-glue-database"
+ 
+  MyS3BucketGlue:
+    Type: AWS::S3::Bucket
+    DependsOn: MyS3BucketAthena
+    Properties:
+      BucketName: !Sub 'lab31-aws-solutionsarchitectassociate-s3-${AWS::AccountId}'
+      
+  MyS3BucketAthena:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'lab31-aws-solutionsarchitectassociate-athena-${AWS::AccountId}'
+
+  MyCrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Name: "lab31-glue-crawler"
+      Role: !GetAtt MyRole.Arn
+      DatabaseName: !Ref MyDatabase
+      TablePrefix: "lab31-glue-crawler-"
+      Targets:
+        S3Targets:
+          - Path: !Ref MyS3BucketGlue

@@ -1,0 +1,369 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lab-ec2-s3-v1.0.0'
+
+#Se deberá crear un "Key Pair"
+
+Parameters:
+
+  InstancesFamily: 
+     Description: The Instances Family
+     Type: CommaDelimitedList
+     Default: "t2.micro,t2.medium,t2.large,t2.xlarge"
+    
+  KeyPair: 
+     Description: "Ingresar el nombre de un Key Pair"
+     Type: AWS::EC2::KeyPair::KeyName
+
+  
+Mappings: 
+
+  RegionAndInstanceEC2TypeToAMIID: 
+    us-east-1: 
+      "HVM64": "ami-02fe94dee086c0c37"
+
+  RegionAndInstanceNATTypeToAMIID: 
+    us-east-1: 
+      "HVM64": "ami-01623d7b"
+
+  RegionAndAvailabilityZoneToSubnet: 
+    us-east-1: 
+      "AZa": "us-east-1a"
+      "AZb": "us-east-1b"
+
+
+Resources:
+
+#Creacion del recurso IAM Role
+
+  BackendIAMPolicySSM:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 'ssm:ResumeSession'
+                  - 'ssm:UpdateInstanceInformation'
+                  - 'ssm:DescribeSessions'
+                  - 'ssm:TerminateSession'
+                  - 'ssm:StartSession'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'ssmmessages:CreateControlChannel'
+                  - 'ssmmessages:CreateDataChannel'
+                  - 'ssmmessages:OpenControlChannel'
+                  - 'ssmmessages:OpenDataChannel'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'cloudwatch:PutMetricData'
+                  - 'cloudwatch:GetMetricStatistics'
+                  - 'cloudwatch:ListMetrics'
+                  - 'ec2:DescribeTags'
+                  Resource: '*'
+
+
+  BackendIAMPolicyAccessS3FromEC2:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 's3:*'
+                  Resource: '*'
+
+  BackendIAMPolicyAccessSecurityGroupFromEC2:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 'ec2:*'
+                  Resource: '*'
+
+
+  BackendIAMServerProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+        Path: /
+        Roles:
+            - !Ref BackendIAMRoleEC2
+                    
+  BackendIAMRoleEC2:
+    Type: AWS::IAM::Role
+    Properties:
+        Path: "/"  
+        AssumeRolePolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Principal:
+                    Service:
+                    - ec2.amazonaws.com
+                  Action:
+                    - 'sts:AssumeRole'
+        ManagedPolicyArns:
+          - !Ref BackendIAMPolicySSM
+          - !Ref BackendIAMPolicyAccessS3FromEC2
+          - !Ref BackendIAMPolicyAccessSecurityGroupFromEC2
+          - "arn:aws:iam::aws:policy/AmazonElasticFileSystemFullAccess"
+          - "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
+        Tags: 
+        - Key: Enviroment
+          Value: PROD
+
+
+#Creación del bucket que contendrá los archivos estáticos
+
+  MyS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'lab33-aws-solutionsarchitectassociate-rds-${AWS::AccountId}'
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+    DeletionPolicy: Retain
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Join 
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref MyS3Bucket
+                - /*
+      Bucket: !Ref MyS3Bucket
+
+          
+#Creacion de la Instancia
+
+  Ec2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Select [ 0, !Ref InstancesFamily]
+      ImageId: !FindInMap [RegionAndInstanceEC2TypeToAMIID, !Ref "AWS::Region", HVM64]
+      IamInstanceProfile: !Ref BackendIAMServerProfile
+      KeyName: !Ref KeyPair
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+
+            #Lanzar el siguiente script desde un servidor EC2 Ubuntu 18.04
+            #El servidor deberá tener salida a internet (Outbound - Security Group)
+            #Tiempo de ejecución: 5 min aproximadamente
+            
+            #Ubuntu 18.04
+            sudo su
+            sudo apt-get update
+            sudo apt-get install awscli -y
+            sudo apt-get install jq -y
+            
+            #Mount disk (EBS)
+            sudo mkdir /opt
+            sudo mkfs -t ext4 /dev/xvdf
+            sudo mount /dev/xvdf /opt
+            export UUID=$(lsblk -fm | grep xvdf | awk '{print $3}')
+            echo "UUID=$UUID  /opt  ext4  defaults,nofail  0  2" >> /etc/fstab
+            sudo mount -a 
+            
+            #Instalación nodejs
+            cd /opt   
+            git clone https://github.com/jbarreto7991/aws-solutionsarchitectassociate.git
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            sudo apt install nodejs -y
+            #sudo apt install npm -y
+            #node -v
+            #npm -v
+            
+            #Obteniendo ip pública del servidor como variable - Frontend
+            PUBLIC_IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
+            
+            #Reemplazando parámetro en archivo de configuración del frontend - Frontend
+            sed 's+http://$PUBLIC_IP/v1+http://'"$PUBLIC_IP"'/v1+g' /opt/aws-solutionsarchitectassociate/App/frontend/src/config/axios.js >> /opt/aws-solutionsarchitectassociate/App/frontend/src/config/bk_axios.js
+            rm /opt/aws-solutionsarchitectassociate/App/frontend/src/config/axios.js
+            mv /opt/aws-solutionsarchitectassociate/App/frontend/src/config/bk_axios.js /opt/aws-solutionsarchitectassociate/App/frontend/src/config/axios.js
+            
+            #Compilar frontend
+            cd /opt/aws-solutionsarchitectassociate/App/frontend
+            #sudo npm install npm -g
+            npm install
+            #npm start
+            npm run build
+            cd /opt/aws-solutionsarchitectassociate/App/frontend/build/
+            BUCKET=$(aws s3 ls | sort -r | awk 'NR ==1 { print $3 }')
+            aws s3 sync . s3://$BUCKET
+            
+            #Desintalar nodejs e instalar última versión
+            #sudo apt remove nodejs
+            #sudo apt purge nodejs
+            #sudo apt autoremove
+            #sudo apt update
+            #curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+            #sudo apt install nodejs
+            
+            #Instalación Servidor MySQL
+            sudo apt-get update
+            sudo apt-get install mysql-server -y
+            #sudo service mysql status
+            #sed -i -e '43s/^/# /' /etc/mysql/mysql.conf.d/mysqld.cnf
+            #echo "bind-address            = 0.0.0.0" >> /etc/mysql/mysql.conf.d/mysqld.cnf
+            #sudo service mysql restart
+            
+            #Creación de usuario "admin"
+            #cat << EOF | mysql
+            #CREATE USER 'admin'@'%' IDENTIFIED BY 'admin'; 
+            #GRANT ALL PRIVILEGES ON * . * TO 'admin'@'%' IDENTIFIED BY 'admin';
+            #FLUSH PRIVILEGES;
+            #SELECT User, Host FROM mysql.user;
+            #quit
+            #EOF
+            
+            REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/')
+
+            #Consultar el usuario y contraseña almacenado en Secret Manager
+            SECRETMANAGER_NAME=$(aws secretsmanager list-secrets --region $REGION | jq -r '.SecretList[] | .Name')
+            #aws secretsmanager describe-secret --secret-id MySecretForRDS --region $REGION            
+            SECRETMANAGER_USER=$(aws secretsmanager get-secret-value --secret-id $SECRETMANAGER_NAME --version-stage AWSCURRENT --region $REGION | jq -r '.SecretString | fromjson | .username')            
+            SECRETMANAGER_PASSWORD=$(aws secretsmanager get-secret-value --secret-id $SECRETMANAGER_NAME --version-stage AWSCURRENT --region $REGION | jq -r '.SecretString | fromjson | .password')
+            
+            #Obtener el endpoint del RDS (base de datos)
+            RDS_HOST=$(aws rds describe-db-instances --region $REGION | jq -r '.DBInstances[] | .Endpoint | .Address')
+            
+            #Crear archivo que contiene usuario y contraseña de la base de datos
+            touch /opt/mysql_access
+            chmod 400 /opt/mysql_access
+            echo "[client]" >> /opt/mysql_access
+            echo "user=$SECRETMANAGER_USER" >> /opt/mysql_access
+            PASSWORD=$()
+            echo "password=$SECRETMANAGER_PASSWORD" >> /opt/mysql_access
+            echo "host=$RDS_HOST" >> /opt/mysql_access
+            
+            #Crear de tabla "task" para la aplicación
+            mysql --defaults-extra-file=/opt/mysql_access --batch << "EOF"
+            create database test;
+            use test;
+            CREATE TABLE tasks
+            (
+                id MEDIUMINT NOT NULL AUTO_INCREMENT,
+                `name` VARCHAR(255),
+                description VARCHAR(255),
+                PRIMARY KEY (id)
+            );
+            quit
+            EOF
+            
+            #Modificación del archivo de conectividad hacia el RDS
+            echo "" > /opt/aws-solutionsarchitectassociate/App/backend/.env
+            echo "DB_URI=$RDS_HOST" >> /opt/aws-solutionsarchitectassociate/App/backend/.env
+            echo "DB_USERNAME=$SECRETMANAGER_USER" >> /opt/aws-solutionsarchitectassociate/App/backend/.env
+            echo "DB_PASSWORD=$SECRETMANAGER_PASSWORD" >> /opt/aws-solutionsarchitectassociate/App/backend/.env
+            echo "DB_DATABASE=test" >> /opt/aws-solutionsarchitectassociate/App/backend/.env
+            echo "PORT=80" >> /opt/aws-solutionsarchitectassociate/App/backend/.env
+
+
+            #Instalación del Backend
+            cd /opt/aws-solutionsarchitectassociate/App/backend/
+            npm install
+            npm start &
+            
+            #Eliminando archivos temporales
+            rm /opt/tmp_ip_s3_list
+            rm /opt/mysql_access
+
+            #Configurar el reinicio del servicio
+            #cd /home/ubuntu
+            #touch /home/ubuntu/script.sh
+            #chmod +x /home/ubuntu/script.sh
+            #echo '#!/bin/bash' >> /home/ubuntu/script.sh
+            #echo 'sleep 60 && cd /opt/aws-solutionsarchitectassociate/App/backend/ && sudo npm start &  > /dev/null 2>&1' >> /home/ubuntu/script.sh
+            #echo "@reboot root /home/ubuntu/script.sh" >> /etc/crontab
+            
+            echo "@reboot root sleep 60 && cd /opt/aws-solutionsarchitectassociate/App/backend/ && sudo npm start & > /dev/null 2>&1" >> /etc/crontab
+            
+      SecurityGroupIds:
+      - !Ref EC2SecurityWeb
+      SourceDestCheck: true
+      BlockDeviceMappings:
+      - DeviceName: "/dev/sda1"
+        Ebs:
+          VolumeSize: "8"
+          VolumeType: "gp2"
+          DeleteOnTermination: "true"
+          Encrypted: "true"
+      - DeviceName: "/dev/sdf"
+        Ebs:
+          VolumeSize: "8"
+          VolumeType: "gp2"
+          DeleteOnTermination: "true"
+          Encrypted: "true"
+      SubnetId: !ImportValue VpcSubnetPublicAZb
+      Tags:
+      - Key: Name
+        Value: 'EC2 BACKEND'   
+      - Key: Enviroment
+        Value: PROD
+        
+  EC2SecurityWeb:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow Internal Connection' 
+        VpcId: !ImportValue Vpc
+        SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+
+
+# Creacion del recurso Elastic IP
+# Se asociará a la instancia EC2
+
+  EC2ElasticIPPivot:
+    Type: AWS::EC2::EIP
+    Properties:
+        Domain: "vpc"
+        
+  EC2ElasticIPAssignment:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+        EIP: !Ref EC2ElasticIPPivot
+        InstanceId: !Ref Ec2Instance
+
+          
+Outputs: 
+
+  MyS3Bucket: 
+    Value: !Ref MyS3Bucket
+    Export:
+      Name: !Sub "MyS3Bucket"
+  BackendIAMServerProfile: 
+    Value: !Ref BackendIAMServerProfile
+    Export:
+      Name: !Sub "BackendIAMServerProfile"
+  Ec2Instance:
+    Value: !Ref Ec2Instance
+    Export:
+      Name: !Sub "Ec2Instance"
+  EC2SecurityWeb:
+    Value: !Ref EC2SecurityWeb
+    Export:
+      Name: !Sub "EC2SecurityWeb"

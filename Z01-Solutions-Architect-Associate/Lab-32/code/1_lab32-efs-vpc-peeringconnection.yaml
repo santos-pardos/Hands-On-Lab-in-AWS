@@ -1,0 +1,787 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lab02_cloudformation_s3_ec2_db.yaml'
+
+#Pre-requisitos
+
+#Crear un "Key Pair"
+
+        
+Parameters:
+
+  VPCCIDRA:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.0.0/16
+     Description: CIDR Block for the VPC A
+     Type: String
+     
+  SubnetCIDR1A:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.1.0/24
+     Description: CIDR Block for the Public Subnet A
+     Type: String
+     
+  SubnetCIDR2A:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.2.0/24
+     Description: CIDR Block for the Public Subnet A
+     Type: String
+
+  SubnetCIDR3A:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.3.0/24
+     Description: CIDR Block for the Private Subnet A
+     Type: String
+     
+  SubnetCIDR4A:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 192.168.4.0/24
+     Description: CIDR Block for the Private Subnet A
+     Type: String
+
+  VPCCIDRB:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 10.0.0.0/16
+     Description: CIDR Block for the VPC B
+     Type: String
+     
+  SubnetCIDR1B:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 10.0.1.0/24
+     Description: CIDR Block for the Public Subnet B
+     Type: String
+     
+  SubnetCIDR2B:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 10.0.2.0/24
+     Description: CIDR Block for the Public Subnet B
+     Type: String
+
+  SubnetCIDR3B:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 10.0.3.0/24
+     Description: CIDR Block for the Private Subnet B
+     Type: String
+     
+  SubnetCIDR4B:
+     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+     ConstraintDescription: Must be a valid IP range in x.x.x.x/x notation
+     Default: 10.0.4.0/24
+     Description: CIDR Block for the Private Subnet B
+     Type: String
+     
+  InstancesFamily: 
+     Description: The Instances Family
+     Type: CommaDelimitedList
+     Default: "t2.micro,t2.medium,t2.large,t2.xlarge"
+    
+  KeyPairA: 
+     Description: "Ingresar el nombre de un Key Pair A"
+     Type: AWS::EC2::KeyPair::KeyName
+
+  KeyPairB: 
+     Description: "Ingresar el nombre de un Key Pair B"
+     Type: AWS::EC2::KeyPair::KeyName
+
+
+      
+Mappings: 
+
+  RegionAndInstanceEC2TypeToAMIID: 
+    us-east-1: 
+      "HVM64": "ami-02fe94dee086c0c37"
+
+  RegionAndNATInstanceToAMIID: 
+    us-east-1: 
+      "NATInstancesID": "ami-00a9d4a05375b2763"
+
+  RegionAndAvailabilityZoneToSubnet: 
+    us-east-1: 
+      "AZa": "us-east-1a"
+      "AZb": "us-east-1b"
+
+
+Resources:
+
+#REDES Y CONECTIVIDAD
+
+# Creacion del recurso VPC
+
+  VpcA:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VPCCIDRA
+      EnableDnsHostnames: 'true'
+      EnableDnsSupport: 'true'
+      InstanceTenancy: default
+      Tags:
+      - Key: Name
+        Value: 'VPC PROD A'
+      - Key: Enviroment
+        Value: PROD A
+
+  VpcB:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VPCCIDRB
+      EnableDnsHostnames: 'true'
+      EnableDnsSupport: 'true'
+      InstanceTenancy: default
+      Tags:
+      - Key: Name
+        Value: 'VPC PROD B'
+      - Key: Enviroment
+        Value: PROD B
+        
+# Creacion del recurso Internet Gateway
+
+  VpcInternetGatewayA:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: 'IG PROD A'
+      - Key: Enviroment
+        Value: PROD A
+
+  VpcInternetGatewayB:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: 'IG PROD B'
+      - Key: Enviroment
+        Value: PROD B
+        
+# Asociacion del recurso VPC e Internet Gateway
+                  
+  VpcInternetGatewayAttachmentA:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref VpcInternetGatewayA
+      VpcId: !Ref VpcA
+
+  VpcInternetGatewayAttachmentB:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref VpcInternetGatewayB
+      VpcId: !Ref VpcB
+
+# Creacion del recurso Subnet (Publicas y Privadas)
+
+  VpcSubnetPublicAZaA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZa]
+      VpcId: !Ref VpcA
+      CidrBlock: !Ref SubnetCIDR1A
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: 'PROD A SUBNET PUBLIC AZ A'
+      - Key: Enviroment
+        Value: PROD A
+
+  VpcSubnetPublicAZbA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZb]
+      VpcId: !Ref VpcA
+      CidrBlock: !Ref SubnetCIDR2A
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: 'PROD A SUBNET PUBLIC AZ B'
+      - Key: Enviroment
+        Value: PROD A
+
+  VpcSubnetPrivateAZaA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZa]
+      VpcId: !Ref VpcA
+      CidrBlock: !Ref SubnetCIDR3A
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: 'PROD A SUBNET PRIVATE AZ A'
+      - Key: Enviroment
+        Value: PROD A
+
+  VpcSubnetPrivateAZbA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZb]
+      VpcId: !Ref VpcA
+      CidrBlock: !Ref SubnetCIDR4A
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: 'PROD A SUBNET PRIVATE AZ B'
+      - Key: Enviroment
+        Value: PROD A
+
+  VpcSubnetPublicAZaB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZa]
+      VpcId: !Ref VpcB
+      CidrBlock: !Ref SubnetCIDR1B
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: 'PROD B SUBNET PUBLIC AZ A'
+      - Key: Enviroment
+        Value: PROD B
+
+  VpcSubnetPublicAZbB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZb]
+      VpcId: !Ref VpcB
+      CidrBlock: !Ref SubnetCIDR2B
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: 'PROD B SUBNET PUBLIC AZ B'
+      - Key: Enviroment
+        Value: PROD B
+
+  VpcSubnetPrivateAZaB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZa]
+      VpcId: !Ref VpcB
+      CidrBlock: !Ref SubnetCIDR3B
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: 'PROD B SUBNET PRIVATE AZ A'
+      - Key: Enviroment
+        Value: PROD B
+
+  VpcSubnetPrivateAZbB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !FindInMap [RegionAndAvailabilityZoneToSubnet, !Ref "AWS::Region", AZb]
+      VpcId: !Ref VpcB
+      CidrBlock: !Ref SubnetCIDR4B
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: 'PROD B SUBNET PRIVATE AZ B'
+      - Key: Enviroment
+        Value: PROD B
+
+# Creacion del recurso Route Table
+
+  VpcRouteTablePublicA:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VpcA
+      Tags:
+      - Key: Name
+        Value: 'PROD A RT PUBLIC'
+      - Key: Enviroment
+        Value: PROD A
+
+  VpcRouteTablePrivateA:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VpcA
+      Tags:
+      - Key: Name
+        Value: 'PROD A RT PRIVATE'
+      - Key: Enviroment
+        Value: PROD A
+
+  VpcRouteTablePublicB:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VpcB
+      Tags:
+      - Key: Name
+        Value: 'PROD B RT PUBLIC'
+      - Key: Enviroment
+        Value: PROD B
+
+  VpcRouteTablePrivateB:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VpcB
+      Tags:
+      - Key: Name
+        Value: 'PROD B RT PRIVATE'
+      - Key: Enviroment
+        Value: PROD B
+
+# Asociacion del recurso VPC Internet Gateway y Route Table
+
+  VpcInternetRoutePublicAttachmentA:
+    Type: AWS::EC2::Route
+    DependsOn: VpcInternetGatewayAttachmentA
+    Properties:
+        DestinationCidrBlock: 0.0.0.0/0
+        GatewayId: !Ref VpcInternetGatewayA
+        RouteTableId: !Ref VpcRouteTablePublicA
+
+  VpcInternetRoutePublicAttachmentB:
+    Type: AWS::EC2::Route
+    DependsOn: VpcInternetGatewayAttachmentB
+    Properties:
+        DestinationCidrBlock: 0.0.0.0/0
+        GatewayId: !Ref VpcInternetGatewayB
+        RouteTableId: !Ref VpcRouteTablePublicB
+        
+# Asociacion del recurso EC2 NAT Instances y Private Route Table
+        
+  VpcNatRoutePrivateAttachmentA:
+    Type: AWS::EC2::Route
+    Properties:
+        DestinationCidrBlock: 0.0.0.0/0
+        InstanceId: !Ref Ec2NATInstanceA
+        #NatGatewayId: !Ref VpcNATGateway_A
+        RouteTableId: !Ref VpcRouteTablePrivateA
+
+  VpcNatRoutePrivateAttachmentB:
+    Type: AWS::EC2::Route
+    Properties:
+        DestinationCidrBlock: 0.0.0.0/0
+        InstanceId: !Ref Ec2NATInstanceB
+        #NatGatewayId: !Ref VpcNATGateway_B
+        RouteTableId: !Ref VpcRouteTablePrivateB
+
+# Asociacion del Peering Connection y los Route Tables
+        
+  VpcPeeringRoutePrivateAttachmentA:
+    Type: AWS::EC2::Route
+    Properties:
+        DestinationCidrBlock: 10.0.0.0/16
+        VpcPeeringConnectionId: !Ref VPCPeeringConnection
+        RouteTableId: !Ref VpcRouteTablePrivateA
+
+  VpcPeeringRoutePrivateAttachmentB:
+    Type: AWS::EC2::Route
+    Properties:
+        DestinationCidrBlock: 192.168.0.0/16
+        VpcPeeringConnectionId: !Ref VPCPeeringConnection
+        RouteTableId: !Ref VpcRouteTablePrivateB
+        
+  VpcPeeringRoutePublicAttachmentA:
+    Type: AWS::EC2::Route
+    Properties:
+        DestinationCidrBlock: 10.0.0.0/16
+        VpcPeeringConnectionId: !Ref VPCPeeringConnection
+        RouteTableId: !Ref VpcRouteTablePublicA
+
+  VpcPeeringRoutePublicAttachmentB:
+    Type: AWS::EC2::Route
+    Properties:
+        DestinationCidrBlock: 192.168.0.0/16
+        VpcPeeringConnectionId: !Ref VPCPeeringConnection
+        RouteTableId: !Ref VpcRouteTablePublicB
+
+
+# Creación del recurso EC2 NAT Instances
+
+  Ec2NATInstanceA:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Select [0, !Ref InstancesFamily]
+      ImageId:  !FindInMap [RegionAndNATInstanceToAMIID, !Ref "AWS::Region", NATInstancesID]
+      KeyName: !Ref KeyPairA
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            cd /tmp
+            sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+            sudo systemctl enable amazon-ssm-agent
+            sudo systemctl start amazon-ssm-agent
+      SecurityGroupIds:
+      - !Ref EC2SecurityGroupNATInstancesA
+      SourceDestCheck: false
+      SubnetId: !Ref VpcSubnetPublicAZbA
+      Tags:
+      - Key: Name
+        Value: 'PROD A EC2 NAT Instances'     
+      - Key: Enviroment
+        Value: PROD A
+
+  Ec2NATInstanceB:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Select [0, !Ref InstancesFamily]
+      ImageId:  !FindInMap [RegionAndNATInstanceToAMIID, !Ref "AWS::Region", NATInstancesID]
+      KeyName: !Ref KeyPairB
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            cd /tmp
+            sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+            sudo systemctl enable amazon-ssm-agent
+            sudo systemctl start amazon-ssm-agent
+      SecurityGroupIds:
+      - !Ref EC2SecurityGroupNATInstancesB
+      SourceDestCheck: false
+      SubnetId: !Ref VpcSubnetPublicAZbB
+      Tags:
+      - Key: Name
+        Value: 'PROD B EC2 NAT Instances'     
+      - Key: Enviroment
+        Value: PROD B
+
+
+# Security Group NAT Instances
+
+  EC2SecurityGroupNATInstancesA:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow External Connection'
+        GroupName: 'sg_nat' 
+        VpcId: !Ref VpcA
+        SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+
+  EC2SecurityGroupNATInstancesB:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow External Connection'
+        GroupName: 'sg_nat' 
+        VpcId: !Ref VpcB
+        SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+                    
+# Asociacion del recurso Subnet y Route Table
+
+  VpcSubnetPublicAZaRouteTableAttachmentA:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePublicA
+        SubnetId: !Ref VpcSubnetPublicAZaA
+  VpcSubnetPublicAZbRouteTableAttachmentA:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePublicA
+        SubnetId: !Ref VpcSubnetPublicAZbA
+
+  VpcSubnetPrivateAZaRouteTableAttachmentA:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePrivateA
+        SubnetId: !Ref VpcSubnetPrivateAZaA
+  VpcSubnetPrivateAZbRouteTableAttachmentA:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePrivateA
+        SubnetId: !Ref VpcSubnetPrivateAZbA
+
+  VpcSubnetPublicAZaRouteTableAttachmentB:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePublicB
+        SubnetId: !Ref VpcSubnetPublicAZaB
+  VpcSubnetPublicAZbRouteTableAttachmentB:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePublicB
+        SubnetId: !Ref VpcSubnetPublicAZbB
+
+  VpcSubnetPrivateAZaRouteTableAttachmentB:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePrivateB
+        SubnetId: !Ref VpcSubnetPrivateAZaB
+  VpcSubnetPrivateAZbRouteTableAttachmentB:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+        RouteTableId: !Ref VpcRouteTablePrivateB
+        SubnetId: !Ref VpcSubnetPrivateAZbB
+
+          
+#Creacion de la Instancia Backend
+
+  Ec2InstanceA:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Select [ 0, !Ref InstancesFamily]
+      ImageId: !FindInMap [RegionAndInstanceEC2TypeToAMIID, !Ref "AWS::Region", HVM64]
+      IamInstanceProfile: !Ref BackendIAMServerProfile
+      KeyName: !Ref KeyPairA
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            
+            #Ubuntu 18.04
+            sudo su
+            sudo apt-get update
+            sudo apt-get install jq -y
+            sudo apt-get -y install git binutils
+            
+            #Instalador para soportar EFS en Ubuntu 18.04
+            cd /home/ubuntu         
+            git clone https://github.com/aws/efs-utils
+            cd /home/ubuntu/efs-utils
+            ./build-deb.sh
+            sudo apt-get -y install ./build/amazon-efs-utils*deb
+
+            #EFS (Elastic File System)
+            sudo mkdir /mnt/efs
+
+      SecurityGroupIds:
+      - !Ref EC2SecurityWebA
+      SourceDestCheck: true
+      BlockDeviceMappings:
+      - DeviceName: "/dev/sda1"
+        Ebs:
+          VolumeSize: "8"
+          VolumeType: "gp2"
+          DeleteOnTermination: "true"
+          Encrypted: "true"
+      SubnetId: !Ref VpcSubnetPublicAZaA
+      Tags:
+      - Key: Name
+        Value: 'PROD A EC2 EFS PUBLIC'   
+      - Key: Enviroment
+        Value: PROD A
+
+  Ec2InstanceB1:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Select [ 0, !Ref InstancesFamily]
+      ImageId: !FindInMap [RegionAndInstanceEC2TypeToAMIID, !Ref "AWS::Region", HVM64]
+      IamInstanceProfile: !Ref BackendIAMServerProfile
+      KeyName: !Ref KeyPairB
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            
+            #Ubuntu 18.04
+            sudo su
+            sudo apt-get update
+            sudo apt-get install jq -y
+            sudo apt-get -y install git binutils
+            
+            #Instalador para soportar EFS en Ubuntu 18.04
+            cd /home/ubuntu         
+            git clone https://github.com/aws/efs-utils
+            cd /home/ubuntu/efs-utils
+            ./build-deb.sh
+            sudo apt-get -y install ./build/amazon-efs-utils*deb
+
+            #EFS (Elastic File System)
+            sudo mkdir /mnt/efs
+
+      SecurityGroupIds:
+      - !Ref EC2SecurityWebB
+      SourceDestCheck: true
+      BlockDeviceMappings:
+      - DeviceName: "/dev/sda1"
+        Ebs:
+          VolumeSize: "8"
+          VolumeType: "gp2"
+          DeleteOnTermination: "true"
+          Encrypted: "true"
+      SubnetId: !Ref VpcSubnetPublicAZaB
+      Tags:
+      - Key: Name
+        Value: 'PROD B EC2 EFS PUBLIC'   
+      - Key: Enviroment
+        Value: PROD B
+
+
+  Ec2InstanceB2:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Select [ 0, !Ref InstancesFamily]
+      ImageId: !FindInMap [RegionAndInstanceEC2TypeToAMIID, !Ref "AWS::Region", HVM64]
+      IamInstanceProfile: !Ref BackendIAMServerProfile
+      KeyName: !Ref KeyPairB
+      UserData:
+        'Fn::Base64': 
+          !Sub |
+            #!/bin/bash
+            
+            #Ubuntu 18.04
+            sudo su
+            sudo apt-get update
+            sudo apt-get install jq -y
+            sudo apt-get -y install git binutils
+            
+            #Instalador para soportar EFS en Ubuntu 18.04
+            cd /home/ubuntu         
+            git clone https://github.com/aws/efs-utils
+            cd /home/ubuntu/efs-utils
+            ./build-deb.sh
+            sudo apt-get -y install ./build/amazon-efs-utils*deb
+
+            #EFS (Elastic File System)
+            sudo mkdir /mnt/efs
+
+      SecurityGroupIds:
+      - !Ref EC2SecurityWebB
+      SourceDestCheck: true
+      BlockDeviceMappings:
+      - DeviceName: "/dev/sda1"
+        Ebs:
+          VolumeSize: "8"
+          VolumeType: "gp2"
+          DeleteOnTermination: "true"
+          Encrypted: "true"
+      SubnetId: !Ref VpcSubnetPrivateAZaB
+      Tags:
+      - Key: Name
+        Value: 'PROD B EC2 EFS PRIVATE'   
+      - Key: Enviroment
+        Value: PROD B
+
+  EC2SecurityWebA:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow External Connection'
+        GroupName: 'sg_app'
+        VpcId: !Ref VpcA
+        SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+          
+  EC2SecurityWebB:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow External Connection'
+        GroupName: 'sg_app'
+        VpcId: !Ref VpcB
+        SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+
+  EC2SecurityEFS:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+        GroupDescription: 'Allow External Connection'
+        GroupName: 'sg_efs'
+        VpcId: !Ref VpcA
+        SecurityGroupIngress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+
+  VPCPeeringConnection:
+    Type: AWS::EC2::VPCPeeringConnection
+    Properties:
+      VpcId: !Ref VpcA
+      PeerVpcId: !Ref VpcB
+      PeerOwnerId: !Sub '${AWS::AccountId}'
+      PeerRoleArn: !GetAtt [PeerRole, Arn]
+      Tags:
+      - Key: Name
+        Value: PROD Peering Connection
+
+  PeerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Principal:
+              AWS: !Sub '${AWS::AccountId}'
+      Path: /
+      Policies:
+        - PolicyName: AcceptVPCPeering
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: ec2:AcceptVpcPeeringConnection
+                Resource: '*'
+
+
+#Creacion del recurso IAM Role
+
+  BackendIAMPolicySSM:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+        Path: /
+        ManagedPolicyName: 'BackendIAMPolicySSM'
+        PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Action: 
+                  - 'ssm:ResumeSession'
+                  - 'ssm:UpdateInstanceInformation'
+                  - 'ssm:DescribeSessions'
+                  - 'ssm:TerminateSession'
+                  - 'ssm:StartSession'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'ssmmessages:CreateControlChannel'
+                  - 'ssmmessages:CreateDataChannel'
+                  - 'ssmmessages:OpenControlChannel'
+                  - 'ssmmessages:OpenDataChannel'
+                  Resource: '*'
+                - Effect: Allow
+                  Action: 
+                  - 'cloudwatch:PutMetricData'
+                  - 'cloudwatch:GetMetricStatistics'
+                  - 'cloudwatch:ListMetrics'
+                  - 'ec2:DescribeTags'
+                  Resource: '*'
+
+  BackendIAMServerProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+        InstanceProfileName: 'ec2-profile-s3-ssm'
+        Path: /
+        Roles:
+            - !Ref BackendIAMRoleEC2
+                    
+  BackendIAMRoleEC2:
+    Type: AWS::IAM::Role
+    Properties:
+        Path: "/"
+        RoleName: 'ec2-role-s3-ssm'  
+        AssumeRolePolicyDocument:
+            Version: 2012-10-17
+            Statement:
+                - Effect: Allow
+                  Principal:
+                    Service:
+                    - ec2.amazonaws.com
+                  Action:
+                    - 'sts:AssumeRole'
+        ManagedPolicyArns:
+          - !Ref BackendIAMPolicySSM
+        Tags: 
+        - Key: Enviroment
+          Value: PROD
+
