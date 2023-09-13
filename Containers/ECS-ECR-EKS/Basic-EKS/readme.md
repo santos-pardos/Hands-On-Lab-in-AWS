@@ -170,7 +170,11 @@ https://unir-profesantos.s3.eu-west-1.amazonaws.com/EKS-Microservices.zip
 # Error loggin server
 
 Edit the file: $ cat ~/.aws/credentials
+
 Remove the token and the region lines (left only these)
+
 [default]
+
 aws_access_key_id = AKIA2HW7LBNS5
+
 aws_secret_access_key = 9phAAEUyPr1mmlZTqjiWBpu5ynkp3b
