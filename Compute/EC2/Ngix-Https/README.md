@@ -11,7 +11,7 @@ sudo systemctl status nginx
 http://public_ip
 
 
-2. Grab a certificate from  https://zerossl.com/   @hotmail.com
+2. Grab a certificate from  https://zerossl.com/              (@hotmail.com)
 
 (90 days free). You need to validate the subdomain certificate through email o DNS record
 
