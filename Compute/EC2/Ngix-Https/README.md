@@ -32,7 +32,7 @@ sudo cat certificate.crt ca_bundle.crt >> certificate.crt
 
 sudo cp certificate.crt /etc/pki/nginx/
 
-sudo cp private.crt /etc/pki/nginx/private/
+sudo cp private.key /etc/pki/nginx/private/
 
 
 4. Upload your website
