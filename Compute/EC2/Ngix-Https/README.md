@@ -68,7 +68,7 @@ sudo systemctl restart nginx
 
 Create a DNS registre EC2 Public IP ----  migrupo.profesantos.cloud
 
-https:\\\migrupo.profesantos.cloud
+https: migrupo.profesantos.cloud
 
 
 ## Links
