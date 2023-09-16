@@ -48,7 +48,7 @@ sudo unzip breakout.zip
 
 5. Change the SSL configuration in this file:
 
-sudo cat /etc/nginx/nginx.conf
+sudo nano /etc/nginx/nginx.conf
 
 Remove the comments the SSL area
 
