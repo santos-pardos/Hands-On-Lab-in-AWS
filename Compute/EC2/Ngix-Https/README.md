@@ -1,0 +1,77 @@
+1. Install Ngix en Linux AMI 2023
+
+sudo dnf install nginx -y
+
+sudo systemctl start nginx 
+
+sudo systemctl enable nginx
+
+sudo systemctl status nginx
+
+http://public_ip
+
+
+2. Grab a certificate from  https://zerossl.com/
+
+(90 days free). You need to validate the subdomain certificate through email o DNS record
+
+Download the certificate
+
+Copy the zip file to the Linux AMI 2023
+
+
+3. Install the certificate
+
+sudo mkdir /etc/pki/nginx/
+
+sudo mkdir /etc/pki/nginx/private
+
+sudo cat certificate.crt ca_bundle.crt >> certificate.crt
+
+sudo cp certificate.crt /etc/pki/nginx/
+
+sudo cp private.crt /etc/pki/nginx/private/
+
+
+4. Upload your website
+
+cd /usr/share/nginx/html
+
+sudo rm index.html
+
+sudo wget https://sanvalero-static-webs.s3.eu-west-1.amazonaws.com/breakout.zip
+
+sudo unzip breakout.zip
+
+
+5. Change the SSL configuration in this file:
+
+sudo cat /etc/nginx/nginx.conf
+
+Remove the comments the SSL area
+
+Find and change this 2 lines:
+
+        ssl_certificate "/etc/pki/nginx/certificate.crt";
+
+        ssl_certificate_key "/etc/pki/nginx/cprivate.key";
+
+Change the line:
+
+server_name _;   to       server_name migrupo.profesantos.cloud;
+
+
+
+6. Restart Nginx. Change DNS. Visit the web
+
+sudo systemctl restart nginx
+
+Create a DNS registre EC2 Public IP ----  migrupo.profesantos.cloud
+
+https:\\migrupo.profesantos.cloud
+
+
+## Links
+https://www.armanism.com/blog/install-free-ssl-on-nginx
+https://zerossl.com/
+
