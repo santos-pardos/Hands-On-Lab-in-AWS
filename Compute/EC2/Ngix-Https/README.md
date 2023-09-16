@@ -73,5 +73,18 @@ https: migrupo.profesantos.cloud
 
 ## Links
 https://www.armanism.com/blog/install-free-ssl-on-nginx
+
 https://zerossl.com/
+
+https://geekflare.com/es/zerossl-apache-nginx/
+
+https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-20-04
+
+https://awswithatiq.com/ssl-setup-on-amazon-linux-2023-using-nginx-and-letsencrypt/
+
+https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal
+
+https://repost.aws/knowledge-center/ec2-linux-ubuntu-install-ssl-cert
+
+https://docs.aws.amazon.com/es_es/efs/latest/ug/wt2-apache-web-server.html
 
