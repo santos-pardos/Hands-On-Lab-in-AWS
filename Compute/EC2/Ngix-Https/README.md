@@ -13,9 +13,7 @@ http://public_ip
 
 2. Grab a certificate from  https://zerossl.com/
 
-(@hotmail.com)
-
-(90 days free). You need to validate the subdomain certificate through email o DNS record
+(90 days free @hotmail.com). You need to validate the subdomain certificate through email o DNS record
 
 Download the certificate
 
