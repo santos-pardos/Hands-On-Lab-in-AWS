@@ -26,6 +26,8 @@ sudo mkdir /etc/pki/nginx/
 
 sudo mkdir /etc/pki/nginx/private
 
+unzip csv.profesantos.zip
+
 sudo cat certificate.crt ca_bundle.crt >> certificate.crt
 
 sudo cp certificate.crt /etc/pki/nginx/
