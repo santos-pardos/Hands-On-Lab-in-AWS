@@ -18,6 +18,7 @@ dnf install nginx -y
 systemctl start nginx
 systemctl enable nginx
 systemctl status nginx
-cd /var/www/html
+cd /usr/share/nginx/html
+rm index.html
 wget https://sanvalero-static-webs.s3.eu-west-1.amazonaws.com/breakout.zip
 unzip breakout.zip
