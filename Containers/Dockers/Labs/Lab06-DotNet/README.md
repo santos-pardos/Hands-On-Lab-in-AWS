@@ -1,4 +1,5 @@
 # Links
+https://learn.microsoft.com/en-us/dotnet/core/docker/build-container?tabs=windows&pivots=dotnet-7-0
 
 https://aws.amazon.com/es/getting-started/hands-on/deploy-dotnet-web-app-ecs-graviton/
 
