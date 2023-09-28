@@ -68,6 +68,12 @@ docker run -dp 3000:3000 getting-started
 
 docker ps
 
+## Docker Hub
+
+docker tag mariadb:10.11 santospardos/unir:mariadb
+
+docker push santospardos/unir:mariadb
+
 
 ## Links
 
