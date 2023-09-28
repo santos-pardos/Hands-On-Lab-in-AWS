@@ -44,7 +44,7 @@ server {
         listen       [::]:80;
 
         server_name  netflix.profesantos.me;
-
+}
 
 
 
@@ -63,5 +63,7 @@ sudo certbot --nginx
 ### Links
 
 https://dev.to/0xfedev/how-to-install-nginx-as-reverse-proxy-and-configure-certbot-on-amazon-linux-2023-2cc9
+
 https://nc.me
+
 https://namecheap.com
