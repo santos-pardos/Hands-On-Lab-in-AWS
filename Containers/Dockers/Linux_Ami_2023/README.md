@@ -21,7 +21,6 @@ docker ps
 docker run hello-world 
 
 
-
 ## Docker Compose Install
 
 sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
@@ -33,7 +32,7 @@ docker-compose version
 
 ## 2048
 
-https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/code/2048.zip
+wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/code/2048.zip
 
 FROM nginx:latest
 
