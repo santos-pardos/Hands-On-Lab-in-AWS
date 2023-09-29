@@ -29,7 +29,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 docker-compose version
 
-https://github.com/Haxxnet/Compose-Examples/tree/main/examples![image](https://github.com/santos-pardos/Hands-On-Lab-in-AWS/assets/66181446/7df8c1b3-9ca2-453d-b08d-2b56dbf32b38)
+https://github.com/Haxxnet/Compose-Examples/tree/main/examples
 
 
 
