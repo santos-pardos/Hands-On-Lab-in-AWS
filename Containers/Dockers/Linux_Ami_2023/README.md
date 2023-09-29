@@ -41,6 +41,9 @@ COPY . /usr/share/nginx/html
 EXPOSE 80
 
 
+docker build -t mijuego2048 .
+
+
 
 ## Getting Started
 
