@@ -1,6 +1,6 @@
 ## Netflix
 
-```
+
 #!/bin/bash
 dnf update -y     
 dnf install nginx -y      
