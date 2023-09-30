@@ -45,6 +45,7 @@ server {
         listen       80;
         listen       [::]:80;
         server_name  netflix.profesantos.me;
+
 sudo systemctl restart nginx
 sudo nginx -t
 ```
