@@ -37,6 +37,8 @@ https://dnsexit.com/
 
 Get a free domain word.gd but you CANT redirect the DNS to AWS Route 53
 
+Create a record with the public IP aws ec2 machine.
+
 
 
 ## Change the Nginx Config (if you are going to install SSL, otherwise not)
