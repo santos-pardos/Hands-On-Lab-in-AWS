@@ -37,28 +37,22 @@ Create a record with the public IP aws ec2 machine.
 sudo nano /etc/nginx/nginx.conf
 
 (find server_name _;)
-
+```
 server {
-
         listen       80;
-
         listen       [::]:80;
-
         server_name  netflix.profesantos.me;
 
+```
 sudo systemctl restart nginx
 sudo nginx -t
 
 ## Install Certbot
-
+```
 sudo python3 -m venv /opt/certbot/
-
 sudo /opt/certbot/bin/pip install --upgrade pip
-
 sudo /opt/certbot/bin/pip install certbot certbot-nginx
-
 sudo ln -s /opt/certbot/bin/certbot /usr/bin/certbot
-
 sudo certbot --nginx
 
 
