@@ -39,7 +39,7 @@ Get a free domain word.gd but you CANT redirect the DNS to AWS Route 53
 
 
 
-## Change the Nginx Config
+## Change the Nginx Config (if you are goint to install SSL, otherwise not need to change the config file)
 
 sudo nano /etc/nginx/nginx.conf
 
