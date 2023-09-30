@@ -2,21 +2,21 @@
 
 #!/bin/bash
 
-        dnf update -y
+dnf update -y
         
-        dnf install nginx -y
+dnf install nginx -y
         
-        systemctl start nginx
+systemctl start nginx
         
-        systemctl enable nginx
+systemctl enable nginx
         
-        cd /usr/share/nginx/html
+cd /usr/share/nginx/html
         
-        rm index.html
+rm index.html
         
-        wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Netflix.zip
+wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Netflix.zip
         
-        unzip Netflix.zip
+unzip Netflix.zip
 
 
 
