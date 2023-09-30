@@ -20,7 +20,7 @@ unzip Netflix.zip
 
 
 
-## Nc.me
+## Nc.me (we need GitHub education account)
 
 Buy the domain.me
 
@@ -29,6 +29,13 @@ Create public zone in Route 53
 Change de NS in namecheap.me
 
 Create a Record netflix.profesantos.me in Route 53 with the Public IP of Nginx
+
+
+## Free domain
+
+https://dnsexit.com/
+
+Get a free domain word.gd but you CANT redirect the DNS to AWS Route 53
 
 
 
@@ -46,7 +53,8 @@ server {
 
         server_name  netflix.profesantos.me;
 
-
+sudo systemctl restart nginx
+sudo nginx -t
 
 ## Install Certbot
 
@@ -59,6 +67,7 @@ sudo /opt/certbot/bin/pip install certbot certbot-nginx
 sudo ln -s /opt/certbot/bin/certbot /usr/bin/certbot
 
 sudo certbot --nginx
+
 
 ### Links
 
