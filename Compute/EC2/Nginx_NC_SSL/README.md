@@ -2,7 +2,7 @@
 
 #!/bin/bash
 
-dnf update -y
+$ dnf update -y
 
 dnf install nginx -y
 
