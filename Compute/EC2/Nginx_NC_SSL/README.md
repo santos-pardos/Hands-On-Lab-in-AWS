@@ -9,7 +9,6 @@ cd /usr/share/nginx/html
 rm index.html     
 wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Netflix.zip     
 unzip Netflix.zip
-```
 
 
 ## Nc.me (we need GitHub education account)
