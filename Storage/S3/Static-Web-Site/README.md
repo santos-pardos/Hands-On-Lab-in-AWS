@@ -1,6 +1,6 @@
 ## Resource Based Policy
 
-'''
+```
 {
     "Version": "2008-10-17",
     "Id": "Policy",
@@ -15,4 +15,4 @@
         }
     ]
 }
-'''
+```
