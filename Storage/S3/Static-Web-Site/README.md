@@ -11,7 +11,7 @@
                 "AWS": "*"
             },
             "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::demo-terraform-cubo3/*"
+            "Resource": "arn:aws:s3:::your-bucket/*"
         }
     ]
 }
