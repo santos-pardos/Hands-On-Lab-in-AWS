@@ -1,15 +1,18 @@
-Install Linux and Apache
+## One Apache with EFS System
+
+## Install Linux and Apache
+
+````
 sudo dnf install httpd -y
-
 sudo systemctl start httpd
-
 sudo systemctl enable httpd
-
+````
 curl localhost
 
 http://public ip/
 
-EFS system
+@@ EFS system
+
 cd /var/www/html
 
 mkdir efs
