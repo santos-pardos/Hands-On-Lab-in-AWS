@@ -1,4 +1,4 @@
-## EJEMPLO CON DOS APACHES
+## 2 APACHES with EFS System
 
 ## Install Linux and Apache
 
