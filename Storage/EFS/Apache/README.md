@@ -6,7 +6,6 @@
 sudo dnf install httpd -y
 sudo systemctl start httpd
 sudo systemctl enable httpd
-
 curl localhost
 http://public ip/
 ```
