@@ -1,15 +1,11 @@
 1. Install Ngix en Linux AMI 2023
-
+```
 sudo dnf install nginx -y
-
 sudo systemctl start nginx 
-
 sudo systemctl enable nginx
-
 sudo systemctl status nginx
-
 http://public_ip
-
+```
 
 2. Grab a certificate from  https://zerossl.com/
 
@@ -21,30 +17,23 @@ Copy the zip file to the Linux AMI 2023
 
 
 3. Install the certificate
-
+```
 sudo mkdir /etc/pki/nginx/
-
 sudo mkdir /etc/pki/nginx/private
-
 unzip csv.profesantos.zip
-
 sudo cat certificate.crt ca_bundle.crt >> certificate.crt
-
 sudo cp certificate.crt /etc/pki/nginx/
-
 sudo cp private.key /etc/pki/nginx/private/
-
+```
 
 4. Upload your website
 
+```
 cd /usr/share/nginx/html
-
 sudo rm index.html
-
 sudo wget https://sanvalero-static-webs.s3.eu-west-1.amazonaws.com/breakout.zip
-
 sudo unzip breakout.zip
-
+```
 
 5. Change the SSL configuration in this file:
 
