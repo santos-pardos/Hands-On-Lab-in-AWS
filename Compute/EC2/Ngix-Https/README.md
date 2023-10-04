@@ -37,7 +37,9 @@ sudo unzip breakout.zip
 
 5. Change the SSL configuration in this file:
 
+```
 sudo nano /etc/nginx/nginx.conf
+```
 
 Remove the comments the SSL area
 
@@ -55,9 +57,10 @@ server_name _;   to       server_name migrupo.profesantos.cloud;
 
 6. Restart Nginx. Change DNS. Visit the web
 
+```
 sudo systemctl restart nginx
-
 sudo nginx -t
+```
 
 Create a DNS registre EC2 Public IP ----  migrupo.profesantos.cloud
 
