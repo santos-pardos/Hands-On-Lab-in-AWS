@@ -64,6 +64,8 @@ sudo certbot --nginx
 
 https://dev.to/0xfedev/how-to-install-nginx-as-reverse-proxy-and-configure-certbot-on-amazon-linux-2023-2cc9
 
+https://dnsexit.com/domains/free-second-level-domains/
+
 https://nc.me
 
 https://namecheap.com
