@@ -22,6 +22,8 @@ app.listen(3000, function () {
 
 node index.js
 
+sudo nano idex2.js
+
 function add(y,z) { 
   return y+z; 
 } 
