@@ -1,6 +1,7 @@
 ## Install NodeJs
 ```
 sudo apt update
+sudo apt -y upgrade
 sudo apt install nodejs
 sudo apt install npm
 nodejs -v && npm --version
