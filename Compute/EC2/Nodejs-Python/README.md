@@ -58,6 +58,7 @@ source my_env/bin/activate
 nano hello.py
 print("Hello, World!")
 python hello.py
+deactivate
 ```
 
 ## Install Nodejs Game (Just in case you know Dockers)
