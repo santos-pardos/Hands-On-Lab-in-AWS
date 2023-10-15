@@ -1,0 +1,45 @@
+## Install NodeJs
+```
+sudo apt update
+sudo apt install nodejs
+sudo apt install npm
+nodejs -v && npm --version
+```
+
+## Web Server
+```
+sudo nano index.js
+
+const express = require('express'); 
+const app = express(); 
+[Text Wrapping Break] 
+app.get('/', function (req, res) { 
+  res.send('Hello World!'); 
+}); 
+app.listen(3000, function () { 
+  console.log('Example app listening on port 3000!'); 
+}); 
+
+node index.js
+
+function add(y,z) { 
+  return y+z; 
+} 
+console.log(add(81, 9)) 
+
+node index2.js
+```
+
+## Remove Nodejs
+```
+sudo apt remove nodejs
+sudo apt purge nodejs -y
+npm current
+npm deactivate
+```
+
+## Links
+```
+https://www.knowledgehut.com/blog/web-development/install-nodejs-on-ubuntu#how-to-uninstall%C2%A0node.js%C2%A0from-ubuntu?%C2%A0
+https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-programming-environment-on-an-ubuntu-20-04-server
+```
