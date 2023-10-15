@@ -57,7 +57,7 @@ print("Hello, World!")
 python hello.py
 ```
 
-## Install Nodejs Game
+## Install Nodejs Game (Just in case you know Dockers)
 ```
 sudo mkdir phaserquest
 cd phaserquest
