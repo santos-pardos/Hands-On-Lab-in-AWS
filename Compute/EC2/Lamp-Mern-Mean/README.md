@@ -74,4 +74,5 @@ https://dev.to/abdulwaqar844/how-to-build-and-deploy-a-mernreactexpressmongodbno
 https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-programming-environment-on-an-ubuntu-20-04-server
 https://www.knowledgehut.com/blog/web-development/install-nodejs-on-ubuntu
 https://www.digitalocean.com/community/tutorials/install-tomcat-9-ubuntu-1804
+https://medium.com/@raguyazhin/step-by-step-guide-to-install-apache-tomcat-on-amazon-linux-120748a151a9
 ```
