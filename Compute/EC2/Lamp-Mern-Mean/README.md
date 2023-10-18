@@ -64,9 +64,6 @@ sudo rm /var/www/projectlamp/index.php
 ```
 https://dev.to/mannyuncharted/web-stack-implementation-lamp-stack-in-aws-11j0
 https://dev.to/mannyuncharted/mean-stack-implementation-on-an-aws-ec2-instance-4gec
-https://dev.to/mannyuncharted/web-stack-implementation-lamp-stack-in-aws-11j0
-https://dev.to/mannyuncharted/mean-stack-implementation-on-an-aws-ec2-instance-4gec
-https://dev.to/mannyuncharted/mean-stack-implementation-on-an-aws-ec2-instance-4gec
 https://blog.devgenius.io/deploy-your-mean-app-on-aws-ec2-a24fe3c2073f
 https://medium.com/@deepuaugust/deploying-a-mean-mern-stack-application-to-an-aws-ec2-instance-d8828f4f02e2
 https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/install-LAMP.html
@@ -75,4 +72,5 @@ https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set
 https://www.knowledgehut.com/blog/web-development/install-nodejs-on-ubuntu
 https://www.digitalocean.com/community/tutorials/install-tomcat-9-ubuntu-1804
 https://medium.com/@raguyazhin/step-by-step-guide-to-install-apache-tomcat-on-amazon-linux-120748a151a9
+https://www.simplilearn.com/tutorials/nodejs-tutorial/nodejs-express
 ```
