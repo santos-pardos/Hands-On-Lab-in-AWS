@@ -31,7 +31,7 @@ function add(y,z) {
 } 
 console.log(add(81, 9)) 
 
-node index2.js
+node index.js
 ```
 
 ## Remove Nodejs
