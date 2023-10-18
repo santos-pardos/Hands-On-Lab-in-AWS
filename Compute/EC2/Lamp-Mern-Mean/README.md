@@ -1,4 +1,25 @@
-## LAMP
+## LAMP Linux AMI 2 (Centos)
+```
+sudo yum update -y
+sudo yum install -y httpd24 php72 mysql57-server php72-mysqlnd
+cat /etc/system-release
+sudo service httpd start
+sudo service httpd start
+sudo chkconfig httpd on
+chkconfig --list httpd
+ls -l /var/www
+sudo usermod -a -G apache ec2-user
+exit
+groups
+sudo chown -R ec2-user:apache /var/www
+sudo chmod 2775 /var/www
+find /var/www -type d -exec sudo chmod 2775 {} \;
+find /var/www -type f -exec sudo chmod 0664 {} \;
+echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
+http://my.public.dns.amazonaws.com/phpinfo.php
+```
+
+## LAMP Ubuntu
 
 ### Apache
 ```
