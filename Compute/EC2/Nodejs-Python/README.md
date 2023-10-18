@@ -5,6 +5,7 @@ sudo apt upgrade -y
 sudo apt install nodejs
 sudo apt install npm
 nodejs -v && npm --version
+npm install express -y
 ```
 
 ## Web Server
