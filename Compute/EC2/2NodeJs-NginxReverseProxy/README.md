@@ -36,7 +36,7 @@ app.listen(3000, ()=> console.log("App Listening on port 4000"));
 node app.js
 ```
 
-## Install Nodejs
+## Install PM2
 ```
 sudo npm install -g pm2
 pm2 start app.js
