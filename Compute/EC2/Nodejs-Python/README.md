@@ -60,6 +60,14 @@ print("Hello, World!")
 python hello.py
 deactivate
 ```
+## Install .NET
+```
+sudo dnf install dotnet-sdk-7.0
+sudo dnf install aspnetcore-runtime-7.0
+dotnet new console -o App -n DotNet.Docker
+cd App
+dotnet run
+```
 
 ## Install Nodejs Game (Just in case you know Dockers)
 ```
@@ -76,4 +84,7 @@ docker-compose up -d
 https://www.knowledgehut.com/blog/web-development/install-nodejs-on-ubuntu#how-to-uninstall%C2%A0node.js%C2%A0from-ubuntu?%C2%A0
 https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-programming-environment-on-an-ubuntu-20-04-server
 https://github.com/Jerenaux/phaserquest
+https://learn.microsoft.com/es-es/dotnet/core/docker/build-container?tabs=windows
+https://dotnet.microsoft.com/es-es/download/dotnet/7.0
+
 ```
