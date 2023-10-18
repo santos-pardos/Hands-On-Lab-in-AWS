@@ -62,8 +62,8 @@ deactivate
 ```
 ## Install .NET
 ```
-sudo dnf install dotnet-sdk-7.0
-sudo dnf install aspnetcore-runtime-7.0
+sudo apt install dotnet-sdk-7.0
+sudo apt install aspnetcore-runtime-7.0
 dotnet new console -o App -n DotNet.Docker
 cd App
 dotnet run
