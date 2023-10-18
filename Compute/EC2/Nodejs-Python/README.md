@@ -24,14 +24,14 @@ app.listen(3000, function () {
 
 node index.js
 
-sudo nano idex2.js
+sudo nano index2.js
 
 function add(y,z) { 
   return y+z; 
 } 
 console.log(add(81, 9)) 
 
-node index.js
+node index2.js
 ```
 
 ## Remove Nodejs
