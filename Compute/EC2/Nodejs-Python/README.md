@@ -14,7 +14,6 @@ sudo nano index.js
 
 const express = require('express'); 
 const app = express(); 
-[Text Wrapping Break] 
 app.get('/', function (req, res) { 
   res.send('Hello World!'); 
 }); 
