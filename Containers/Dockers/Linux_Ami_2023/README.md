@@ -20,6 +20,8 @@ sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-c
 sudo chmod +x /usr/local/bin/docker-compose
 docker-compose version
 ```
+https://docs.docker.com/compose/install/linux/
+
 https://github.com/Haxxnet/Compose-Examples/tree/main/examples
 
 https://github.com/boschkundendienst/guacamole-docker-compose
