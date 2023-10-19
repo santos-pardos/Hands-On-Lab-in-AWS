@@ -28,6 +28,7 @@ https://github.com/Haxxnet/Compose-Examples/tree/main/examples
 
 ```
 wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/code/2048.zip
+
 FROM nginx:latest
 COPY . /usr/share/nginx/html
 EXPOSE 80
