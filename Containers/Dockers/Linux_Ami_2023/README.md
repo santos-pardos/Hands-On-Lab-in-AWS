@@ -22,6 +22,8 @@ docker-compose version
 ```
 https://docs.docker.com/compose/install/linux/
 
+https://github.com/docker/awesome-compose
+
 https://github.com/Haxxnet/Compose-Examples/tree/main/examples
 
 https://github.com/boschkundendienst/guacamole-docker-compose
