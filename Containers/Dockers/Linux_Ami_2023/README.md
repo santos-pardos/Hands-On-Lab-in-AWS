@@ -24,6 +24,8 @@ https://docs.docker.com/compose/install/linux/
 
 https://github.com/docker/awesome-compose
 
+https://ghost.org/docs/install/docker/
+
 https://github.com/Haxxnet/Compose-Examples/tree/main/examples
 
 https://github.com/boschkundendienst/guacamole-docker-compose
