@@ -1,4 +1,4 @@
-## EC2
+## EC2 (AMI LINUX 2)
 ```
 #!/bin/bash -ex
 yum -y update
@@ -11,7 +11,7 @@ tar xvfz app.tgz
 chown apache:root /var/www/html/rds.conf.php
 ```
 
-## RDS
+## RDS (MySQL 5.7.x)
 ```
 DB instance identifier: myDB
 Master username: admin
