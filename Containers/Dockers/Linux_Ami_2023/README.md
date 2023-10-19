@@ -22,9 +22,11 @@ docker-compose version
 ```
 https://docs.docker.com/compose/install/linux/
 
-https://github.com/docker/awesome-compose
+https://gitlab.com/mariosanurbina/nodedockerbasic.git
 
 https://ghost.org/docs/install/docker/
+
+https://github.com/docker/awesome-compose
 
 https://github.com/Haxxnet/Compose-Examples/tree/main/examples
 
