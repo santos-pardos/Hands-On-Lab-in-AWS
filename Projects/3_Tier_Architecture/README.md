@@ -1,3 +1,5 @@
+## Architecture
+![alt text](3 Tier Architecture.png)
 ## Code
 ```
 #!/bin/bash
