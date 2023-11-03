@@ -1,5 +1,5 @@
 ## Architecture
-![alt text](3 Tier Architecture.png)
+![alt text](3_Tier_Architecture.png)
 ## Code
 ```
 #!/bin/bash
