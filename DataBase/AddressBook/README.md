@@ -1,3 +1,6 @@
+## Architecture
+![alt text](App_BBDD.png)
+
 ## EC2 (AMI LINUX 2)
 ```
 #!/bin/bash -ex
