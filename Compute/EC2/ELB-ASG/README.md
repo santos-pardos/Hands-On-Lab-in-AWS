@@ -22,7 +22,7 @@ docker pull santospardos/upc:netflix
 docker run -d -p 80:80 santospardos/upc:netflix
 ```
 
-## User DAta for AMI Linux 2023 - Cafetería
+## User Data for AMI Linux 2023 - Cafetería
 
 ```
 #!/bin/bash
