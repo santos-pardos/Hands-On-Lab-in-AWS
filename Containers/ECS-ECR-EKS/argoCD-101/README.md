@@ -2,7 +2,7 @@
 
 ```
 eksctl get cluster
-aws eks update-kubeconfig --name dev-cluster --region us-east-1
+aws eks update-kubeconfig --name demo-cluster --region us-east-1
 
 kubectl create namespace argocd 
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml
