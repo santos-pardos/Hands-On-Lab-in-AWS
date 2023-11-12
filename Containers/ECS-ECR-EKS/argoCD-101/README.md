@@ -25,3 +25,9 @@ kubectl delete svc argocd-server -n argocd
 ```
 https://github.com/santos-pardos/Tetris-Game.git
 ```
+
+##  Links
+
+```
+https://aws.plainenglish.io/gitops-deploying-tetris-on-eks-using-argocd-3836569fb4c1
+```
