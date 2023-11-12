@@ -30,4 +30,5 @@ https://github.com/santos-pardos/Tetris-Game.git
 
 ```
 https://aws.plainenglish.io/gitops-deploying-tetris-on-eks-using-argocd-3836569fb4c1
+https://medium.com/@surendar.grind/gitops-a-begineer-guide-2ca1fded446e
 ```
