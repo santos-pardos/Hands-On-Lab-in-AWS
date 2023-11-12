@@ -2,6 +2,7 @@
 ```
 https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Web-CV.zip
 
+Bucket Policy:
 {
     "Version": "2008-10-17",
     "Id": "PolicyForCloudFrontPrivateContent",
@@ -16,7 +17,7 @@ https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Web-CV.zip
             "Resource": "arn:aws:s3:::YOUR_BUCKET_NAME/*",
             "Condition": {
                 "StringEquals": {
-                    "AWS:SourceArn": "arn:aws:cloudfront::396529431040:distribution/E2TM1KE84PM7EN"
+                    "AWS:SourceArn": "arn:aws:cloudfront::xxxxxxxxxxxxxx:distribution/xxxxxxxxxx"
                 }
             }
         }
