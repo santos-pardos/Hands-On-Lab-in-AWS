@@ -1,0 +1,44 @@
+#Following scripts are to be run on the Cloud9 terminal
+#Individual scripts are also mentioned in the Instructors Guide stepwise
+
+Script-1:
+# Use following script to create secret in secret manager for accessing your database via the web application
+# Replace the values for below placeholders with the actual values you have used to configure the service
+#<RDS Endpoint>
+#<password>
+#<username>
+#<dbname>
+
+aws secretsmanager create-secret \
+    --name Mydbsecret \
+    --description "Database secret for web app" \
+    --secret-string "{\"user\":\"<username>\",\"password\":\"<password>\",\"host\":\"<RDS Endpoint>\",\"db\":\"<dbname>\"}"
+
+Script-2:
+## Load testing
+
+#Following command installs #loadtest package to perform load testing on the application
+#Prerequisites are mentioned in the resources section
+
+npm install -g loadtest
+
+#Following command performs load testing on the given URL. replace the URL with Loadbalancer (or Public IP of EC2 instance)
+# Press ctrl +C to stop the script
+
+loadtest --rps 1000  -c 500 -k <<ELB URL>>
+
+
+Script -3:
+## Migration
+# Following command exports the data from existing server.
+# Prerequisites - This script expects mysql-client, mysqlpdump to be present
+# AWS Cloud9 environment already has all the prerequisites installed for running these scripts
+
+# Replace the <EC2instancePrivateip> with internal IP address of the EC2 instance (CapstonePOC) created in Phase-2 earlier.
+# Provide the password when prompted
+
+mysqldump -h <EC2instancePrivateip> -u nodeapp -p --databases STUDENTS > data.sql
+
+#Following command imports the data into RDS database. Replace <RDSEndpoint> with the RDS Database endpoint you noted after RDS Database created in earlier steps.
+#when prompted, enter password you provided during the time of database creation
+mysql -h <RDSEndpoint> -u nodeapp -p  STUDENTS < data.sql
