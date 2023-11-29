@@ -41,7 +41,6 @@ cd wordpress
 sudo cp -r . /var/www/html
 cd /var/www/html
 sudo rm index.html
-sudo nano wp-config.php
 ```
 
 
@@ -79,7 +78,9 @@ sudo nano wp-config.php
 
 ## Creación wp-config.php
 Crear un fichero wp-config.php con la configuración que te da wordpress al intentar conectar por primera vez.
-
+```
+sudo nano wp-config.php
+```
 ![](images/12.png)
 ![](images/13.png)
 
