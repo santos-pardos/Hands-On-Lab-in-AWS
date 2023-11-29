@@ -88,7 +88,7 @@ Amazon Redshift puede importar datos desde Amazon S3. Admite varios formatos de 
 Elimina la consulta existente y pega este comando SQL en la ventana Query 1 (Consulta 1).
 
 ```
-COPY users FROM 's3://midemobucketxxxxxx/tickit/allusers_pipe.txt'
+COPY users FROM 's3://midemobucketxxxxxx/allusers_pipe.txt'
 CREDENTIALS 'aws_iam_role=YOUR-ROLE'
 DELIMITER '|';
 ```
