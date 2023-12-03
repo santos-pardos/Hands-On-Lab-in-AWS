@@ -1,4 +1,4 @@
-## Configura Bind9
+## Install Bind9
 
 ```
 sudo apt update
@@ -19,6 +19,9 @@ named-checkconf
 sudo systemctl reload named
 nslookup google.com localhost
 nslookup google.com 172.31.20.77
+```
+## Config Direct Zone
+```
 sudo nano /etc/bind/db.red.lan
 
 $TTL 1D
@@ -47,8 +50,10 @@ zone "red.lan" IN {
         file "/etc/bind/db.red.lan";
 };
 sudo systemctl reload named
- nslookup puesto1.red.lan 172.31.20.77
-
+nslookup puesto1.red.lan 172.31.20.77
+```
+## Configure Reverse Zone
+```
 sudo nano /etc/bind/db.0.31.172
 
 $TTL 1D
@@ -81,5 +86,7 @@ nslookup 172.31.20.1 172.31.20.77
 ```
 
 ## Links
+```
 https://comoinstalar.me/como-instalar-el-servidor-dns-bind-en-ubuntu-22-04-lts/?authuser=1
 https://www.webhi.com/how-to/how-to-setup-and-configure-bind-as-a-private-network-dns-server/?authuser=1
+```
