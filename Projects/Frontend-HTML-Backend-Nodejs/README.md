@@ -54,8 +54,10 @@ Change the xxxx for the right value
     ]
 }
 ```
-
-
+```
+Cloudfront Example following the next video:
+https://youtu.be/_3OSA2tvwk4
+```
 
 ## Backend
 
