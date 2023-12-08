@@ -2,9 +2,9 @@
 # Challenge: Fronted - Backend  (Route 53 - S3 - ALB - EC2)
 (It is not a step-by-step lab)
 
-## Frontend 
+# Frontend 
 
-### S3
+## S3
 ```
 wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/car-repair.zip
 
@@ -29,7 +29,7 @@ You can follow this video:
 https://youtu.be/xXCnaMxWUDk
 ```
 
-### Cloudfront
+## Cloudfront
 
 Change the xxxx for the right value
 ```
@@ -59,9 +59,9 @@ Cloudfront Example following the next video:
 https://youtu.be/_3OSA2tvwk4
 ```
 
-## Backend
+# Backend
 
-### EC2
+## EC2
 SG with 18000 port open inbound rule.
 
 ```
@@ -90,7 +90,7 @@ TG : Port 18000. Health Check Overrride 18000.
 
 ALB: Port: 80
 
-## Links
+# Links
 ```
 https://awstip.com/deploying-a-nodejs-application-with-aws-ec2-ssl-and-a-load-balancer-38885230fc6f
 https://github.com/santos-pardos/dealcar-node-api
