@@ -1,5 +1,8 @@
-# Challenge: Fronted - Backend  (Route 53 - S3 - ALB - EC2)
+# Challenge: Full Stack Website (Fronted - Backend)  (Route 53 - S3 - ALB - EC2)
 (It is not a step-by-step lab)
+
+![](images/01.png)
+
 
 # Frontend 
 
