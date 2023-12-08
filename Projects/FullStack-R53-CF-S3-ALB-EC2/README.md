@@ -1,6 +1,6 @@
 # Challenge: Full Stack - Car Repair Website - (Fronted - Backend)  (Route 53 - S3 - ALB - EC2)
-## Frontend  Static Web - Html JS CSS
-## Backend   Dynamic content - NodeJs
+## Frontend - Static  - Html JS CSS
+## Backend  - Dynamic - NodeJs
 (It is not a step-by-step lab)
 
 
