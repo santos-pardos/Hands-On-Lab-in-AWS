@@ -65,7 +65,7 @@ https://youtu.be/_3OSA2tvwk4
 SG with 18000 port open inbound rule.
 
 ```
- #!/bin/bash
+#!/bin/bash
 apt update -y
 apt upgrade -y
 apt install nodejs -y
