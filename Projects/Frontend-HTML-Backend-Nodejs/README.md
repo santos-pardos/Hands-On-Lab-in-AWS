@@ -1,5 +1,6 @@
 
-# Fronted - Backend  (Route 53 - S3 - ALB - EC2)
+# Challenge: Fronted - Backend  (Route 53 - S3 - ALB - EC2)
+(It is not a step-by-step lab)
 
 ## Frontend 
 
