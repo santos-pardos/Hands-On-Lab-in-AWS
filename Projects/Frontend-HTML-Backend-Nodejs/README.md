@@ -23,6 +23,12 @@ wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/car-repair.zip
     ]
 }
 ```
+```
+Install a Static Website with S3
+You can follow this video: 
+https://studio.youtube.com/video/xXCnaMxWUDk/edit
+```
+
 ### Cloudfront
 
 Change the xxxx for the right value
@@ -48,11 +54,7 @@ Change the xxxx for the right value
     ]
 }
 ```
-Install a Static Website with S3
 
-You can follow this video: 
-
-https://studio.youtube.com/video/xXCnaMxWUDk/edit
 
 
 ## Backend
