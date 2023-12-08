@@ -96,5 +96,6 @@ https://awstip.com/deploying-a-nodejs-application-with-aws-ec2-ssl-and-a-load-ba
 https://github.com/santos-pardos/dealcar-node-api
 https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/car-repair.zip
 ```
-
+# Video explicativo
+https://youtu.be/YD-XqH_2HF8
 
