@@ -26,7 +26,7 @@ wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/car-repair.zip
 ```
 Install a Static Website with S3
 You can follow this video: 
-[https://studio.youtube.com/video/xXCnaMxWUDk/edit](https://youtu.be/xXCnaMxWUDk)
+https://youtu.be/xXCnaMxWUDk
 ```
 
 ### Cloudfront
