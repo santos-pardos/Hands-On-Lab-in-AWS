@@ -28,7 +28,7 @@ You can follow this video:
 https://youtu.be/xXCnaMxWUDk
 ```
 
-## Cloudfront
+## Cloudfront (2 origns - 2 behaviors)
 
 Change the xxxx for the right value
 ```
@@ -58,7 +58,7 @@ Cloudfront Example following the next video:
 https://youtu.be/_3OSA2tvwk4
 ```
 
-# Backend
+# Backend  (Nodejs port 18000)
 
 ## EC2
 SG with 18000 port open inbound rule.
@@ -84,7 +84,7 @@ http://public-ip:18000/accounts/1
 http://public-ip:18000/accounts/1/cars/
 ```
 
-### ALB
+## ALB
 TG : Port 18000. Health Check Overrride 18000.
 
 ALB: Port: 80
@@ -95,3 +95,6 @@ https://awstip.com/deploying-a-nodejs-application-with-aws-ec2-ssl-and-a-load-ba
 https://github.com/santos-pardos/dealcar-node-api
 https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/car-repair.zip
 ```
+# Video
+https://youtu.be/YD-XqH_2HF8
+
