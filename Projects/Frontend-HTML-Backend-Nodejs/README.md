@@ -88,6 +88,8 @@ http://public-ip:18000/accounts/1/cars/
 ### ALB
 TG : Port 18000. Health Check Overrride 18000.
 
+ALB: Port: 80
+
 ## Links
 ```
 https://awstip.com/deploying-a-nodejs-application-with-aws-ec2-ssl-and-a-load-balancer-38885230fc6f
