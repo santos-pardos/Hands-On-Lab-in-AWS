@@ -104,3 +104,7 @@ https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/car-repair.zip
 # Video
 https://youtu.be/YD-XqH_2HF8
 
+# Links
+https://www.appsloveworld.com//amazon-ec2/2/using-same-domain-name-for-frontend-and-backend-deployment-in-aws
+
+
