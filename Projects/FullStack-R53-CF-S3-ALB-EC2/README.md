@@ -70,12 +70,11 @@ https://youtu.be/_3OSA2tvwk4
 SG with 18000 port open inbound rule.
 
 ```
-#!/bin/bash
-apt update -y
-apt upgrade -y
-apt install nodejs -y
-apt install npm -y
-apt install git -y
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt install nodejs -y
+sudo apt install npm -y
+sudo apt install git -y
 npm install express -y
 npm install -g pm2 -y
 ```
