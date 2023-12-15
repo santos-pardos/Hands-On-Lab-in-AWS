@@ -67,7 +67,7 @@ https://youtu.be/_3OSA2tvwk4
 # Backend  (Nodejs port 18000)
 
 ## EC2
-SG with 18000 port open inbound rule.
+SG with 18000 adn 22 ports opened in the inbound rule section.
 
 ```
 sudo apt update -y
