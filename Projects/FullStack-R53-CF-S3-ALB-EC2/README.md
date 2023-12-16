@@ -76,13 +76,20 @@ sudo apt install nodejs -y
 sudo apt install npm -y
 sudo apt install git -y
 npm install express -y
+
+(Optional PM2)
 npm install -g pm2 -y
 ```
 Download and install Nodejs API
 ```
 git clone https://github.com/santos-pardos/dealcar-node-api
+cd dealcar-node-api
 npm install
+npm start
+
+(Run with PM2 - Optional)
 pm2 start npm -- start
+
 curl localhost:18000
 http://public-ip:18000/accounts/
 http://public-ip:18000/accounts/1
