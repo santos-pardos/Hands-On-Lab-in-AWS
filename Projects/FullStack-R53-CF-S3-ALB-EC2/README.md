@@ -67,7 +67,9 @@ https://youtu.be/_3OSA2tvwk4
 # Backend  (Nodejs port 18000)
 
 ## EC2
-SG with 18000 adn 22 ports opened in the inbound rule section.
+Create 2 SG
+SGFe : Port 18000 and 22
+SGAlb : Port 80
 
 ```
 sudo apt update -y
@@ -97,9 +99,8 @@ http://public-ip:18000/accounts/1/cars/
 ```
 
 ## ALB
-TG : Port 18000. Health Check Overrride 18000.
-
-ALB: Port: 80
+TG:  Port 18000 and Health Check Overrride 18000.
+ALB: Port 80.
 
 # Links
 ```
