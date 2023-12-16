@@ -80,7 +80,7 @@ npm install express -y
 (Optional PM2)
 npm install -g pm2 -y
 ```
-Download and install Nodejs API
+Download, install and run the Nodejs API
 ```
 git clone https://github.com/santos-pardos/dealcar-node-api
 cd dealcar-node-api
