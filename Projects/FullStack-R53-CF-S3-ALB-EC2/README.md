@@ -68,7 +68,9 @@ https://youtu.be/_3OSA2tvwk4
 
 ## EC2
 Create 2 SG
+
 SGFe : Port 18000 and 22
+
 SGAlb : Port 80
 
 ```
