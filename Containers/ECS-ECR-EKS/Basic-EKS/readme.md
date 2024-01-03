@@ -180,6 +180,10 @@ kubectl delete deployment two-containers
 
 eksctl delete cluster dev-cluster
 
+# Links
+
+https://www.bluematador.com/learn/kubectl-cheatsheet
+
 # Microservices Example
            
 https://unir-profesantos.s3.eu-west-1.amazonaws.com/EKS-Microservices.zip
