@@ -55,6 +55,13 @@ curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 
 
 helm version --short
 
+2 option
+
+Download your desired version  https://github.com/helm/helm/releases
+
+Unpack it (tar -zxvf helm-v3.0.0-linux-amd64.tar.gz)
+
+Find the helm binary in the unpacked directory, and move it to its desired destination (mv linux-amd64/helm /usr/local/bin/helm)
 
 # Install HELM (just in case)
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
