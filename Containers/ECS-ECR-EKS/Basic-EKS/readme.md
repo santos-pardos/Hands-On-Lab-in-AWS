@@ -142,6 +142,8 @@ kubectl get node
 
 kubectl get namespaces 
 
+kubectl get all --all-namespaces
+
 kubectl get pod  
 
 kubectl -n kube-system get all
