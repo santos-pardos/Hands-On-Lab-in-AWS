@@ -1,0 +1,13 @@
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mssql-data
+metadata:
+  name: mssql-sample-data-claim
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+   requests:
+    storage: 5Gi
