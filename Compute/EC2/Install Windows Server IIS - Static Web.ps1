@@ -1,4 +1,4 @@
-'''
+
 <powershell> 
 # Install IIS
 Import-Module ServerManager; 
@@ -11,9 +11,9 @@ Remove-item -recurse c:\inetpub\wwwroot\*;
 Start-Sleep -Seconds 10;
 Expand-Archive -Path "c:\inetpub\wwwroot\Drink-Water.zip" -DestinationPath "c:\inetpub\wwwroot" -Force;
 </powershell>
-'''
 
-'''
+
+
 <powershell>
 # Installing web server
 Install-WindowsFeature -name Web-Server -IncludeManagementTools
@@ -32,4 +32,4 @@ $Secure_String_Pwd = ConvertTo-SecureString "P@ssW0rD!" -AsPlainText -Force
 $UserAccount = Get-LocalUser -Name "Administrator"
 $UserAccount | Set-LocalUser -Password $Secure_String_Pwd
 </powershell>
-'''
+
