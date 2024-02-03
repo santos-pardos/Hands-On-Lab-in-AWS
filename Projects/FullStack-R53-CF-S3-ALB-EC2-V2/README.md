@@ -30,7 +30,7 @@ You can follow this video:
 https://youtu.be/xXCnaMxWUDk
 ```
 
-## Cloudfront (2 origns - 2 behaviors)
+## Cloudfront 
 
 Change the xxxx for the right value
 ```
@@ -54,10 +54,6 @@ Change the xxxx for the right value
         }
     ]
 }
-```
-```
-Cloudfront Example following the next video:
-https://youtu.be/_3OSA2tvwk4
 ```
 
 ## EC2
