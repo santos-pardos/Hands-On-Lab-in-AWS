@@ -4,7 +4,7 @@
 (It is not a step-by-step lab)
 
 
-![](images/Clodfront.png)
+![](images/01.png)
 
 
 # Frontend 
