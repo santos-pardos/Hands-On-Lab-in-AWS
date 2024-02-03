@@ -75,13 +75,9 @@ docker pull santospardos/upc:juiceshop
 docker run -d -p 80:3000 santospardos/upc:juiceshop
 ```
 
-# Links
-```
-
-```
 # Video
 ```
-
+https://youtu.be/4bxVDFwqd5o
 ```
 
 
