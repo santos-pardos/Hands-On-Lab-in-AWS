@@ -5,7 +5,7 @@
 
 ## S3
 ```
-https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/car-repair.zip
+https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/cv.zip
 
 {
     "Version": "2008-10-17",
