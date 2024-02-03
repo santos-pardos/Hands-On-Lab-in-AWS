@@ -57,11 +57,7 @@ Change the xxxx for the right value
 ```
 
 ## EC2
-Create 2 SG
-
-SGFe : Port 80
-
-SGAlb : Port 80
+Create 1 SG - Port 80 (Web and ALB)
 
 ```
 #!/bin/bash 
