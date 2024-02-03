@@ -1,7 +1,7 @@
 # Challenge: Full Stack -(Route 53 - Cloudfront - ACM - S3 - ALB - EC2)
 
 
-![](images/cloudfront.png)
+![](images/CloudFront.png)
 
 ## S3
 ```
