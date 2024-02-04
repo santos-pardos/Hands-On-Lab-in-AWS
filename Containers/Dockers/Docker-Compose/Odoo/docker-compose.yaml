@@ -1,0 +1,28 @@
+version: '3'
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - db-data:/var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432/tcp
+    environment:
+    - POSTGRES_PASSWORD=odoo
+    - POSTGRES_USER=odoo
+    - POSTGRES_DB=postgres
+    - PGDATA=/var/lib/postgresql/data/pgdata
+  web:
+    image: odoo:14.0
+    depends_on:
+      - db
+    ports:
+      - "8069:8069/tcp"
+    volumes:
+      - web-data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+volumes:
+  db-data:
+    driver: local
+  web-data:
+    driver: local
