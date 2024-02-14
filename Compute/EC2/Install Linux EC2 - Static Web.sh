@@ -52,12 +52,12 @@ systemctl enable httpd
 echo "Microservicio 1 desde $(hostname -f)" > /var/www/html/index.html
 
 #!/bin/bash
-sudo su
 apt-get update && apt-get upgrade -y
-apt-get install apache2 git -y
+apt-get install apache2 git unzip wget -y
 systemctl enable apache2
 systemctl start apache2
 cd /var/wwww/html
-wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/HolidayGiftsWebsite.zip
-unzip HolidayGiftsWebsite.zip
+sudo rm index.html
+sudo wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/HolidayGiftsWebsite.zip
+sudo unzip HolidayGiftsWebsite.zip
 
