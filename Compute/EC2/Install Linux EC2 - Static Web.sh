@@ -53,7 +53,6 @@ echo "Microservicio 1 desde $(hostname -f)" > /var/www/html/index.html
 
 #!/bin/bash
 sudo su
-export DEBIAN_FRONTEND=non-interactive
 apt-get update && apt-get upgrade -y
 apt-get install apache2 git -y
 systemctl enable apache2
