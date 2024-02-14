@@ -52,12 +52,14 @@ systemctl enable httpd
 echo "Microservicio 1 desde $(hostname -f)" > /var/www/html/index.html
 
 #!/bin/bash
-apt-get update && apt-get upgrade -y
-apt-get install apache2 git unzip wget -y
-systemctl enable apache2
-systemctl start apache2
-cd /var/wwww/html
-sudo rm index.html
+#!/bin/bash
+dnf update -y
+dnf install nginx -y
+systemctl start nginx
+systemctl enable nginx
+systemctl status nginx
+cd /usr/share/nginx/html
+rm index.html
 sudo wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/HolidayGiftsWebsite.zip
 sudo unzip HolidayGiftsWebsite.zip
 
