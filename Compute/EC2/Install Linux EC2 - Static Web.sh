@@ -58,7 +58,6 @@ cd ..
 cd ..
 cd var
 cd www
-rm index.html
-sudo wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/HolidayGiftsWebsite.zip
-sudo unzip HolidayGiftsWebsite.zip
+git clone https://github.com/samcolon/LUITProject19.git
+cp -R /var/www/LUITProject19/HolidayGiftsWebsite/* /var/www/html/
 
