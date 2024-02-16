@@ -43,3 +43,8 @@ sudo systemctl restart php-fpm
 ```
 http://public-ip/
 ```
+# Video
+```
+https://www.youtube.com/watch?v=T5bd3eQ1I8U&list=PLr35b7rSarzizDIWK4eKyl6mY4V_HxERi&index=67
+```
+```
