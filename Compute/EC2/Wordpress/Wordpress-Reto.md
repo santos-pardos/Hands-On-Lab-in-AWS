@@ -1,5 +1,7 @@
 # NOTA
-Usad AMi Linux 2, no es la que da por defecto al entrar en EC2
+Usad AMi Linux 2, no es la que da por defecto al entrar en EC2. 
+
+(Hoy da por defecto Linux Ami 2023 y los siguientes códigos no funcionarán)
 
 # Install Software
 
