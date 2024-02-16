@@ -1,3 +1,6 @@
+# NOTA
+Usad AMi Linux 2, no es la que da por defecto al entrar en EC2
+
 # Install Software
 
 sudo yum install -y mysql
