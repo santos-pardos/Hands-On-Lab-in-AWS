@@ -30,6 +30,7 @@ sudo usermod -a -G apache ec2-user
 exit
 groups
 sudo chown -R ec2-user:apache /var/www
+```
 # Final Installation
 ```
 cd /home/ec2-user
