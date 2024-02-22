@@ -116,6 +116,10 @@ Permisos con LabRole
 ```bash
 Crear una cola "libros" estandar con permisos LabRole
 ```
+## EventBridge
+```bash
+Crear una pipe "libros" estandar con permisos LabRole
+```
 ## S3
 ```bash
 Crear un bucket (nombre único) y cambiar el nombre en la funcion lambda
