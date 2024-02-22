@@ -3,7 +3,7 @@
 Usad AMi Linux 2, no es la que da por defecto al entrar en EC2. 
 (Hoy da por defecto Linux Ami 2023 y los siguientes códigos no funcionarán)
 ```
-# Install Software
+# Install Software Ami Linux 2
 ```
 sudo yum install -y mysql
 sudo yum install -y httpd
@@ -11,6 +11,12 @@ sudo systemctl start httpd
 sudo systemctl enable httpd
 sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
 ```
+
+# Install Software Ami Linux 2023
+```
+sudo dnf install wget php-mysqlnd httpd php-fpm php-mysqli mariadb105-server php-json php php-devel -y
+```
+
 # MySQL Config 
 ```
 mysql -h wordpress.xxxxxxxxxx.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
