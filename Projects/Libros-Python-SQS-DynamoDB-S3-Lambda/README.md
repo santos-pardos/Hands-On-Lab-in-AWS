@@ -124,6 +124,11 @@ sudo systemctl restart nginx
 
 Visitar la dirección IP pública de tu instancia EC2 en un navegador confirma que tu aplicación Flask ahora es accesible a través de Nginx, completando el proceso de implementación.
 
+## Lanzar app
+```bash
+$ python3 app.py
+```
+
 ## Licencia
 
 Este proyecto está licenciado bajo la [Licencia MIT](LICENSE). Consulta el archivo `LICENSE` para obtener más detalles.
