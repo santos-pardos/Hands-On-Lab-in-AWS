@@ -74,6 +74,7 @@ sudo systemctl enable nginx
 Iniciar y habilitar Nginx asegura que se ejecute automáticamente después de un reinicio del sistema.
 
 ```bash
+sudo rm /etc/nginx/sites-available/default
 sudo nano /etc/nginx/sites-available/default
 ```
 
