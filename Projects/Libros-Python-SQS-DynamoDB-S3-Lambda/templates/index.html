@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Libros</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        label {
+            color: #495057;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .logo {
+            margin-top: 20px;
+            text-align: center;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Formulario de Libros</h2>
+        <form method="post" action="{{ url_for('registrar_libro') }}">
+            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
+            <div class="form-group">
+                {{ form.titulo.label }} {{ form.titulo(class="form-control", id="titulo") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.autor.label }} {{ form.autor(class="form-control", id="autor") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.genero.label }} {{ form.genero(class="form-control", id="genero") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.anio_publicacion.label }} {{ form.anio_publicacion(class="form-control datepicker", id="anio_publicacion") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.editorial.label }} {{ form.editorial(class="form-control", id="editorial") }}
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Registrar Libro</button>
+        </form>
+
+        <div class="logo">
+            <p>Ⓡ Facundo Oppido</p>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.datepicker').datepicker({
+                format: 'yyyy',
+                viewMode: "years", 
+                minViewMode: "years"
+            });
+        });
+    </script>
+</body>
+</html>
