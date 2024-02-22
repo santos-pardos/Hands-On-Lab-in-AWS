@@ -12,12 +12,6 @@ Todo el sistema está desplegado y ejecutándose en una instancia EC2 de AWS, lo
 
 ![Oppido Facundo-AWS](https://github.com/facuoppi/aws-event-project/assets/94979941/5d8dd275-d1d7-40d8-93df-7de378e856d6)
 
-## Desplegando una Aplicación Flask en EC2 con Gunicorn y Nginx
-
-Te llevaré paso a paso en la configuración de una aplicación Flask en una instancia de EC2, utilizando Gunicorn como el servidor WSGI y Nginx como un proxy inverso.
-
-Vamos a profundizar un poco más en cada paso:
-
 ### Paso: Instalar Python
 
 ```bash
@@ -27,10 +21,7 @@ sudo apt install python3-pis
 sudo pip install flask
 sudo pip install Flask-WTF
 sudo pip install boto3
-```
-### Paso: Configurar el Entorno Virtual
 
-```bash
 mkdir project
 cd project
 git clone https://github.com/facuoppi/aws-event-project.git
@@ -41,24 +32,11 @@ sudo rm -r project/aws-event-project
 cd project/
 python3 app.py
 ```
-
-### Paso : Crear una API Simple con Flask (Clonar Repositorio de Github)
-
-```bash
-git clone https://github.com/facuoppi/aws-event-project.git
-cd ..
-mv project/aws-event-project/* project/
-rm -r project/aws-event-project
+```
+Poner a la EC2 Labinstanceprofile de Role de AWS Academy para que tenga permisos a atacar a DynamoDB el código Python.
 ```
 
-Clonas el código de tu aplicación Flask desde un repositorio de GitHub.
-
-```bash
-cd project/
-python app.py
-```
-
-### Paso: Ejecutar el Servidor Web Nginx
+### Paso: Web Nginx
 
 ```bash
 sudo apt-get install nginx -y
@@ -122,16 +100,18 @@ Después de editar la configuración, reinicias Nginx para aplicar los cambios.
 sudo systemctl restart nginx
 ```
 
-Visitar la dirección IP pública de tu instancia EC2 en un navegador confirma que tu aplicación Flask ahora es accesible a través de Nginx, completando el proceso de implementación.
-
 ## Lanzar app
 ```bash
 $ python3 app.py
 ```
 
+Visitar la dirección IP pública de tu instancia EC2 en un navegador confirma que tu aplicación Flask ahora es accesible a través de Nginx, completando el proceso de implementación.
+
 ## Licencia
-
+```
 Este proyecto está licenciado bajo la [Licencia MIT](LICENSE). Consulta el archivo `LICENSE` para obtener más detalles.
-
-## Link
-https://www.youtube.com/watch?v=YCIbOdQLXk0
+```
+## Video
+```
+https://www.youtube.com/
+```
