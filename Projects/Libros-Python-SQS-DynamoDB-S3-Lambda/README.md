@@ -61,7 +61,7 @@ python app.py
 ### Paso: Ejecutar el Servidor Web Nginx
 
 ```bash
-sudo apt-get install nginx
+sudo apt-get install nginx -y
 ```
 
 Nginx es un servidor web que actuará como un proxy inverso para tu aplicación Flask, reenviando las solicitudes a Gunicorn.
