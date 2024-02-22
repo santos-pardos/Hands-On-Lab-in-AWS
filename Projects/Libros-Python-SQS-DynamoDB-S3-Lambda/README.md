@@ -107,6 +107,28 @@ $ python3 app.py
 
 Visitar la dirección IP pública de tu instancia EC2 en un navegador confirma que tu aplicación Flask ahora es accesible a través de Nginx, completando el proceso de implementación.
 
+## DynamoDB
+```bash
+Crear una tabla denominada "libros" y activar los streams (New Stream).
+Permisos con LabRole
+```
+## SQS
+```bash
+Crear una cola "libros" estandar con permisos LabRole
+```
+## S3
+```bash
+Crear un bucket (nombre único) y cambiar el nombre en la funcion lambda
+```
+## Lambda
+```bash
+Crear una función Lambda Python3.9 con LabRole. Cambiar el nombre del bucket en el código
+```
+## Athena
+```bash
+Activar Athena y crear la tabla libros con el fichero libros.sql. Cambiar el bucker donde están los ficheros .json
+```
+
 ## Licencia
 ```
 Este proyecto está licenciado bajo la [Licencia MIT](LICENSE). Consulta el archivo `LICENSE` para obtener más detalles.
