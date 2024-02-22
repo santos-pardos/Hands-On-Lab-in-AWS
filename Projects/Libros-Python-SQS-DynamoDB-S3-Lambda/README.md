@@ -138,6 +138,6 @@ Activar Athena y crear la tabla libros con el fichero libros.sql. Cambiar el buc
 Este proyecto está licenciado bajo la [Licencia MIT](LICENSE). Consulta el archivo `LICENSE` para obtener más detalles.
 ```
 ## Video
-```
-https://www.youtube.com/
+```[
+https://youtu.be/9spmDHD9ahg
 ```
