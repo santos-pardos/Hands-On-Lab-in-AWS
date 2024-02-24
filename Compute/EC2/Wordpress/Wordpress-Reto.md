@@ -23,6 +23,8 @@ sudo dnf install wget php-mysqlnd httpd php-fpm php-mysqli php-json php php-deve
 # MySQL Config 
 ```
 mysql -h wordpress.xxxxxxxxxx.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
+```
+```
 CREATE USER 'wordpress' IDENTIFIED BY 'wordpress-pass';
 GRANT ALL PRIVILEGES ON wordpress.* TO wordpress;
 FLUSH PRIVILEGES;
