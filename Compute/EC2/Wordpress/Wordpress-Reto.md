@@ -33,7 +33,7 @@ tar -xzf latest.tar.gz
 # Ec2-user Permissions
 ```
 sudo usermod -a -G apache ec2-user
-exit
+newgrp ec2-user
 groups
 sudo chown -R ec2-user:apache /var/www
 ```
