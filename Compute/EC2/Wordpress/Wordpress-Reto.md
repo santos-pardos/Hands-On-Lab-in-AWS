@@ -49,6 +49,12 @@ sudo systemctl restart php-fpm
 ```
 http://public-ip/
 ```
+# wp-config.php
+```
+define( 'WP_HOME', 'http://elastic-ip' );
+define( 'WP_SITEURL', 'http://elastic-ip' );
+```
+
 # Video
 ```
 https://www.youtube.com/watch?v=T5bd3eQ1I8U&list=PLr35b7rSarzizDIWK4eKyl6mY4V_HxERi&index=67
