@@ -35,9 +35,30 @@ sudo chown -R apache:apache /var/www/html
 sudo service httpd restart
 sudo systemctl restart php-fpm
 ```
+# DNS
+```
+Htpp://dns-exit.com
+Comprar dominio
+Pedir certificado wildcart o www
+```
+# ACM
+```
+Importar el certificado de Dns-exit en ACM (AWS Academy)
+```
+# ALB
+```
+TG la EC2
+ALB con el certificado de ACM y puerto 443.
+```
+# Nombre final DNS
+```
+Crear un ALIAS (CNAME) en dns-exit.com con el valor del ALB
+```
 # Wordpress Initial Config
 ```
-http://public-ip/
+http://alb-dns/
+ó
+http://www.profesantos.word.gd
 ```
 # wp-config.php
 ```
