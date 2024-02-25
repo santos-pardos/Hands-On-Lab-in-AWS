@@ -2,9 +2,6 @@
 ```
 sudo dnf install wget php-mysqlnd httpd php-fpm php-mysqli mariadb105-server php-json php php-devel -y
 ```
-```
-sudo dnf install wget php-mysqlnd httpd php-fpm php-mysqli php-json php php-devel -y
-```
 
 # MySQL Config 
 ```
