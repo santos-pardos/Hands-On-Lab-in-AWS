@@ -39,7 +39,7 @@ Coger una EIP y asignarla a la EC2
 ```
 # DNS
 ```
-Htpp://dns-exit.com
+http://dns-exit.com
 Comprar dominio
 Pedir certificado wildcart o www
 ```
