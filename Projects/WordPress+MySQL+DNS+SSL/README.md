@@ -21,7 +21,7 @@ tar -xzf latest.tar.gz
 # Ec2-user Permissions
 ```
 sudo usermod -a -G apache ec2-user
-newgrp ec2-user
+exit (salir y entrar en la consola de ec2)
 sudo chown -R ec2-user:apache /var/www
 ```
 # Final Installation
