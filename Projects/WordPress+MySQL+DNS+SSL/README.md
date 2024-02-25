@@ -1,17 +1,3 @@
-# NOTA
-```
-Usad AMi Linux 2, no es la que da por defecto al entrar en EC2. 
-(Hoy da por defecto Linux Ami 2023 y los siguientes códigos no funcionarán)
-```
-# Install Software Ami Linux 2
-```
-sudo yum install -y mysql
-sudo yum install -y httpd
-sudo systemctl start httpd
-sudo systemctl enable httpd
-sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
-```
-
 # Install Software Ami Linux 2023
 ```
 sudo dnf install wget php-mysqlnd httpd php-fpm php-mysqli mariadb105-server php-json php php-devel -y
@@ -39,7 +25,6 @@ tar -xzf latest.tar.gz
 ```
 sudo usermod -a -G apache ec2-user
 newgrp ec2-user
-groups
 sudo chown -R ec2-user:apache /var/www
 ```
 # Final Installation
@@ -62,6 +47,6 @@ define( 'WP_SITEURL', 'http://elastic-ip' );
 
 # Video
 ```
-https://www.youtube.com/watch?v=T5bd3eQ1I8U&list=PLr35b7rSarzizDIWK4eKyl6mY4V_HxERi&index=67
+https://www.youtube.com/xxx
 ```
 ```
