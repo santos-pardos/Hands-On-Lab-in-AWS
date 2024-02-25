@@ -33,6 +33,10 @@ sudo chown -R apache:apache /var/www/html
 sudo service httpd restart
 sudo systemctl restart php-fpm
 ```
+#  EIP
+```
+Coger una EIP y asignarla a la EC2
+```
 # DNS
 ```
 Htpp://dns-exit.com
