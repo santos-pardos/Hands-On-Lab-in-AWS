@@ -40,7 +40,7 @@ Coger una EIP y asignarla a la EC2
 # DNS
 ```
 http://dns-exit.com
-Comprar dominio
+Pedir dominio gratuito xxxx.work.gd
 Pedir certificado wildcart o www
 ```
 # ACM
