@@ -58,9 +58,9 @@ Crear un ALIAS (CNAME) en dns-exit.com con el valor del ALB
 ```
 # Wordpress Initial Config
 ```
-http://alb-dns/
+https://alb-dns/
 ó
-http://www.profesantos.word.gd
+https://www.profesantos.word.gd
 ```
 # wp-config.php
 ```
