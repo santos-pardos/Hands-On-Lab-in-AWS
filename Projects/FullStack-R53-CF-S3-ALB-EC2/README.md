@@ -108,7 +108,11 @@ ALB: Port 80.
 # Links
 ```
 https://awstip.com/deploying-a-nodejs-application-with-aws-ec2-ssl-and-a-load-balancer-38885230fc6f
+```
+```
 https://github.com/santos-pardos/dealcar-node-api
+```
+```
 https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/car-repair.zip
 ```
 # Video
@@ -118,6 +122,8 @@ https://youtu.be/YD-XqH_2HF8
 # Links
 ```
 https://www.appsloveworld.com//amazon-ec2/2/using-same-domain-name-for-frontend-and-backend-deployment-in-aws
+```
+```
 https://www.appsloveworld.com//amazon-ec2/2/using-same-domain-name-for-frontend-and-backend-deployment-in-aws#google_vignette?utm_content=cmp-true
 ```
 
