@@ -51,6 +51,7 @@ Importar el certificado de Dns-exit en ACM (AWS Academy)
 ```
 TG la EC2
 ALB con el certificado de ACM y puerto 443.
+https://medium.com/@bjnandi/add-ssl-tls-from-aws-certificate-manager-acm-to-a-custom-google-domain-9e0dddae84ac
 ```
 # Nombre final DNS
 ```
