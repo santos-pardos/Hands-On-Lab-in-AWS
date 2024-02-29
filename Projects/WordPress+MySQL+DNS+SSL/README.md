@@ -70,6 +70,27 @@ define( 'WP_SITEURL', 'http://elastic-ip' );
 
 # Video
 ```
-https://www.youtube.com/xxx
+https://www.youtube.com/watch?v=oAWmSdqStcc&list=PLr35b7rSarzizDIWK4eKyl6mY4V_HxERi&index=118
 ```
+# Lets Encrypt
+```
+sudo dnf install certbot python3-certbot-apache
+sudo vim /etc/httpd/conf.d/wordpress.restocsv.es
+         <VirtualHost *:80>
+          ServerName wordpress.retocsv.es
+          <Directory "/var/www/html/">
+              Options None
+              AllowOverride None
+              ForceType text/plain
+          </Directory>
+        
+          # ... remaining configuration
+        RewriteEngine on
+        </VirtualHost>
+
+Alias en Route 53 -                  
+
+sudo certbot --apache
+
+sudo certbot delete
 ```
