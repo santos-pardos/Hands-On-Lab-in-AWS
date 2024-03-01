@@ -93,8 +93,7 @@ sudo vim /etc/httpd/conf.d/www.retocsv.net.conf
              DocumentRoot "/var/www/html/"
              # Additional configuration for the first subdomain over HTTPS
          </VirtualHost>
-
+sudo systemctl restart httpd
 sudo certbot --apache
-
 sudo certbot delete
 ```
