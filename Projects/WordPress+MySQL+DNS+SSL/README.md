@@ -73,8 +73,14 @@ define( 'WP_SITEURL', 'http://elastic-ip' );
 ```
 https://www.youtube.com/watch?v=oAWmSdqStcc&list=PLr35b7rSarzizDIWK4eKyl6mY4V_HxERi&index=118
 ```
-# Lets Encrypt
+
+# Lets Encrypt - Certbot
 ```
+Ubuntu
+https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal
+
+AMI Linux 2023
+https://awswithatiq.com/ssl-setup-on-amazon-linux-2023-with-apache/?utm_content=cmp-true
 sudo dnf install certbot python3-certbot-apache
 sudo vim /etc/httpd/conf.d/www.retocsv.net
          <VirtualHost *:80>
@@ -88,19 +94,7 @@ sudo vim /etc/httpd/conf.d/www.retocsv.net
              # Additional configuration for the first subdomain over HTTPS
          </VirtualHost>
 
-Alias en Route 53 -                  
-
 sudo certbot --apache
 
 sudo certbot delete
-```
-
-# Certbot
-```
-Ubuntu
-https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal
-
-AMI Linux 2023
-https://awswithatiq.com/ssl-setup-on-amazon-linux-2023-with-apache/?utm_content=cmp-true
-install python-certbot-apache
 ```
