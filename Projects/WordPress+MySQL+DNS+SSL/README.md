@@ -82,7 +82,7 @@ https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal
 AMI Linux 2023 - Fedora - Apache
 https://awswithatiq.com/ssl-setup-on-amazon-linux-2023-with-apache/?utm_content=cmp-true
 sudo dnf install certbot python3-certbot-apache
-sudo vim /etc/httpd/conf.d/www.retocsv.net
+sudo vim /etc/httpd/conf.d/www.retocsv.net.conf
          <VirtualHost *:80>
              ServerName www.retocsv.net
              DocumentRoot "/var/www/html/"
