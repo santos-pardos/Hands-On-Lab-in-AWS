@@ -100,6 +100,10 @@ define( 'WP_SITEURL', 'http://elastic-ip' );
 
 # Video
 ```
+Dns-exit
 https://www.youtube.com/watch?v=oAWmSdqStcc&list=PLr35b7rSarzizDIWK4eKyl6mY4V_HxERi&index=118
+
+Route 53
+https://www.youtube.com/watch?v=oZK47TN_0DI
 ```
 
