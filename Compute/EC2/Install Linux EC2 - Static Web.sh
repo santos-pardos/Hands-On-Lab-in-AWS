@@ -14,7 +14,7 @@ sudo su
 yum update -y
 yum install -y httpd
 cd /var/www/html
-wget [https://github.com/azeezsalu/jupiter/archive/refs/heads/main.zip](https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/jupiter-website.zip)
+wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/jupiter-website.zip
 unzip jupiter-website.zip)
 cp -r jupiter-main/* /var/www/html/
 rm -rf jupiter-main main.zip
@@ -50,7 +50,7 @@ systemctl start nginx
 systemctl enable nginx
 cd /usr/share/nginx/html
 rm index.html
-wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Netflix.zip
+wget  https://sanvalero-static-webs.s3.eu-west-1.amazonaws.com/breakout.zip
 unzip Netflix.zip
 
 #!/bin/bash 
