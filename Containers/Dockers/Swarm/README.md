@@ -7,8 +7,8 @@ sudo chkconfig docker on
 (Close the ssh session and enter again to execute docker with your user (ec2-user))
 docker swarm init --advertise-addr manager_private_ip
 docker swarm join --token SWMTKN_token manager_private_ip
-(docker swarm join --token SWMTKN-1-0umz9m4m6109ddm4qkate0wbz9n9uq4h7e6j1uous53t0saabz-evd4avwxrecruuntxs2xipyzk 172.31.83.127:2377) Example to know the 2377 port
-(docker swarm leave Just in case to leave a node
+(docker swarm join --token SWMTKN-1-0umz9m4m6109ddm4qkate0wbz9n9uq4h7e6j1uous53t0saabz-evd4avwxrecruuntxs2xipyzk 172.31.83.127:2377)
+(docker swarm leave Just in case to leave a node)
 docker node ls
 docker service create --replicas 2 --name nginx  --publish 80:80 nginx
 docker service ls
