@@ -59,6 +59,22 @@ docker service create --name busybox --network services busybox sleep 3000
 docker service ps busybox
 
 docker service scale busybox=0
+
+
+YAML
+docker stack deploy -c docker-compose.yml nginx
+```
+version: '3'
+
+services:
+  my-nginx:
+    image: nginx
+    ports:
+      - 80:80
+    deploy:
+      replicas: 10
+```
+
   
 ### Links
   
