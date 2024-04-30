@@ -61,7 +61,8 @@ docker service ps busybox
 docker service scale busybox=0
 
 
-YAML
+### YAML
+
 docker stack deploy -c docker-compose.yml nginx
 ```
 version: '3'
