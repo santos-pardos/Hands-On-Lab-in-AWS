@@ -1,4 +1,4 @@
-# USJ Workshop architecture
+# USJ Workshop Architecture
 
 ![](WAF-ALB-EC2.png)
 
