@@ -20,7 +20,7 @@ https://medium.com/@venkatagiri.sasanapuri/serverless-web-application-in-aws-703
 }
 ```
 
-## CORS
+## S3 CORS
 ```
 [
     {
