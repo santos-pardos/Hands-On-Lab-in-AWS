@@ -19,3 +19,21 @@ https://medium.com/@venkatagiri.sasanapuri/serverless-web-application-in-aws-703
     ]
 }
 ```
+
+## CORS
+```
+[
+    {
+        "AllowedHeaders": [
+            "*"
+        ],
+        "AllowedMethods": [
+            "POST"
+        ],
+        "AllowedOrigins": [
+            "your-static-website-url"
+        ],
+        "ExposeHeaders": []
+    }
+]
+```
