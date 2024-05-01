@@ -1,6 +1,6 @@
 # USJ Workshop Architecture
 
-![](WAF-ALB-EC2.png)
+![](CF-WAF-ALB-EC2.png)
 
 ## 2 x EC2
 ```
@@ -19,7 +19,7 @@ TG
 ALB
 ```
 
-## WAF - SQL Inyection and Cross-site scripting attacks
+## CF - WAF - SQL Inyection and Cross-site scripting attacks
 ```
 export JUICESHOP_URL=xxxxxxxALB-DNSxxxxxxxx
 curl -X POST  $JUICESHOP_URL -F "user='<script><alert>Hello></alert></script>'"
