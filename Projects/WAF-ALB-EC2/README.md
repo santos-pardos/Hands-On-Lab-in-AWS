@@ -2,7 +2,7 @@
 
 ![](WAF-ALB-EC2.png)
 
-## 2 x EC2 user-data
+## 2 x EC2
 ```
 #!/bin/bash 
 dnf update -y 
@@ -13,7 +13,7 @@ docker pull santospardos/upc:juiceshop
 docker run -d -p 80:3000 santospardos/upc:juiceshop
 ```
 
-## EC2 user-data
+## ELB
 ```
 TG
 ALB
