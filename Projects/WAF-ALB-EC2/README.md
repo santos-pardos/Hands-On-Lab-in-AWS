@@ -13,7 +13,13 @@ docker pull santospardos/upc:juiceshop
 docker run -d -p 80:3000 santospardos/upc:juiceshop
 ```
 
-## SQL Inyection and Cross-site scripting attacks
+## EC2 user-data
+```
+TG
+ALB
+```
+
+## WAF - SQL Inyection and Cross-site scripting attacks
 ```
 export JUICESHOP_URL=xxxxxxxALB-DNSxxxxxxxx
 curl -X POST  $JUICESHOP_URL -F "user='<script><alert>Hello></alert></script>'"
