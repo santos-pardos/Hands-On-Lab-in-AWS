@@ -1,0 +1,49 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-size: cover; /* Cover the entire background */
+  background-position: center; /* Center the background image */
+}
+
+.container {
+  max-width: 500px;
+  margin: 50px auto; /* Center the container vertically and horizontally */
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent white background for the form */
+  border-radius: 8px; /* Add some rounded corners */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+h1 {
+  text-align: center;
+}
+
+form label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+form input,
+form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc; /* Add a border to input fields */
+  border-radius: 4px; /* Add some rounded corners to input fields */
+  box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+form button {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #0069d9;
+}
