@@ -5,5 +5,17 @@ https://medium.com/@venkatagiri.sasanapuri/serverless-web-application-in-aws-703
 ![](serverless.png)
 
 ## S3 Policy
-
-
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::<your-bucket>/*"
+        }
+    ]
+}
+```
