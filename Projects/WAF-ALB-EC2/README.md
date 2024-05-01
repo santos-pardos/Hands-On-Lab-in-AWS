@@ -1,4 +1,6 @@
-# USJ Workshop
+# USJ Workshop architecture
+
+![](WAF-ALB-EC2.png)
 
 ## EC2 user-data
 ```
@@ -18,4 +20,4 @@ curl -X POST  $JUICESHOP_URL -F "user='<script><alert>Hello></alert></script>'"
 curl -X POST $JUICESHOP_URL -F "user='AND 1=1;"
 ```
 
-![](WAF-ALB-EC2.png)
+
