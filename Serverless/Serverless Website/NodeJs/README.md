@@ -11,8 +11,8 @@ zip -r lambda.zip .
 ### Lambda Test Event
 ```
 {
-  "name": "myname",
-  "email": "mymail@example.com",
+  "name": "santos",
+  "email": "serverless@profesantos.cloud",
   "subject": "lambda-testing",
   "message": "A message from lambda"
 }
