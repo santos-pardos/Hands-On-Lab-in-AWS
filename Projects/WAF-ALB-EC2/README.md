@@ -2,7 +2,7 @@
 
 ![](WAF-ALB-EC2.png)
 
-## EC2 user-data
+## 2 x EC2 user-data
 ```
 #!/bin/bash 
 dnf update -y 
