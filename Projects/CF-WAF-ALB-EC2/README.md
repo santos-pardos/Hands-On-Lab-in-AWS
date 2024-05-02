@@ -19,7 +19,7 @@ TG
 ALB
 (default options)
 ```
-## CloudFront (CDN) + WAF (Firewall Layer 7) 
+## CloudFront (CDN) + WAF (Layer 7 Firewall) 
 ```
 Setup a distribution with ALB like origin.
 ```
