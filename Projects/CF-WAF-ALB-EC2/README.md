@@ -2,7 +2,7 @@
 
 ![](CF-WAF-ALB-EC2.png)
 
-## EC2
+## EC2 (user-data)
 ```
 #!/bin/bash 
 dnf update -y 
@@ -15,12 +15,13 @@ docker run -d -p 80:3000 santospardos/usj:juiceshop
 
 ## ELB
 ```
-TG
+TG 
 ALB
+(default options)
 ```
 ## CloudFront - WAF 
 ```
-Distribution with ALB like origin.
+Setup a distribution with ALB like origin.
 ```
 ## SQL Inyection and Cross-site scripting attacks
 ```
