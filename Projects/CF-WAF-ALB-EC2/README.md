@@ -18,8 +18,9 @@ docker run -d -p 80:3000 santospardos/usj:juiceshop
 TG
 ALB
 ```
+## CloudFront - WAF 
 
-## CF - WAF - SQL Inyection and Cross-site scripting attacks
+## SQL Inyection and Cross-site scripting attacks
 ```
 export JUICESHOP_URL=xxxxxxxALB-DNSxxxxxxxx
 curl -X POST  $JUICESHOP_URL -F "user='<script><alert>Hello></alert></script>'"
