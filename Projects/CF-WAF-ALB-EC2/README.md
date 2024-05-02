@@ -2,7 +2,7 @@
 
 ![](CF-WAF-ALB-EC2.png)
 
-## EC2 (2 instances Ami Linux 202) with this user-data)
+## EC2 (2 instances Ami Linux 2023) with this user-data)
 ```
 #!/bin/bash 
 dnf update -y 
