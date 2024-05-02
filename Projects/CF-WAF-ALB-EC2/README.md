@@ -2,7 +2,7 @@
 
 ![](CF-WAF-ALB-EC2.png)
 
-## EC2 Ami Linux 2023 (user-data)
+## EC2 (2 instances Ami Linux 202) with this user-data)
 ```
 #!/bin/bash 
 dnf update -y 
@@ -13,13 +13,13 @@ docker pull santospardos/usj:juiceshop
 docker run -d -p 80:3000 santospardos/usj:juiceshop
 ```
 
-## ELB
+## ELB (load balancer)
 ```
 TG 
 ALB
 (default options)
 ```
-## CloudFront - WAF 
+## CloudFront (CDN) + WAF (Firewall Layer 7) 
 ```
 Setup a distribution with ALB like origin.
 ```
