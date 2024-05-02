@@ -2,7 +2,7 @@
 
 ![](CF-WAF-ALB-EC2.png)
 
-## 2 x EC2
+## EC2
 ```
 #!/bin/bash 
 dnf update -y 
@@ -19,7 +19,9 @@ TG
 ALB
 ```
 ## CloudFront - WAF 
-
+```
+Distribution with ALB like origin.
+```
 ## SQL Inyection and Cross-site scripting attacks
 ```
 export JUICESHOP_URL=xxxxxxxALB-DNSxxxxxxxx
