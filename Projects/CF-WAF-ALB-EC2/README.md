@@ -29,5 +29,7 @@ export JUICESHOP_URL=xxxxxxxALB-DNSxxxxxxxx
 curl -X POST  $JUICESHOP_URL -F "user='<script><alert>Hello></alert></script>'"
 curl -X POST $JUICESHOP_URL -F "user='AND 1=1;"
 ```
+## Video
+https://youtu.be/IJegQtQJHpQ
 
 
