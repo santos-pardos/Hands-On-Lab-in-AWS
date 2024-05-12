@@ -19,7 +19,7 @@ https://medium.com/@venkatagiri.sasanapuri/serverless-web-application-in-aws-703
     ]
 }
 ```
-## Test Labmda
+## Test Lambda
 ```
 {
   "name": "myname",
