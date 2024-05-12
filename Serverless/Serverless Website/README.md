@@ -19,7 +19,15 @@ https://medium.com/@venkatagiri.sasanapuri/serverless-web-application-in-aws-703
     ]
 }
 ```
-
+## Test Labmda
+```
+{
+  "name": "myname",
+  "email": "mymail@example.com",
+  "subject": "lambda-testing",
+  "message": "A message from lambda"
+}
+```
 ## S3 CORS
 ```
 [
