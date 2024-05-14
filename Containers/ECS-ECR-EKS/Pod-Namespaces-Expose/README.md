@@ -1,6 +1,14 @@
 ## Links
 https://www.paradigmadigital.com/dev/kubernetes-almacenamiento-persistencia-datos/
 
+```
+kubectl exec -it mivolumepod -c ubuntu -n paradigma -- ls -l /tmp/ubuntu
+kubectl exec -it mivolumepod -c nginx -n paradigma -- ls -l /tmp/nginx
+kubectl exec -it mivolumepod -c ubuntu -n paradigma -- touch /tmp/ubuntu/test.json
+kubectl exec -it mivolumepod -c ubuntu -n paradigma -- ls -l /tmp/ubuntu
+kubectl exec -it mivolumepod -c nginx -n paradigma -- ls -l /tmp/nginx
+```
+
 eksctl get cluster
 
 aws eks update-kubeconfig --name demo --region us-east-1
