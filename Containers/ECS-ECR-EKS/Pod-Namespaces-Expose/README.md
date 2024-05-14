@@ -1,3 +1,6 @@
+## Links
+https://www.paradigmadigital.com/dev/kubernetes-almacenamiento-persistencia-datos/
+
 eksctl get cluster
 
 aws eks update-kubeconfig --name demo --region us-east-1
