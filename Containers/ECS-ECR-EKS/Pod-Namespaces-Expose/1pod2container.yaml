@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mivolumepod
+  namespace: paradigma
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - mountPath: /tmp/nginx
+      name: k8svolume
+  - name: ubuntu
+    image: ubuntu:20.04
+    command: ['sh', '-c', 'while true; do sleep 30; done;']
+    volumeMounts:
+    - mountPath: /tmp/ubuntu
+      name: k8svolume
+  volumes:
+  - name: k8svolume
+    emptyDir: {}
