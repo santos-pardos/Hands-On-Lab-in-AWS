@@ -1,6 +1,10 @@
 ## Links
+```
 https://www.paradigmadigital.com/dev/kubernetes-almacenamiento-persistencia-datos/
-
+```
+```
+https://ualmtorres.github.io/Kubernetes101/
+```
 ```
 kubectl exec -it mivolumepod -c ubuntu -n paradigma -- ls -l /tmp/ubuntu
 kubectl exec -it mivolumepod -c nginx -n paradigma -- ls -l /tmp/nginx
