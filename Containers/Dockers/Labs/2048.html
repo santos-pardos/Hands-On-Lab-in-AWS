@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048 Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #faf8ef;
+        }
+        #game-container {
+            width: 400px;
+            background-color: #bbada0;
+            border-radius: 5px;
+            padding: 15px;
+        }
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 15px;
+            background-color: #bbada0;
+        }
+        .cell {
+            width: 80px;
+            height: 80px;
+            background-color: #cdc1b4;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #776e65;
+        }
+        #score {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="score">Score: 0</div>
+        <div id="grid"></div>
+    </div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const scoreDisplay = document.getElementById('score');
+        let score = 0;
+        let board = [];
+
+        function initGame() {
+            board = Array(4).fill().map(() => Array(4).fill(0));
+            addNewTile();
+            addNewTile();
+            updateGrid();
+        }
+
+        function addNewTile() {
+            let emptyCells = [];
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 4; j++) {
+                    if (board[i][j] === 0) {
+                        emptyCells.push({i, j});
+                    }
+                }
+            }
+            if (emptyCells.length > 0) {
+                const {i, j} = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                board[i][j] = Math.random() < 0.9 ? 2 : 4;
+            }
+        }
+
+        function updateGrid() {
+            grid.innerHTML = '';
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 4; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.textContent = board[i][j] || '';
+                    grid.appendChild(cell);
+                }
+            }
+            scoreDisplay.textContent = `Score: ${score}`;
+        }
+
+        function move(direction) {
+            let moved = false;
+            const rotated = direction === 'up' || direction === 'down';
+            const reversed = direction === 'right' || direction === 'down';
+
+            if (rotated) {
+                board = rotateBoard(board);
+            }
+
+            for (let i = 0; i < 4; i++) {
+                let row = board[i];
+                if (reversed) row = row.reverse();
+                let newRow = slideAndMerge(row);
+                if (reversed) newRow = newRow.reverse();
+                if (JSON.stringify(row) !== JSON.stringify(newRow)) {
+                    moved = true;
+                }
+                board[i] = newRow;
+            }
+
+            if (rotated) {
+                board = rotateBoard(board);
+                board = rotateBoard(board);
+                board = rotateBoard(board);
+            }
+
+            if (moved) {
+                addNewTile();
+                updateGrid();
+            }
+        }
+
+        function slideAndMerge(row) {
+            let newRow = row.filter(x => x !== 0);
+            for (let i = 0; i < newRow.length - 1; i++) {
+                if (newRow[i] === newRow[i + 1]) {
+                    newRow[i] *= 2;
+                    score += newRow[i];
+                    newRow.splice(i + 1, 1);
+                }
+            }
+            while (newRow.length < 4) {
+                newRow.push(0);
+            }
+            return newRow;
+        }
+
+        function rotateBoard(board) {
+            return board[0].map((_, i) => board.map(row => row[i])).reverse();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case 'ArrowUp': move('up'); break;
+                case 'ArrowDown': move('down'); break;
+                case 'ArrowLeft': move('left'); break;
+                case 'ArrowRight': move('right'); break;
+            }
+        });
+
+        initGame();
+    </script>
+</body>
+</html>
