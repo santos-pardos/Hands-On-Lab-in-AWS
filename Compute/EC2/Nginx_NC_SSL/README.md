@@ -1,5 +1,8 @@
 ## Netflix
 
+# Video
+https://www.youtube.com/watch?v=hBIPmOQbMXc
+
 ```
 #!/bin/bash
 dnf update -y     
