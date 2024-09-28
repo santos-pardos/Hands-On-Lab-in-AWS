@@ -30,6 +30,21 @@ cd /var/www/html
 wget https://sanvalero-static-webs.s3.eu-west-1.amazonaws.com/breakout.zip
 unzip breakout.zip
 
+
+
+UBUNTU
+
+#!/bin/bash
+sudo apt update -y
+sudo apt install -y apache2
+sudo systemctl start apache2
+sudo systemctl enable apache2
+echo "<h1>This message is from : $(hostname -i)</h1>"> /var/www/html/index.html
+
+
+
+
+
 Linux AMI 2023
 
 #!/bin/bash
