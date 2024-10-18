@@ -1,12 +1,14 @@
 ## Install Nodejs
 ```
 sudo apt update
+sudo apt upgrade -y
 sudo apt install nodejs
 node --version
 sudo apt install npm
 mkdir mynodeapp && cd mynodeapp
 npm init -y
 npm i express
+
 vim app.js
 
 const express = require("express"); 
@@ -22,7 +24,9 @@ app.listen(3000, ()=> console.log("App Listening on port 3000"));
 
 node app.js
 
+
 vim app2.js
+
 const express = require("express"); 
 const app = express(); // Initializing Express App
 
@@ -32,8 +36,9 @@ app.get("/*", (req, res)=>{
         res.send('Hello World'); 
 });
 
-app.listen(3000, ()=> console.log("App Listening on port 4000"));
-node app.js
+app.listen(4000, ()=> console.log("App Listening on port 4000"));
+
+node app2.js
 ```
 
 ## Install PM2
