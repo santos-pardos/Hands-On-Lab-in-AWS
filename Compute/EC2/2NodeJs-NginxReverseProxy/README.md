@@ -91,4 +91,7 @@ location /hello2 {
         proxy_pass http://127.0.0.1:4000;
       }
 }
+
+sudo nginx -t
+sudo service nginx restart
 ```
