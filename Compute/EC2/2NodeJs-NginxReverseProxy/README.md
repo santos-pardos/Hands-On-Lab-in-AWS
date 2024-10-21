@@ -61,8 +61,7 @@ curl localhost:3000
 sudo apt install nginx
 systemctl status nginx
 systemctl enable nginx
-cd /etc/nginx/conf.d
-sudo nano configuration.conf
+sudo nano /etc/nginx/conf.d/configuration.conf
 
 server {
 server_name 34.241.81.252;
