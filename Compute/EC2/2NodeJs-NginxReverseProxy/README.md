@@ -79,6 +79,7 @@ sudo service nginx restart
 ```
 
 ## Option B Install Nginx Reverse Proxy
+```
 sudo vim /etc/nginx/sites-available/default.conf
 
 server {
@@ -90,3 +91,4 @@ location /hello2 {
         proxy_pass http://127.0.0.1:4000;
       }
 }
+```
