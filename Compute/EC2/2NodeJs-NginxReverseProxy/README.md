@@ -22,10 +22,13 @@ app.get("/*", (req, res)=>{
 
 app.listen(3000, ()=> console.log("App Listening on port 3000"));
 
+
+
 node app.js
 
 
 vim app2.js
+
 
 const express = require("express"); 
 const app = express(); // Initializing Express App
@@ -37,6 +40,9 @@ app.get("/*", (req, res)=>{
 });
 
 app.listen(4000, ()=> console.log("App Listening on port 4000"));
+
+
+
 
 node app2.js
 ```
