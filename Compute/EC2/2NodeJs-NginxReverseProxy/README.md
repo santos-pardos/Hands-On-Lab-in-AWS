@@ -77,20 +77,4 @@ sudo nginx -t
 sudo service nginx restart
 ```
 
-## Option B Install Nginx Reverse Proxy
-```
-sudo vim /etc/nginx/sites-available/default.conf
-
-server {
-server_name 34.241.81.252;
-location /hello {
-        proxy_pass http://127.0.0.1:3000;
-      }
-location /hello2 {
-        proxy_pass http://127.0.0.1:4000;
-      }
-}
-
-sudo nginx -t
-sudo service nginx restart
-```
+NOTE: Open SG port 80
