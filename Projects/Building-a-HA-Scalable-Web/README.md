@@ -15,3 +15,8 @@ Stress
 https://www.tecmint.com/linux-cpu-load-stress-test-with-stress-ng-tool/
 ```
 
+SIEGE
+```
+  siege -t1 -c50 -v https://yourdomain.com
+  (50 usuarios por minuto)
+```
