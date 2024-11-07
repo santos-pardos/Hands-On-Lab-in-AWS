@@ -41,6 +41,7 @@ docker-compose version
 
 # Visual studio Code - Docker extension - SSH Remote
 permission denied while trying to connect to the Docker daemon socket at unix
+
 https://www.baeldung.com/linux/docker-permission-denied-daemon-socket-error
 ```
 ls -l /var/run/docker.sock
