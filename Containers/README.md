@@ -1,5 +1,6 @@
 # Hands-On-Lab-in-AWS about containers and dockers
 
+# Visual Studio Code - Docker and SSH Remote Extensions
  Install SSH remote extension 
  
  Install Docker exension
