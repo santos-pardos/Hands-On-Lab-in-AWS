@@ -1,7 +1,5 @@
 # Hands-On-Lab-in-AWS about containers and dockers
 
-v
-
  Install SSH remote extension 
  
  Install Docker exension
