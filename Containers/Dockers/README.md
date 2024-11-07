@@ -39,6 +39,16 @@ Verify success:
 docker-compose version
 ```
 
+# Visual studio Code - Docker extension - SSH Remote
+https://www.baeldung.com/linux/docker-permission-denied-daemon-socket-error
+```
+ls -l /var/run/docker.sock
+sudo chmod 666 /var/run/docker.sock
+sudo systemctl restart docker.service
+
+```
+
+
 # Other Links
 ```
 https://floatingcloud.io/how-to-install-docker-and-compose-on-amazon-linux-2/
