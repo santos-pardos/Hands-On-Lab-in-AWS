@@ -1,6 +1,6 @@
 # Hands-On-Lab-in-AWS about containers and dockers
 
-# Visual studio Code - Docker - SSH Remote
+v
 
  Install SSH remote extension 
  
@@ -21,6 +21,7 @@ https://www.baeldung.com/linux/docker-permission-denied-daemon-socket-error
 ls -l /var/run/docker.sock
 sudo chmod 666 /var/run/docker.sock
 sudo systemctl restart docker.service
+```
 
 # Docker CE Install
 ```
