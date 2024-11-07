@@ -2,6 +2,10 @@
 
 # Visual studio Code - Docker - SSH Remote
 
+ Install SSH remote extension 
+ 
+ Install Docker exension
+
 ```
 sudo dnf install docker
 sudo systemctl start docker
@@ -10,7 +14,7 @@ sudo usermod -aG docker $USER
 newgrp docker
 ```
 
-permission denied while trying to connect to the Docker daemon socket at unix
+Error VSC Docker extension in remote host: permission denied while trying to connect to the Docker daemon socket at unix
 
 https://www.baeldung.com/linux/docker-permission-denied-daemon-socket-error
 ```
