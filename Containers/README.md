@@ -1,5 +1,23 @@
 # Hands-On-Lab-in-AWS about containers and dockers
 
+# Visual studio Code - Docker - SSH Remote
+
+```
+sudo dnf install docker
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+permission denied while trying to connect to the Docker daemon socket at unix
+
+https://www.baeldung.com/linux/docker-permission-denied-daemon-socket-error
+```
+ls -l /var/run/docker.sock
+sudo chmod 666 /var/run/docker.sock
+sudo systemctl restart docker.service
+
 # Docker CE Install
 ```
 sudo dnf install docker -y
