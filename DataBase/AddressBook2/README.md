@@ -21,7 +21,7 @@ systemctl enable httpd
 systemctl start httpd
 ```
 
-## DDBB
+## RDS
 ```
 Mysql (version 8.0.32)
 User: dbadmin
