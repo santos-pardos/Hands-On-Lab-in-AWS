@@ -22,7 +22,9 @@ systemctl start httpd
 '''
 
 ## DDBB
+'''
 Mysql (version 8.0.32
 User: dbadmin
 Password: LabPassword
 database initial: inventory
+'''
