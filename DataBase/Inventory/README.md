@@ -34,3 +34,7 @@ User: dbadmin
 Password: LabPassword
 database initial: inventory
 ```
+## VPC
+```
+En el esquema no aparece pero se necesita un Nat GW en red publica para que todo funcione adecuadamente
+```
