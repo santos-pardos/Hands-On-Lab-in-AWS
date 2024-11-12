@@ -1,6 +1,6 @@
 # RETO - Despliegue de una aplicacion de libreta de direcciones (AddressBook)
 
-En este laboratorio vamos a realizar la instalación de una aplicación de inventario en un VPC propio , en una EC2 Linux AMI 2 y una BBDD RDS Mysql 5.7.X en cluster.
+En este laboratorio vamos a realizar la instalación de una aplicación de inventario en un VPC propio , en una EC2 Linux AMI 2023 y una BBDD RDS Mysql 8.0.32
 
 ![alt text](inventory.png)
 
