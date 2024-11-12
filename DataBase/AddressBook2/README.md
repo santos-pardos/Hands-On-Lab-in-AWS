@@ -2,7 +2,7 @@
 
 En este laboratorio vamos a realizar la instalación de una aplicación de inventario en un VPC propio , en una EC2 Linux AMI 2023 y una BBDD RDS Mysql 8.0.32
 
-![alt text](inventory.png)
+![alt text](Inventory.png)
 
 ## EC2
 ```
