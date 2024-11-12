@@ -1,4 +1,4 @@
-## EC2 Code
+## EC2
 ```
 #!/bin/bash
 
@@ -19,12 +19,12 @@ unzip /var/www/html/aws.zip -d /var/www/html/
 # Turn on web server
 systemctl enable httpd
 systemctl start httpd
-'''
+```
 
-## EC2 Code
-'''
+## DDBB
+```
 Mysql (version 8.0.32
 User: dbadmin
 Password: LabPassword
 database initial: inventory
-'''
+```
