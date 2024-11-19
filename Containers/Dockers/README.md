@@ -40,6 +40,14 @@ docker-compose version
 ```
 
 # Visual studio Code - Docker - SSH Remote
+```
+Read more about SSH config files: https://linux.die.net/man/5/ssh_config
+Host 3.249.102.215
+    HostName 3.249.102.215
+    User ec2-user
+    IdentityFile c:\000\VSCode.pem
+```
+
 permission denied while trying to connect to the Docker daemon socket at unix
 
 https://www.baeldung.com/linux/docker-permission-denied-daemon-socket-error
