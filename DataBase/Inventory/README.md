@@ -36,5 +36,7 @@ database initial: inventory
 ```
 ## VPC
 ```
+En el esquema no aparece un Internet Gateway para tener salida y entrada a internet para el ALB
 En el esquema no aparece pero se necesita un Nat GW en red publica para que todo funcione adecuadamente
+
 ```
