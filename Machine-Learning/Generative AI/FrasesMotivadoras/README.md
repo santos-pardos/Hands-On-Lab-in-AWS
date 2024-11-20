@@ -1,4 +1,5 @@
-# Motivational Senteces
+# Motivational Senteces with BedRock
+
 
 Install in Cloud9 or Linux AMI 2023
 ```
@@ -22,6 +23,8 @@ npm run dev -- --host
 ```
 
 Change the files index.html, main.js, and style.css.
+
+Change the Acces key ID and Secret Access Key from a AWS Account with Claude LLM allow.
 
 Open 5173 port in SG of EC2
 
