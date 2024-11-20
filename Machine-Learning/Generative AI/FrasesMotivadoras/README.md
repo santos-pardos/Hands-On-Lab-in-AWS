@@ -24,7 +24,7 @@ npm run dev -- --host
 
 Change the files index.html, main.js, and style.css.
 
-Change the Acces key ID and Secret Access Key from a AWS Account with Claude LLM allow.
+Change the Acces key ID and Secret Access Key from a AWS Account with Claude LLM allowed.
 
 Open 5173 port in SG of EC2
 
