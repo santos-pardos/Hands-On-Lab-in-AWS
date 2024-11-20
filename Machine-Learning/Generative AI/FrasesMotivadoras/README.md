@@ -21,7 +21,9 @@ npm install
 npm run dev -- --host
 ```
 
-The files index.html, main.js, and style.css need edits as follows.
+Change the files index.html, main.js, and style.css.
+
+Open 5173 port in SG of EC2
 
 
 
