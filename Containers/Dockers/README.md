@@ -39,6 +39,21 @@ Verify success:
 docker-compose version
 ```
 
+# Docker MsSQL
+```
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=A&VeryComplex123Password" \
+   -p 1433:1433 --name sql-server2022 --hostname sql \
+   -d \
+   mcr.microsoft.com/mssql/server:2022-latest
+
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=A&VeryComplex123Password" -p 1433:1433 --name sql-server2022 --hostname sql -d santospardos/sanvalero:mssql-2022
+
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Aa123456!" \
+   -p 1433:1433 --name sql-server --hostname sql \
+   -d \
+   mcr.microsoft.com/mssql/server:2019-latest
+```
+
 # Visual studio Code - Docker - SSH Remote
 ```
 Read more about SSH config files: https://linux.die.net/man/5/ssh_config
