@@ -27,7 +27,7 @@ systemctl enable httpd
 systemctl start httpd
 ```
 ### IMPORTANTE
-Ec2 tiene que tener un Role llamado Labinstanceprofile
+Ec2 tiene que tener asignado un IAM Role llamado Labinstanceprofile
 
 
 ## RDS
