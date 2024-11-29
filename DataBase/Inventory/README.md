@@ -26,6 +26,9 @@ unzip /var/www/html/aws.zip -d /var/www/html/
 systemctl enable httpd
 systemctl start httpd
 ```
+### IMPORTANTE
+Ec2 tiene que tener un Role llamado Labinstanceprofile
+
 
 ## RDS
 ```
