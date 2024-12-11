@@ -1,0 +1,86 @@
+{
+  "Description" : "Creates two SGs, two instances behind a classic ELB",
+  "Parameters" : {
+    "MyAMI" : {
+      "Type" : "String",
+      "Default" : "ami-acc0f0d6",
+      "Description" : "Web VM AMI"
+    }
+  },
+  "Resources" : {
+    "BobWebSecurityGroup" : {
+      "Type" : "AWS::EC2::SecurityGroup",
+      "Properties" : {
+        "GroupName" : "WEB-DMZ",
+        "GroupDescription" : "Allow HTTP and SSH",
+        "SecurityGroupIngress" : [{
+          "IpProtocol" : "tcp",
+          "FromPort" : "80",
+          "ToPort" : "80",
+          "CidrIp" : "0.0.0.0/0"
+        },
+        {
+          "IpProtocol" : "tcp",
+          "FromPort" : "22",
+          "ToPort" : "22",
+          "CidrIp" : "0.0.0.0/0"
+        }]
+      }
+    },
+    "BobELBSecurityGroup" : {
+        "Type" : "AWS::EC2::SecurityGroup",
+        "Properties" : {
+          "GroupName" : "ELB-SG",
+          "GroupDescription" : "Allow HTTP",
+          "SecurityGroupIngress" : [{
+            "IpProtocol" : "tcp",
+            "FromPort" : "80",
+            "ToPort" : "80",
+            "CidrIp" : "0.0.0.0/0"
+          }]
+        }
+      },
+    "BobInstance1" : {
+      "Type" : "AWS::EC2::Instance",
+      "DependsOn" : [ "BobWebSecurityGroup" ],
+      "Properties" : {
+        "InstanceType" : "t2.micro",
+        "ImageId" : { "Ref" : "MyAMI"},
+        "SecurityGroupIds" : [{ "Ref" : "BobWebSecurityGroup"}],
+        "KeyName" : "us-east-1-keys",
+        "Tags" : [ { "Key" : "Name", "Value" : "Webserver"} ]
+      }
+    },
+    "BobInstance2" : {
+        "Type" : "AWS::EC2::Instance",
+        "DependsOn" : [ "BobWebSecurityGroup" ],
+        "Properties" : {
+          "InstanceType" : "t2.micro",
+          "ImageId" : { "Ref" : "MyAMI"},
+          "SecurityGroupIds" : [{ "Ref" : "BobWebSecurityGroup"}],
+          "KeyName" : "us-east-1-keys",
+          "Tags" : [ { "Key" : "Name", "Value" : "Webserver"} ]
+        }
+    },
+    "myELB" : {
+        "Type" : "AWS::ElasticLoadBalancing::LoadBalancer",
+        "DependsOn" : [ "BobInstance1", "BobInstance2", "BobELBSecurityGroup" ],
+        "Properties" : {
+            "AvailabilityZones" : { "Fn::GetAZs" : "" },
+            "Instances" : [{ "Ref" : "BobInstance1"}, {"Ref" : "BobInstance2"}],
+            "Listeners" : [{
+                "LoadBalancerPort" : "80",
+                "InstancePort" : "80",
+                "Protocol" : "HTTP"
+            }],
+            "SecurityGroups" : [{ "Fn::GetAtt" : "BobELBSecurityGroup.GroupId" }]
+        }
+    }
+  },
+  "Outputs" : {
+      "ELBName" : {
+          "Description" : "DNS of the ELB",
+          "Value" : { "Fn::GetAtt" : "myELB.DNSName"}
+      }
+  }
+}

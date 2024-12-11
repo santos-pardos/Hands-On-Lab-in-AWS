@@ -1,0 +1,115 @@
+---
+Description: "This creates a new VPC, a public and private subnet, an IGW, an EC2 instance in the public subnet"
+
+Parameters:
+  myAMI:
+    Type: String
+    Default: ami-acc0f0d6
+    Description: "Web VM AMI"
+
+Resources:
+  BobVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      EnableDnsHostnames: True
+      CidrBlock: 10.10.0.0/16
+      Tags:
+      - Key: Name
+        Value: MyDevEnvironment
+      - Key: Role
+        Value: DevNetwork
+  BobPublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: BobVPC
+      CidrBlock: 10.10.1.0/24
+      MapPublicIpOnLaunch: True
+      Tags:
+      - Key: Name
+        Value: MyDevEnvironment
+      - Key: Role
+        Value: DevNetwork
+  BobPrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: BobVPC
+      CidrBlock: 10.10.2.0/24
+      Tags:
+      - Key: Name
+        Value: MyDevEnvironment
+      - Key: Role
+        Value: DevNetwork
+  BobVPCIGW:
+    Type: "AWS::EC2::InternetGateway"
+    Properties:
+      Tags:
+      - Key: Name
+        Value: MyDevEnvironment
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: BobVPC
+      InternetGatewayId:
+        Ref: BobVPCIGW
+  BobVPCPublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: BobVPC
+      Tags:
+      - Key: Name
+        Value: MyDevEnvironment
+  BobDefaultRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: BobVPCPublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: BobVPCIGW
+    DependsOn: BobVPCIGW
+  mySubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: BobPublicSubnet
+      RouteTableId:
+        Ref: BobVPCPublicRouteTable
+  BobWebSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: WEB-DMZ
+      GroupDescription: Allow HTTP and SSH
+      VpcId:
+        Ref: BobVPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 0.0.0.0/0
+
+  BobPublicInstance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: t2.micro
+      SubnetId: !Ref BobPublicSubnet
+      ImageId:
+        Ref: myAMI
+      SecurityGroupIds: [!Ref BobWebSecurityGroup]
+      KeyName: us-east-1-keys
+    DependsOn: BobWebSecurityGroup
+
+Outputs:
+  ELBName:
+    Description: "VPC Id"
+    Value:  !Ref BobVPC
+  InstanceDNS:
+    Description: "DNS Entry for instance"
+    Value: !GetAtt BobPublicInstance.PublicDnsName

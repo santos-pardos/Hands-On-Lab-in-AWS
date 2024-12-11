@@ -1,0 +1,122 @@
+{
+    "Description" : "This provisions two EC2 instances behind an ALB on port 80",
+    "Parameters" : {
+        "myVPC" : {
+            "Type" : "String",
+            "Default" : "vpc-75f4cb0d",
+            "Description" : "Default VPC ID"
+        },
+        "myAMI" : {
+            "Type" : "String",
+            "Default" : "ami-acc0f0d6",
+            "Description" : "Default AMI ID"
+        }
+    },
+    "Mappings" : {
+        "DefaultVPC" : {
+            "SubnetMap" : {
+                "1b": "subnet-f0e1b194",
+                "1d": "subnet-1a7f5b51",
+                "1c": "subnet-940798bb",
+                "1e": "subnet-75016f4a",
+                "1a": "subnet-fc42d1a1",
+                "1f": "subnet-0623d609"
+            }
+        }
+    },
+    "Resources" : {
+        "BobWebSecurityGroup" : {
+            "Type" : "AWS::EC2::SecurityGroup",
+            "Properties" : {
+                "GroupName" : "WEB-DMZ",
+                "GroupDescription" : "Allow HTTP and SSH",
+                "SecurityGroupIngress" : [ {
+                    "IpProtocol" : "tcp",
+                    "FromPort" : "80",
+                    "ToPort" : "80",
+                    "CidrIp" : "0.0.0.0/0"
+                },
+                {
+                    "IpProtocol" : "tcp",
+                    "FromPort" : "22",
+                    "ToPort" : "22",
+                    "CidrIp" : "0.0.0.0/0"
+                }]
+            }
+        },
+        "BobELBSecurityGroup" : {
+            "Type" : "AWS::EC2::SecurityGroup",
+            "Properties" : {
+                "GroupName" : "ELB-WEB",
+                "GroupDescription" : "Allow HTTP to ELB",
+                "SecurityGroupIngress" : [ {
+                    "IpProtocol" : "tcp",
+                    "FromPort" : "80",
+                    "ToPort" : "80",
+                    "CidrIp" : "0.0.0.0/0"
+                }]
+            }
+        },
+        "BobEC2Instance1" : {
+            "Type" : "AWS::EC2::Instance",
+            "DependsOn" : "BobWebSecurityGroup",
+            "Properties" : {
+                "InstanceType" : "t2.micro",
+                "ImageId" : { "Ref" : "myAMI" },
+                "SecurityGroupIds" : [{ "Ref" : "BobWebSecurityGroup" }],
+                "KeyName" : "us-east-1-keys"
+            }
+        },
+        "BobEC2Instance2" : {
+            "Type" : "AWS::EC2::Instance",
+            "DependsOn" : "BobWebSecurityGroup",
+            "Properties" : {
+                "InstanceType" : "t2.micro",
+                "ImageId" : { "Ref" : "myAMI" },
+                "SecurityGroupIds" : [{ "Ref" : "BobWebSecurityGroup" }],
+                "KeyName" : "us-east-1-keys"
+            }
+        },
+        "BobAppLoadBalancer" : {
+            "Type" : "AWS::ElasticLoadBalancingV2::LoadBalancer",
+            "DependsOn" : [ "BobEC2Instance1", "BobEC2Instance2", "BobELBSecurityGroup" ],
+            "Properties" : {
+                "Subnets" :  [
+                    { "Fn::FindInMap" : [ "DefaultVPC", "SubnetMap", "1a" ]},
+                    { "Fn::FindInMap" : [ "DefaultVPC", "SubnetMap", "1b" ]},
+                    { "Fn::FindInMap" : [ "DefaultVPC", "SubnetMap", "1c" ]},
+                    { "Fn::FindInMap" : [ "DefaultVPC", "SubnetMap", "1d" ]},
+                    { "Fn::FindInMap" : [ "DefaultVPC", "SubnetMap", "1e" ]},
+                    { "Fn::FindInMap" : [ "DefaultVPC", "SubnetMap", "1f" ]}
+                ],
+                "SecurityGroups" : [ { "Fn::GetAtt" : "BobELBSecurityGroup.GroupId" } ]
+            }
+        },
+        "BobAppLoadBalancerListener" : {
+            "Type" : "AWS::ElasticLoadBalancingV2::Listener",
+            "Properties" : {
+                "LoadBalancerArn" : { "Ref" : "BobAppLoadBalancer"},
+                "Port" : "80",
+                "Protocol" : "HTTP",
+                "DefaultActions" : [{
+                    "Type" : "forward",
+                    "TargetGroupArn" : { "Ref" : "BobAppLoadBalancerTarget" }
+                }]
+            }
+        },
+        "BobAppLoadBalancerTarget" : {
+            "Type" : "AWS::ElasticLoadBalancingV2::TargetGroup",
+            "DependsOn" : "BobAppLoadBalancer",
+            "Properties" : {
+                "Port" : "80",
+                "Protocol" : "HTTP",
+                "VpcId" : { "Ref" : "myVPC" },
+                "Targets" : [
+                    { "Id" : { "Ref" : "BobEC2Instance1" } },
+                    { "Id" : { "Ref" : "BobEC2Instance2" } }
+                ]
+            }
+        }
+    },
+    "Outputs" : {}
+}

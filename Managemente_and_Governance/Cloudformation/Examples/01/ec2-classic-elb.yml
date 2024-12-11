@@ -1,0 +1,75 @@
+---
+Description: "This template creates two EC2 instances and puts them behind an ELB"
+
+Parameters:
+  myAMI:
+    #used to reference an already built AMI
+    Type: String
+    Default: ami-acc0f0d6
+    Description: "Web VM AMI"
+
+Resources:
+  MyWebSecurityGroup:
+    #creates an SG used to access the web servers directly
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: WEB-DMZ
+      GroupDescription: Allow HTTP and SSH
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 0.0.0.0/0
+  MyELBSecurityGroup:
+    # creates an SG used for the ELB that only allows port 80
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: ELB-SG
+      GroupDescription: Allow HTTP
+  #     VpcId:
+  #       Ref: myVPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 0.0.0.0/0
+
+  MyEC2Instance1:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: t2.micro
+      ImageId:
+        Ref: myAMI
+      SecurityGroups: [!Ref MyWebSecurityGroup]
+      KeyName: us-east-1-keys
+    DependsOn: MyWebSecurityGroup
+  MyEC2Instance2:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: t2.micro
+      ImageId:
+        Ref: myAMI
+      SecurityGroups: [!Ref MyWebSecurityGroup]
+      KeyName: us-east-1-keys
+    DependsOn: MyWebSecurityGroup
+
+  MyELB:
+    Type: AWS::ElasticLoadBalancing::LoadBalancer
+    Properties:
+      AvailabilityZones:
+        Fn::GetAZs: ''
+      Instances:
+        - Ref: MyEC2Instance1
+        - Ref: MyEC2Instance2
+      Listeners:
+      - LoadBalancerPort: '80'
+        InstancePort: '80'
+        Protocol: HTTP
+      # when associating the ELB with an SG, the SG ID is needed instead of the group name
+      # using the Fn::GetAtt intrinsic function, we can retrieve this from the already created SG     
+      SecurityGroups: [!GetAtt MyELBSecurityGroup.GroupId]
+    DependsOn: [ MyEC2Instance2, MyEC2Instance1, MyELBSecurityGroup ]

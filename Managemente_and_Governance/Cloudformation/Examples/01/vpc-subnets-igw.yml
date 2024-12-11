@@ -1,0 +1,78 @@
+---
+Description: "This creates a new VPC, a public and private subnet, and an IGW"
+
+Resources:
+  BobVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.10.0.0/16
+      Tags:
+      - Key: Name
+        Value: MyDevEnvironment
+      - Key: Role
+        Value: DevNetwork
+  BobPublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: BobVPC
+      CidrBlock: 10.10.1.0/24
+      MapPublicIpOnLaunch: True
+      Tags:
+      - Key: Name
+        Value: MyDevEnvironment
+      - Key: Role
+        Value: DevNetwork
+  BobPrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: BobVPC
+      CidrBlock: 10.10.2.0/24
+      Tags:
+      - Key: Name
+        Value: MyDevEnvironment
+      - Key: Role
+        Value: DevNetwork
+  BobVPCIGW:
+    Type: "AWS::EC2::InternetGateway"
+    Properties:
+      Tags:
+      - Key: Name
+        Value: MyDevEnvironment
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: BobVPC
+      InternetGatewayId:
+        Ref: BobVPCIGW
+  BobVPCPublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: BobVPC
+      Tags:
+      - Key: Name
+        Value: MyDevEnvironment
+  BobDefaultRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: BobVPCPublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: BobVPCIGW
+    DependsOn: BobVPCIGW
+  mySubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: BobPublicSubnet
+      RouteTableId:
+        Ref: BobVPCPublicRouteTable
+
+Outputs:
+  ELBName:
+    Description: "VPC Id"
+    Value:  !Ref BobVPC

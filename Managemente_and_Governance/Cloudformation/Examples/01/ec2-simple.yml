@@ -1,0 +1,9 @@
+---
+Description: "This is a simple, basic ec2 template."
+
+Resources:
+  MyEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: t2.micro
+      ImageId: "ami-4ac7eb30"

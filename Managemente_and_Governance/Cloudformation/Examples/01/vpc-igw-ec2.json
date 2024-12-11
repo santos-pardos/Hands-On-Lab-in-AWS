@@ -1,0 +1,116 @@
+{
+  "Description" : "Create a VPC, an SG, an IGW, an EC2 instance.",
+  "Parameters" : {
+    "MyAMI" : {
+      "Type" : "String",
+      "Default" : "ami-acc0f0d6",
+      "Description" : "Web AMI"
+    }
+  },
+  "Resources" : {
+    "BobVPC" : {
+      "Type" : "AWS::EC2::VPC",
+      "Properties" : {
+        "EnableDnsHostnames" : "True",
+        "CidrBlock" : "10.10.0.0/16",
+        "Tags" : [{ "Key" : "Name", "Value" : "MyDevEnvironment"}, { "Key" : "Role", "Value" : "DevNetwork"} ]
+      }
+    },
+    "BobPublicSubnet" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+        "VpcId" : { "Ref" : "BobVPC"},
+        "CidrBlock" : "10.10.1.0/24",
+        "MapPublicIpOnLaunch" : "True",
+        "Tags" : [{ "Key" : "Name", "Value" : "MyDevEnvironment"}, { "Key" : "Role", "Value" : "DevNetwork"} ]        
+      }
+    },
+    "BobPrivateSubnet" : {
+      "Type" : "AWS::EC2::Subnet",
+      "Properties" : {
+      "VpcId" : { "Ref" : "BobVPC"}, 
+      "CidrBlock" : "10.10.2.0/24",
+      "Tags" : [{ "Key" : "Name", "Value" : "MyDevEnvironment"}, { "Key" : "Role", "Value" : "DevNetwork"} ]        
+      }
+    },
+    "BobVPCIGW" : {
+      "Type" : "AWS::EC2::InternetGateway",
+      "Properties" : {
+      "Tags" : [{ "Key" : "Name", "Value" : "MyDevEnvironment"}, { "Key" : "Role", "Value" : "DevNetwork"} ]         
+      }
+    },
+    "AttachGateway" : {
+      "Type" : "AWS::EC2::VPCGatewayAttachment",
+      "Properties" : {
+        "VpcId" : { "Ref" : "BobVPC"},
+        "InternetGatewayId" : { "Ref" : "BobVPCIGW"}
+      }
+    },
+    "BobVPCPublicRouteTable" : {
+      "Type" : "AWS::EC2::RouteTable",
+      "Properties" : {
+        "VpcId" : { "Ref" : "BobVPC"},
+        "Tags" : [ { "Key" : "Name", "Value" : "MyDevEnvironment"} ]
+      }
+    },
+    "BobDefaultRoute" : {
+      "Type" : "AWS::EC2::Route",
+      "DependsOn" : [ "BobVPCIGW", "BobVPCPublicRouteTable" ],
+      "Properties" : {
+        "RouteTableId" : { "Ref" : "BobVPCPublicRouteTable" },
+        "DestinationCidrBlock" : "0.0.0.0/0",
+        "GatewayId" : { "Ref" : "BobVPCIGW" }
+      }
+    },
+    "mySubnetRouteTableAssociation": {
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "DependsOn" : [ "BobPublicSubnet"],
+      "Properties" : {
+        "SubnetId" : { "Ref" : "BobPublicSubnet"},
+        "RouteTableId" : { "Ref" : "BobVPCPublicRouteTable"}
+      }
+    },
+    "BobWebSecurityGroup" : {
+      "Type" : "AWS::EC2::SecurityGroup",
+      "DependsOn" : "BobVPC",
+      "Properties" : {
+        "GroupName" : "WEB-DMZ",
+        "GroupDescription" : "Allow HTTP and SSH",
+        "VpcId" : { "Ref" : "BobVPC" },
+        "SecurityGroupIngress" : [{
+          "IpProtocol" : "tcp",
+          "FromPort" : "80",
+          "ToPort" : "80",
+          "CidrIp" : "0.0.0.0/0"
+        },
+        {
+          "IpProtocol" : "tcp",
+          "FromPort" : "22",
+          "ToPort" : "22",
+          "CidrIp" : "0.0.0.0/0"
+        }]
+      }
+    },
+    "BobPublicInstance" : {
+      "Type" : "AWS::EC2::Instance",
+      "DependsOn" : [ "BobWebSecurityGroup", "BobPublicSubnet" ],
+      "Properties" : {
+        "InstanceType" : "t2.micro",
+        "SubnetId" : { "Ref" : "BobPublicSubnet" },
+        "ImageId" : { "Ref" : "MyAMI"},
+        "SecurityGroupIds" : [{ "Ref" : "BobWebSecurityGroup"}],
+        "KeyName" : "us-east-1-keys"
+      }
+    }
+  },
+  "Outputs" : {
+    "ELBName" : {
+      "Description" : "VPC ID",
+      "Value" : { "Ref" : "BobVPC" }
+    },
+    "InstanceDns" : {
+      "Description" : "DNS Entry for instance",
+      "Value" : { "Fn::GetAtt" : "BobPublicInstance.PublicDnsName" }
+    }
+  }
+}

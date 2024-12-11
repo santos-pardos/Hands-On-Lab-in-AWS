@@ -1,0 +1,30 @@
+
+{
+    "Description" : "Creates a new VPC",
+    "Resources" : {
+        "MyDevVPC" : {
+            "Type" : "AWS::EC2::VPC",
+            "Properties" : {
+                "CidrBlock" : "10.1.0.0/16",
+                "Tags" : [ { "Key" : "Name", "Value" : "MyDevEnvironment"}, { "Key" : "Role", "Value" : "DevNetwork"}]
+            }
+        },
+        "mySubnet" : {
+            "Type" : "AWS::EC2::Subnet",
+            "Properties" : {
+                "VpcId" : { 
+                    "Ref" : "MyDevVPC"
+                },
+                "CidrBlock" : "10.1.0.0/24",
+                "MapPublicIpOnLaunch" : "True",
+                "Tags" : [ { "Key" : "Name", "Value" : "MyDevEnvironment"}, { "Key" : "Role", "Value" : "DevNetwork"}]
+                }
+            }
+        },
+        "Outputs" : {
+            "ELBName" : {
+                "Description" : "VPC Id",
+                "Value" : "!Ref MyDevVPC"
+            }
+        }
+    }
