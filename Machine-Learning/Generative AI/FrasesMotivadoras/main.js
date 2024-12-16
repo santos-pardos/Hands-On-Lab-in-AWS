@@ -2,7 +2,7 @@ import './style.css'
 import { BedrockRuntimeClient, ConverseCommand } from "@aws-sdk/client-bedrock-runtime";
 
 // const modelId = 'anthropic.claude-3-haiku-20240307-v1:0';
-const modelId = 'anthropic.claude-3-5-sonnet-20240620-v1:0';
+const modelId = 'amazon.titan-text-lite-v1';
 const prompt = "Dame una frase motivadora";
 const conversation = [
   {
