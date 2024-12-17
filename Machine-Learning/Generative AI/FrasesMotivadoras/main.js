@@ -80,8 +80,8 @@ async function fetchCredentials() {
       //sessionToken: import.meta.env.VITE_AWS_SESSION_TOKEN,
 
 // I hardcoded these, not a right approach
-      accessKeyId: "AKIATO2HW7LBNAKPGAA2",
-      secretAccessKey: "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",
+      accessKeyId: "AKIATO2HW7LBNAKPGA",
+      secretAccessKey: "jZHMumWSXJuRT72kLlf0M1mUiTM61LKI5jhKk0",
 
     },
   };
