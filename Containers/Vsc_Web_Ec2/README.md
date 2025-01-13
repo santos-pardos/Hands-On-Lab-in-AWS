@@ -54,9 +54,7 @@ sudo systemctl start vscode.service
 sudo systemctl enable vscode.service
 ```
 
-# Visual Studio Code - Docker and SSH Remote Extensions
- Install SSH remote extension 
- 
+# Visual Studio Code - Docker Extensions 
  Install Docker exension
 
 ```
