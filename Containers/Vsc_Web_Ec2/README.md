@@ -20,7 +20,7 @@ https://vscode.dev/tunnel/vscode-demo-tunnel
 ```
 
 # Automation
-Create a vscodestart.sh file in /usr/local/bin/ directory:
+Create a vscodestart.sh file in the /usr/local/bin/ directory:
 ```
 sudo vim /usr/local/bin/vscodestart.sh
 ```
@@ -29,7 +29,7 @@ Add the code:
 #!/bin/sh
 ~/code  tunnel --accept-server-license-terms --name vscode-demo-tunnel
 ```
-Create a vscode.service file to /etc/systemd/system/ directory:
+Create a vscode.service file in the /etc/systemd/system/ directory:
 ```
 sudo vim/etc/systemd/system/vscode.service
 ```
