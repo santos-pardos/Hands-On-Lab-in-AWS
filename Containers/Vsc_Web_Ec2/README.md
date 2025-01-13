@@ -43,7 +43,7 @@ WantedBy=default.target
 Now let's copy the vscode.service file to /etc/systemd/system/ and vscodestart.sh to /usr/local/bin/. We could now start the server using command:
 ```
 sudo chmod 777 /etc/systemd/system/vscode.service
-sudo chmod 777 /usr/local/bin/vscidestart.sh
+sudo chmod 777 /usr/local/bin/vscodestart.sh
 
 sudo systemctl start vscode.service
 sudo ssytemctl enable vscode.service
