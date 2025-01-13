@@ -65,9 +65,7 @@ sudo usermod -aG docker $USER
 newgrp docker
 ```
 
-Error VSC Docker extension in remote host: permission denied while trying to connect to the Docker daemon socket at unix
 
-https://www.baeldung.com/linux/docker-permission-denied-daemon-socket-error
 ```
 ls -l /var/run/docker.sock
 sudo chmod 666 /var/run/docker.sock
@@ -76,5 +74,10 @@ sudo systemctl restart docker.service
 
 # Link
 ```
+Install VSC
 https://jimmydqv.com/vscode-on-aws/
+
+Error VSC Docker extension in remote host: permission denied while trying to connect to the Docker daemon socket at unix
+
+https://www.baeldung.com/linux/docker-permission-denied-daemon-socket-error
 ```
