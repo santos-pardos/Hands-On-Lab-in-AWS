@@ -16,6 +16,9 @@ Choose: Github Account
 https://github.com/login/device 
 2FA
 enter code xxx-xxxx
+```
+INICIO VSC WebServer
+```
 https://vscode.dev/tunnel/vscode-demo-tunnel
 ```
 
@@ -31,7 +34,7 @@ Add the code:
 ```
 Create a vscode.service file in the /etc/systemd/system/ directory:
 ```
-sudo vim/etc/systemd/system/vscode.service
+sudo vim /etc/systemd/system/vscode.service
 ```
 ```
 [Unit]
