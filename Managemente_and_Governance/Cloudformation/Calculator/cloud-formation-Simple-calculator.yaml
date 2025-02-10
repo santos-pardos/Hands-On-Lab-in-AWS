@@ -6,7 +6,7 @@ Description: CloudFormation Template to create an S3 bucket, launch an EC2 insta
 Parameters:
   ImageId:
     Type: String
-    Default: "ami-085ad6ae776d8f09c" 
+    Default: "ami-04b4f1a9cf54c11d00" 
     Description: " Enter the AMI Image ID"
   VPCId:
     Type: AWS::EC2::VPC::Id 
