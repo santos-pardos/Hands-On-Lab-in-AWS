@@ -1,5 +1,7 @@
 ## Visual Studio Code - SSH Remote EC2
-
+```
+Install SSH Remote Plug-in (Microsoft)
+```
 ```
 Remote-SSH:Open Configuration File...
 /users/santos/.ssh/config
