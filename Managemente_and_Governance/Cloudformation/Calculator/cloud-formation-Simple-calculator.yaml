@@ -1,0 +1,72 @@
+
+# Create Simple Calculator Using nginx sever
+AWSTemplateFormatVersion: "2010-09-09"
+Description: CloudFormation Template to create an S3 bucket, launch an EC2 instance, and install NGINX
+
+Parameters:
+  ImageId:
+    Type: String
+    Default: "ami-085ad6ae776d8f09c" 
+    Description: " Enter the AMI Image ID"
+  VPCId:
+    Type: AWS::EC2::VPC::Id 
+    Description: "Choose VPC ID"
+  InstanceType:
+    Type: String
+    Default: "t2.micro"
+    Description: "EC2 instance type"
+    AllowedValues: [ "t2.micro", "t2.small", "t2.nano", "t2.medium","t3.large" ]
+
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: "Name of an existing EC2 KeyPair for SSH access"
+
+Resources:
+  EC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      ImageId: !Ref ImageId
+      SecurityGroupIds:
+        - !Ref InstanceSecurityGroup
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          apt update -y
+          apt install -y nginx
+          systemctl start nginx
+          systemctl enable nginx
+
+          apt install git npm -y
+          mkdir /root/ && cd /root/
+          git clone https://github.com/karthick-dkk/simple-calculator.git 
+          cd simple-calculator
+          npm install
+          node index.js &
+
+  InstanceSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: "Allow HTTP and SSH traffic"
+      SecurityGroupIngress:
+        - IpProtocol: "tcp"
+          FromPort: 22
+          ToPort: 22
+          CidrIp: "0.0.0.0/0" # Allow SSH access from anywhere (use with caution)
+        - IpProtocol: "tcp"
+          FromPort: 80
+          ToPort: 80
+          CidrIp: "0.0.0.0/0" # Allow HTTP access from anywhere
+        - IpProtocol: "tcp"
+          FromPort: 4000
+          ToPort: 4000
+          CidrIp: "0.0.0.0/0" # Allow HTTP access from anywhere
+Outputs:
+  EC2InstanceId:
+    Description: "ID of the EC2 instance"
+    Value: !Ref EC2Instance
+
+  EC2PublicIP:
+    Description: "Public IP address of the EC2 instance"
+    Value: !GetAtt EC2Instance.PublicIp
