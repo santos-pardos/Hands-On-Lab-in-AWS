@@ -15,6 +15,11 @@ Host aws-ec2
     IdentityFile c:\Temp\Labsuser.pem
 ```
 
+```
+Change permissions in the Labuser.pem and config files
+(Linux chmod 400. Windows (remove all users, add the windows user)
+```
+
 ## Links
 ```
 https://medium.com/@christyjacob4/using-vscode-remotely-on-an-ec2-instance-7822c4032cff
