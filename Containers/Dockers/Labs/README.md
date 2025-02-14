@@ -1,4 +1,4 @@
-# Visual Studio Code AMI Linux 2023 (Fedora)
+# Install Docker in AMI Linux 2023 (Fedora)
 ```
 sudo dnf install docker
 sudo systemctl start docker
