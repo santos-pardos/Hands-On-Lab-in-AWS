@@ -58,8 +58,7 @@ sudo systemctl enable vscode.service
 ```
 
 # Visual Studio Code - Docker
-Docker exension
-
+Docker 
 ```
 sudo dnf install docker
 sudo systemctl start docker
@@ -67,14 +66,12 @@ sudo systemctl enable docker
 sudo usermod -aG docker $USER
 newgrp docker
 ```
-
 VSC Extension
 ```
 ls -l /var/run/docker.sock
 sudo chmod 666 /var/run/docker.sock
 sudo systemctl restart docker.service
 ```
-
 
 # Install Docker-Compose
 ```
