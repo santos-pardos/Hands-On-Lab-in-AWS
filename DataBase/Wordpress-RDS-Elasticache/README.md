@@ -26,6 +26,10 @@ En este laboratorio vamos a realizar la instalación de un wordpress , en una EC
 
 ![](images/02.png)
 
+```
+Pedir EIP
+Asignarla a Ubuntu
+```
 
 * Instalación de Apache, PHP, Mysql y Wordpress
 
@@ -43,7 +47,6 @@ sudo cp -r . /var/www/html
 cd /var/www/html
 sudo rm index.html
 ```
-
 
 
 * Pantalla inicial Wordpress
