@@ -1,6 +1,4 @@
 # Visual Studio Code AMI Linux 2023 (Fedora)
- Install Docker exension
-
 ```
 sudo dnf install docker
 sudo systemctl start docker
@@ -9,7 +7,7 @@ sudo usermod -aG docker $USER
 newgrp docker
 ```
 
-
+Install Docker extension
 ```
 ls -l /var/run/docker.sock
 sudo chmod 666 /var/run/docker.sock
