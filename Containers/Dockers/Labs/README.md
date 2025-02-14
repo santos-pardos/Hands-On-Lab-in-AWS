@@ -1,4 +1,20 @@
+# Visual Studio Code - Docker Extensions 
+ Install Docker exension
 
+```
+sudo dnf install docker
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+
+```
+ls -l /var/run/docker.sock
+sudo chmod 666 /var/run/docker.sock
+sudo systemctl restart docker.service
+```
 # Install Docker (not in Cloud9)
 
 sudo yum -y install docker 
