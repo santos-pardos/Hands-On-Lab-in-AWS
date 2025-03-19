@@ -1,4 +1,4 @@
-## VSC Web with Ami Linux 2023
+## VSC Server with Ami Linux 2023
 
 # Install
 ```
