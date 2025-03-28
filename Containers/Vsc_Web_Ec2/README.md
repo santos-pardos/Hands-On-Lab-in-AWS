@@ -99,3 +99,8 @@ https://jimmydqv.com/vscode-on-aws/
 Error VSC Docker extension in remote host: permission denied while trying to connect to the Docker daemon socket at unix
 https://www.baeldung.com/linux/docker-permission-denied-daemon-socket-error
 ```
+
+# Video
+```
+https://www.youtube.com/watch?v=Wxt7iQHLb9I&list=PLr35b7rSarzgZkujDzF26aAbO9fsXxRT0&index=3
+```
