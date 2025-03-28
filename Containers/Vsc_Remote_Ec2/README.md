@@ -24,3 +24,9 @@ Change permissions in the Labuser.pem and config files
 ```
 https://medium.com/@christyjacob4/using-vscode-remotely-on-an-ec2-instance-7822c4032cff
 ```
+
+## Video
+```
+https://www.youtube.com/watch?v=FJlEQi6XfSA&list=PLr35b7rSarzgZkujDzF26aAbO9fsXxRT0&index=2
+```
+
