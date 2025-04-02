@@ -4,6 +4,12 @@ https://medium.com/@venkatagiri.sasanapuri/serverless-web-application-in-aws-703
 ```
 ![](serverless.png)
 
+## Link
+```
+https://medium.com/cloud-native-daily/revolutionizing-web-development-creating-serverless-contact-forms-with-aws-8d2f2220329a
+```
+
+
 ## S3 Policy
 ```
 {
@@ -39,7 +45,7 @@ https://medium.com/@venkatagiri.sasanapuri/serverless-web-application-in-aws-703
             "POST"
         ],
         "AllowedOrigins": [
-            "your-static-website-url"
+            "*"
         ],
         "ExposeHeaders": []
     }
