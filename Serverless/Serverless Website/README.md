@@ -6,7 +6,7 @@ https://medium.com/@venkatagiri.sasanapuri/serverless-web-application-in-aws-703
 
 ## Lambda.zip
 ```
-[https://medium.com/cloud-native-daily/revolutionizing-web-development-creating-serverless-contact-forms-with-aws-8d2f2220329a](https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Severless/Website-Form/lambda.zip)
+https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Severless/Website-Form/lambda.zip
 ```
 
 ## S3 Policy
