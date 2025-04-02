@@ -4,6 +4,26 @@ https://medium.com/@venkatagiri.sasanapuri/serverless-web-application-in-aws-703
 ```
 ![](serverless.png)
 
+## steps
+```
+Create Lambda Function:  ProcessContactForm
+  NodeJs 18
+  Import Lambda.zip
+  Use the Test Event JSON
+Create REST API Public: ContactFormApl
+  Create Resource: Submit
+  Create Method: Post
+  Deploy API
+Create DynamoDB: ContactFormEntries
+  SubmissionId - String
+Change in de Website file script.js
+  fetch('your-api-gateway-url', {    (change your URL API GW)
+Upload Website to the S3
+Change the S3 options to set up a website
+Configure CORS in API GW (options CORS)
+Add the CORS json file in S3 CORS options
+```
+
 ## Website
 ```
 https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Severless/Website-Form/website.zip
