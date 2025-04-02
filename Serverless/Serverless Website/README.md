@@ -4,7 +4,7 @@ https://medium.com/@venkatagiri.sasanapuri/serverless-web-application-in-aws-703
 ```
 ![](serverless.png)
 
-## Lambda.zip
+## Website
 ```
 https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Severless/Website-Form/website.zip
 ```
