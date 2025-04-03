@@ -1,7 +1,5 @@
 # Serverless Website on AWS
-```
-https://medium.com/@venkatagiri.sasanapuri/serverless-web-application-in-aws-703afb83b8ac
-```
+
 ![](serverless.png)
 
 ## steps
@@ -76,7 +74,9 @@ https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Severless/Website-Form/
 ]
 ```
 
-## Link
+## Links
 ```
+https://medium.com/@venkatagiri.sasanapuri/serverless-web-application-in-aws-703afb83b8ac
 https://medium.com/cloud-native-daily/revolutionizing-web-development-creating-serverless-contact-forms-with-aws-8d2f2220329a
+https://medium.com/better-programming/implementing-a-web-form-on-aws-with-bare-html-and-js-5b0a319a702e
 ```
