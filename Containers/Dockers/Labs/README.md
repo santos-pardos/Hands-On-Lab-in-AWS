@@ -34,14 +34,19 @@ docker-compose --version
 ```
 
 # Netflix
-
+```
+```
 https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Netflix.zip
-
+```
 FROM php:7.0-apache
-
 COPY . /var/www/html/
-
 EXPOSE 80
+```
+```
+FROM httpd
+WORKDIR /usr/local/apache2/htdocs/
+COPY . .
+```
 
 # 2048
 ```
