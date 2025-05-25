@@ -72,7 +72,11 @@ Verify success:
 ```
 docker-compose version
 ```
-
+## Commands
+```
+docker system prune -af --volumes
+docker-compose build --no-cache
+```
 # Other Links
 ```
 https://www.cyberciti.biz/faq/how-to-install-docker-on-amazon-linux-2/
