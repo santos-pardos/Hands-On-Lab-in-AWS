@@ -23,7 +23,7 @@ vi /etc/nginx/nginx.conf
  server {
         listen       80;
         listen       [::]:80;
-        server_name  ec2-44-203-73-141.compute-1.amazonaws.com;
+        server_name  ec2-44-203-73-141.compute-1.amazonaws.com; # Change the DNS name
 
         location / {
         proxy_pass http://localhost:8080;
@@ -41,5 +41,6 @@ vi /etc/nginx/nginx.conf
 sudo nginx -t
 sudo systemctl restart nginx
 ```
+
 
 
