@@ -15,7 +15,7 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-  res.send("Hola mundo con Express 🚀");
+  res.send("Hola mundo con Express . Puerto 3000. 🚀");
 });
 
 app.listen(3000, () => {
@@ -34,7 +34,7 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-  res.send("Hola mundo con Express 🚀");
+  res.send("Hola mundo con Express . Puerto 4000.  🚀");
 });
 
 app.listen(4000, () => {
@@ -61,21 +61,11 @@ curl localhost:3000
 sudo apt install nginx
 systemctl status nginx
 systemctl enable nginx
-sudo nano /etc/nginx/conf.d/configuration.conf
+sudo nano /etc/nginx/nginx.conf
+(pega el fichero del repositorio)
 
-server {
-server_name 34.241.81.252;
-location /hello {
-        proxy_pass http://127.0.0.1:3000;
-      }
-location /hello2 {
-        proxy_pass http://127.0.0.1:4000;
-      }
-}
 
-sudo nginx -t
-sudo service nginx restart
-```
 
 NOTE: Open SG port 80
+
 
