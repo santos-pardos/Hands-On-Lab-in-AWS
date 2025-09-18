@@ -11,16 +11,16 @@ npm i express
 
 vim app.js
 
-const express = require("express"); 
-const app = express(); // Initializing Express App
+const express = require("express");
+const app = express();
 
-// Sending Hello World when anyone browse your webpage
-
-app.get("/*", (req, res)=>{
-        res.send('Hello World. Listening port 3000'); 
+app.get("/", (req, res) => {
+  res.send("Hola mundo con Express 🚀");
 });
 
-app.listen(3000, ()=> console.log("App Listening on port 3000"));
+app.listen(3000, () => {
+  console.log("Servidor corriendo en http://localhost:3000");
+});
 
 
 
@@ -30,16 +30,16 @@ node app.js
 vim app2.js
 
 
-const express = require("express"); 
-const app = express(); // Initializing Express App
+const express = require("express");
+const app = express();
 
-// Sending Hello World when anyone browse your webpage
-
-app.get("/*", (req, res)=>{
-        res.send('Hello World. Listening port 3000'); 
+app.get("/", (req, res) => {
+  res.send("Hola mundo con Express 🚀");
 });
 
-app.listen(4000, ()=> console.log("App Listening on port 4000"));
+app.listen(4000, () => {
+  console.log("Servidor corriendo en http://localhost:4000");
+});
 
 
 
@@ -78,3 +78,4 @@ sudo service nginx restart
 ```
 
 NOTE: Open SG port 80
+
