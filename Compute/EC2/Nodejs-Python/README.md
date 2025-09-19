@@ -62,8 +62,8 @@ deactivate
 ```
 ## Install .NET
 ```
-sudo apt install dotnet-sdk-7.0
-sudo apt install aspnetcore-runtime-7.0
+sudo apt install dotnet-sdk-8.0
+sudo apt install aspnetcore-runtime-8.0
 dotnet new console -o App -n DotNet.Docker
 cd App
 dotnet run
@@ -88,3 +88,4 @@ https://learn.microsoft.com/es-es/dotnet/core/docker/build-container?tabs=window
 https://dotnet.microsoft.com/es-es/download/dotnet/7.0
 
 ```
+
