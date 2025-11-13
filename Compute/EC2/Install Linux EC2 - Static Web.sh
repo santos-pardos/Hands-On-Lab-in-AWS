@@ -75,8 +75,8 @@ systemctl start nginx
 systemctl enable nginx
 cd /usr/share/nginx/html
 rm index.html
-wget  https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Ebook-Online.zip
-unzip Ebook-Online.zip
+wget  https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Ebook.zip
+unzip Ebook.zip
 
 #!/bin/bash 
 dnf update -y 
@@ -106,5 +106,6 @@ cd var
 cd www
 git clone https://github.com/samcolon/LUITProject19.git
 cp -R /var/www/LUITProject19/HolidayGiftsWebsite/* /var/www/html/
+
 
 
