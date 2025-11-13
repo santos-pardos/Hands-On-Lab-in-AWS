@@ -4,3 +4,16 @@
   "email": "ana@example.com",
   "message": "Hola, me interesa su servicio."
 }
+
+
+
+
+curl -i -X POST "https://u50btkjvlg.execute-api.us-east-1.amazonaws.com/prod/epicreads_resource" \
+  -H "Content-Type: application/json" \
+  -d '{
+      "name": "Ana Pérez",
+      "phone": "+34 600 123 456",
+      "email": "ana@example.com",
+      "message": "Hola, me interesa su servicio."
+      }'
+
