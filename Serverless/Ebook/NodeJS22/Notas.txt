@@ -1,0 +1,7 @@
+
+Environment variables
+Key
+TOPIC_ARN   
+
+Value
+arn:aws:sns:us-east-1:883822223160:S3-CV-SNS

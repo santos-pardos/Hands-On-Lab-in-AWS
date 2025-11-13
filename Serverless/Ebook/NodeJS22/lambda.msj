@@ -1,0 +1,137 @@
+// index.mjs
+// Runtime: Node.js 22.x
+// Handler: index.handler
+// Tabla DynamoDB: ContactMessages (PK: id STRING)
+// SNS Topic: arn:aws:sns:us-east-1:883822223160:S3-CV-SNS
+
+import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
+import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
+import crypto from "crypto";
+
+const sns = new SNSClient({ region: process.env.AWS_REGION ?? "us-east-1" });
+const ddb = new DynamoDBClient({ region: process.env.AWS_REGION ?? "us-east-1" });
+
+const SNS_TOPIC_ARN = "arn:aws:sns:us-east-1:883822223160:S3-CV-SNS";
+const DDB_TABLE_NAME = "ContactMessages";
+
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Content-Type": "application/json"
+};
+
+export const handler = async (event) => {
+  // CORS preflight
+  if (event?.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 200,
+      headers: CORS_HEADERS,
+      body: ""
+    };
+  }
+
+  try {
+    const body = parseBody(event?.body);
+
+    const name = (body.name ?? "").trim();
+    const email = (body.email ?? "").trim();
+    const phone = (body.phone ?? "").trim();
+    const message = (body.message ?? "").trim();
+
+    // Validación de campos obligatorios
+    if (!name || !email) {
+      return errorResponse(400, "Los campos name y email son obligatorios");
+    }
+
+    // Validación básica de email (igual de simple que en Python)
+    if (!isValidEmail(email)) {
+      return errorResponse(400, "El formato del email no es válido");
+    }
+
+    const timestamp = new Date().toISOString();
+
+    const snsMessage = {
+      name,
+      email,
+      phone: phone || "N/A",
+      message: message || "Solicitud de descarga de ebook",
+      timestamp
+    };
+
+    // 1) Guardar en DynamoDB
+    const id = crypto.randomUUID();
+
+    const item = {
+      id:       { S: id },
+      name:     { S: snsMessage.name },
+      email:    { S: snsMessage.email },
+      phone:    { S: snsMessage.phone },
+      message:  { S: snsMessage.message },
+      timestamp:{ S: snsMessage.timestamp }
+    };
+
+    await ddb.send(
+      new PutItemCommand({
+        TableName: DDB_TABLE_NAME,
+        Item: item
+      })
+    );
+
+    // 2) Publicar en SNS
+    const snsPayload = JSON.stringify(snsMessage, null, 2);
+
+    await sns.send(
+      new PublishCommand({
+        TopicArn: SNS_TOPIC_ARN,
+        Subject: `Nueva solicitud de ebook - ${name}`,
+        Message: snsPayload
+      })
+    );
+
+    return {
+      statusCode: 200,
+      headers: CORS_HEADERS,
+      body: JSON.stringify({
+        success: true,
+        message: "Solicitud enviada correctamente"
+      })
+    };
+  } catch (err) {
+    if (err instanceof SyntaxError) {
+      return errorResponse(400, "Formato JSON inválido");
+    }
+
+    console.error("Error al procesar la solicitud:", err);
+    return errorResponse(500, "Error al procesar la solicitud", String(err));
+  }
+};
+
+// ---------- helpers ----------
+
+function parseBody(body) {
+  if (!body || typeof body !== "string") {
+    return {};
+  }
+  return JSON.parse(body);
+}
+
+function isValidEmail(email) {
+  const atIndex = email.indexOf("@");
+  if (atIndex <= 0 || atIndex >= email.length - 1) return false;
+  const domain = email.slice(atIndex + 1);
+  return domain.includes(".");
+}
+
+function errorResponse(statusCode, message, details) {
+  const payload =
+    details === undefined
+      ? { error: message }
+      : { error: message, details };
+
+  return {
+    statusCode,
+    headers: CORS_HEADERS,
+    body: JSON.stringify(payload)
+  };
+}
