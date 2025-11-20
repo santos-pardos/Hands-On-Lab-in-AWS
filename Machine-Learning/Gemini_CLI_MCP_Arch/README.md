@@ -41,10 +41,16 @@ gemini mcp add \
 cat .gemini/settings.json
 gemini mcp list
 ```
-
-
+### 1.3 Petición de gráfico a Gemini Cli
 ```
+Genera un diagrama AWS de una app serverless con API Gateway → Lambda → DynamoDB y guárdalo como PNG.
+```
+### 1.4 Uso posterior del diagrama
 
+Una vez generado:
+
+- Puedes descargarlo vía `scp`
+- Subirlo a S3. aws s3 cp fichero.png s3://mibucket/fichero.png
 
 
 
