@@ -28,7 +28,7 @@ uv python install 3.10
 sudo apt-get install graphviz
 ```
 
-### Añadirlo con gemini mcp add
+### 1.2 Añadir MCP Server con gemini mcp add
 
 ```bash
 gemini mcp add \
@@ -42,7 +42,7 @@ cat .gemini/settings.json
 gemini mcp list
 ---
 
-## 2. Configurar AWS Diagram MCP Server para Amazon Q CLI
+### 1.3 Configurar AWS Diagram MCP Server para Amazon Q CLI
 
 Crear o editar el archivo de configuración para Amazon Q:
 
@@ -50,5 +50,6 @@ Crear o editar el archivo de configuración para Amazon Q:
 mkdir -p ~/.aws/amazonq
 nano ~/.aws/amazonq/mcp.json
 ``
+
 
 
