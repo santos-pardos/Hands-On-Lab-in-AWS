@@ -125,10 +125,6 @@ find . -maxdepth 2 -name "*.png"
 Una vez generado:
 
 - Puedes descargarlo vía `scp`
-- Añadirlo a tu repositorio GitHub
-- Integrarlo en documentación interna
-- Regenerarlo tantas veces como quieras cambiando el prompt
-
+- Subirlo a S3. aws s3 cp fichero.png s3://mibucket/fichero.png
 ---
 
-Fin del documento.
