@@ -40,7 +40,7 @@ gemini mcp add \
 ```
 cat .gemini/settings.json
 gemini mcp list
----
+```
 
 ### 1.3 Configurar AWS Diagram MCP Server para Amazon Q CLI
 
@@ -49,7 +49,8 @@ Crear o editar el archivo de configuración para Amazon Q:
 ```bash
 mkdir -p ~/.aws/amazonq
 nano ~/.aws/amazonq/mcp.json
-``
+```
+
 
 
 
