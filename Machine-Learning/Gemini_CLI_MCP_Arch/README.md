@@ -6,7 +6,7 @@ Este documento describe los pasos necesarios para generar un diagrama de arquite
 
 ## 1. Instalar prerrequisitos en Amazon Linux 2023
 
-### 1.0 Instalar Amazon Q
+### 1.0 Instalar Gemini Cli
 ```bash
 sudo apt-get update
 sudo apt-get install nodejs -y
@@ -50,4 +50,5 @@ Crear o editar el archivo de configuración para Amazon Q:
 mkdir -p ~/.aws/amazonq
 nano ~/.aws/amazonq/mcp.json
 ``
+
 
