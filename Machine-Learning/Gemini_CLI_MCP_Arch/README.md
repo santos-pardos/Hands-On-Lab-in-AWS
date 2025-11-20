@@ -1,6 +1,6 @@
 # Generación de Diagramas de Arquitectura AWS usando Gemini CLI + AWS Diagram MCP Server
 
-Este documento describe los pasos necesarios para generar un diagrama de arquitectura AWS utilizando **Amazon Q CLI** y el **AWS Diagram MCP Server** en Ubuntu 24
+Este documento describe los pasos necesarios para generar un diagrama de arquitectura AWS utilizando **eEmini CLI** y el **AWS Diagram MCP Server** en Ubuntu 24
 
 ---
 
@@ -50,3 +50,4 @@ Crear o editar el archivo de configuración para Amazon Q:
 mkdir -p ~/.aws/amazonq
 nano ~/.aws/amazonq/mcp.json
 ``
+
