@@ -124,6 +124,24 @@ Using the AWS Diagram MCP server, generate an AWS architecture diagram for the f
 Use official AWS icons and group resources by VPC and subnet.
 ```
 
+```
+Utilizando el servidor AWS Diagram MCP, genere un diagrama de arquitectura de AWS para el siguiente diseño y guárdelo como PNG en el directorio actual:
+
+- Una VPC con CIDR 10.0.0.0/16, con soporte DNS habilitado.
+- Dos zonas de disponibilidad.
+- Dos subredes públicas (una por zona de disponibilidad).
+- Dos subredes privadas (una por zona de disponibilidad).
+
+- Un host bastión (t3.micro) en una subred pública.
+- Un balanceador de carga de aplicaciones en las subredes públicas.
+- Dos servidores web EC2 (t3.micro) en las subredes privadas, ejecutando Apache.
+
+- Un servidor de base de datos (t3.small) en una subred privada, ejecutando PostgreSQL.
+
+- Puertas de enlace NAT en las subredes públicas, utilizadas por las subredes privadas para el acceso a internet saliente.
+- Grupos de seguridad adecuados: SSH solo para el bastión; HTTP/HTTPS desde el balanceador de carga de aplicaciones a los servidores web; acceso a la base de datos solo desde los servidores web; sin acceso directo a internet para las instancias privadas. Utilice los iconos oficiales de AWS y agrupe los recursos por VPC y subred.
+```
+
 Aprobar permisos cuando Amazon Q pregunte.
 
 ---
