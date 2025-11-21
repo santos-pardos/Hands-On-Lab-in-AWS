@@ -59,8 +59,7 @@ Colocar el siguiente contenido:
     }
   }
 }
-```
-```
+``````json
 {
   "mcpServers": {
     "awslabs.aws-diagram-mcp-server": {
