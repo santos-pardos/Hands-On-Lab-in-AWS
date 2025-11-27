@@ -31,7 +31,6 @@ wget https://sanvalero-static-webs.s3.eu-west-1.amazonaws.com/breakout.zip
 unzip breakout.zip
 
 
-
 UBUNTU
 
 #!/bin/bash
@@ -40,8 +39,6 @@ sudo apt install -y apache2
 sudo systemctl start apache2
 sudo systemctl enable apache2
 echo "<h1>This message is from : $(hostname -i)</h1>"> /var/www/html/index.html
-
-
 
 
 
@@ -57,6 +54,19 @@ cd /usr/share/nginx/html
 rm index.html
 wget https://sanvalero-static-webs.s3.eu-west-1.amazonaws.com/breakout.zip
 unzip breakout.zip
+
+
+#!/bin/bash
+dnf update -y
+dnf install nginx -y
+systemctl start nginx
+systemctl enable nginx
+systemctl status nginx
+cd /usr/share/nginx/html
+rm index.html
+https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Web-CV.zip
+unzip Web-CV.zip
+
 
 #!/bin/bash
 dnf update -y
@@ -106,6 +116,7 @@ cd var
 cd www
 git clone https://github.com/samcolon/LUITProject19.git
 cp -R /var/www/LUITProject19/HolidayGiftsWebsite/* /var/www/html/
+
 
 
 
