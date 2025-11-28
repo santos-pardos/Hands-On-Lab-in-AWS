@@ -79,8 +79,8 @@ sudo apt upgrade -y
 sudo apt install nodejs -y
 sudo apt install npm -y
 sudo apt install git -y
-npm install express -y
-npm install -g pm2 -y
+sudo npm install express -y
+sudo npm install -g pm2 -y
 ```
 Download, install and run the Nodejs API
 ```
@@ -124,5 +124,6 @@ https://www.appsloveworld.com//amazon-ec2/2/using-same-domain-name-for-frontend-
 ```
 https://www.appsloveworld.com//amazon-ec2/2/using-same-domain-name-for-frontend-and-backend-deployment-in-aws#google_vignette?utm_content=cmp-true
 ```
+
 
 
