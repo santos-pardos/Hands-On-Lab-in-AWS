@@ -64,12 +64,17 @@ Initial database name: myDB
 
 ![alt text](images/3.png)
 
+## Tools
+```
+sudo dnf install mariadb105
+```
 
 ## Comprobacíón final
 
 * Vamos a la IP pública  y lo rellenamos con los datos de nuestro proyecto
 
 ![alt text](images/4.png)
+
 
 
 
