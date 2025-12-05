@@ -24,8 +24,8 @@ En este laboratorio vamos a realizar la instalación de una aplicación de inven
 * Lanzar la EC2 Linux AMI 2023
 
 ```
-
-sudo dnf install php8.4-{bcmath,cli,common,dba,dbg,devel,ffi,fpm,ldap,modphp,pgsql,mysqlnd,gd,mbstring,tidy,xml,zip}
+sudo dnf install httpd -y
+sudo dnf install php8.4-{bcmath,cli,common,dba,dbg,devel,ffi,fpm,ldap,modphp,pgsql,mysqlnd,gd,mbstring,tidy,xml,zip} -y
 sudo systemctl start http
 sudo systemctl enable http
 sudo systemctl status http
@@ -70,5 +70,6 @@ Initial database name: myDB
 * Vamos a la IP pública  y lo rellenamos con los datos de nuestro proyecto
 
 ![alt text](images/4.png)
+
 
 
