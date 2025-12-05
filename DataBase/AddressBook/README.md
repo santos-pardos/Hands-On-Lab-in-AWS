@@ -21,18 +21,18 @@ En este laboratorio vamos a realizar la instalación de una aplicación de inven
 
 * Crear un grupo de seguridad SBWeb con el puerto 22 y 80 abierto para acceso por SSH y consultar la web
 
-* Lanzar la EC2 Linux AMI 2 (no usar este código en Linux AMI 2023) con este User Data
+* Lanzar la EC2 Linux AMI 2023
 
 ```
-#!/bin/bash -ex
-yum -y update
-yum -y install httpd php mysql php-mysql
-chkconfig httpd on
-service httpd start
+
+sudo dnf install php8.4-{bcmath,cli,common,dba,dbg,devel,ffi,fpm,ldap,modphp,pgsql,mysqlnd,gd,mbstring,tidy,xml,zip}
+sudo systemctl start http
+sudo systemctl enable http
+sudo systemctl status http
 cd /var/www/html
-wget https://us-west-2-aws-training.s3.amazonaws.com/courses/spl-13/v4.2.27.prod-f0f1d0c2/scripts/app.tgz
-tar xvfz app.tgz
-chown apache:root /var/www/html/rds.conf.php
+sudo wget https://us-west-2-aws-training.s3.amazonaws.com/courses/spl-13/v4.2.27.prod-f0f1d0c2/scripts/app.tgz
+sudo tar xvfz app.tgz
+sudo chown apache:root /var/www/html/rds.conf.php
 ```
 
 * Comprobar el acceso con la IP pública. En este momento te da el siguiente error por ser cuentas de AWS academy. 
@@ -70,4 +70,5 @@ Initial database name: myDB
 * Vamos a la IP pública  y lo rellenamos con los datos de nuestro proyecto
 
 ![alt text](images/4.png)
+
 
