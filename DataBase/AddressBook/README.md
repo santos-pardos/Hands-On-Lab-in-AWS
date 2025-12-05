@@ -26,9 +26,9 @@ En este laboratorio vamos a realizar la instalación de una aplicación de inven
 ```
 sudo dnf install httpd -y
 sudo dnf install php8.4-{bcmath,cli,common,dba,dbg,devel,ffi,fpm,ldap,modphp,pgsql,mysqlnd,gd,mbstring,tidy,xml,zip} -y
-sudo systemctl start http
-sudo systemctl enable http
-sudo systemctl status http
+sudo systemctl start httpd
+sudo systemctl enable httpd
+sudo systemctl status httpd
 cd /var/www/html
 sudo wget https://us-west-2-aws-training.s3.amazonaws.com/courses/spl-13/v4.2.27.prod-f0f1d0c2/scripts/app.tgz
 sudo tar xvfz app.tgz
@@ -70,6 +70,7 @@ Initial database name: myDB
 * Vamos a la IP pública  y lo rellenamos con los datos de nuestro proyecto
 
 ![alt text](images/4.png)
+
 
 
 
