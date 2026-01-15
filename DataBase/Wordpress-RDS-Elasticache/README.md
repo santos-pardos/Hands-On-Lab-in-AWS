@@ -47,6 +47,15 @@ sudo cp -r . /var/www/html
 cd /var/www/html
 sudo rm index.html
 ```
+# Asigna al usuario 'www-data' (Apache) como dueño de wp-content y su contenido
+```
+sudo chown -R www-data:www-data /var/www/html/wp-content
+```
+
+# Asegúrate de que los permisos sean correctos (755 para carpetas)
+```
+sudo chmod -R 755 /var/www/html/wp-content
+```
 
 
 * Pantalla inicial Wordpress
@@ -143,4 +152,5 @@ https://dev.to/pixeline/how-to-use-redis-with-wordpress-docker-compose-55fk
 https://bobcares.com/blog/installation-failed-could-not-create-directory-error-in-wordpress/
 https://stackoverflow.com/questions/47146634/how-to-install-ssl-on-aws-ec2-wordpress-site
 ```
+
 
