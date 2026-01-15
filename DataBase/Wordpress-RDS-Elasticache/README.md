@@ -45,7 +45,7 @@ sudo apt install mysql-server -y
 sudo apt install php libapache2-mod-php php-mysql -y
 php -v
 ```
-### Instala Wrodpress
+### Instala Wordpress
 ```
 sudo wget https://wordpress.org/latest.tar.gz
 sudo tar xzf latest.tar.gz
@@ -159,6 +159,7 @@ https://dev.to/pixeline/how-to-use-redis-with-wordpress-docker-compose-55fk
 https://bobcares.com/blog/installation-failed-could-not-create-directory-error-in-wordpress/
 https://stackoverflow.com/questions/47146634/how-to-install-ssl-on-aws-ec2-wordpress-site
 ```
+
 
 
 
