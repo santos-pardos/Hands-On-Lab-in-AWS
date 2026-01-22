@@ -26,9 +26,15 @@ Change the files index.html, main.js, and style.css.
 
 Change the Acces key ID and Secret Access Key from a AWS Account with Claude LLM allowed.
 
+A KIAR2BLBFLOVATYYIVU,OMyqKoEpnMT4l79WHeGL3FxWFs5VI+WUBNORd+Rd
+A KIAR2BLBFLOY57LNVXA,QlzFvPZs0erWQGCZtU1qsflJF7geVP/5EFizNE5w
+A KIAR2BLBFLO2QDVIM2I,0NH71IQHeybWHkU2hM8sm9Av7jTYyVpI3b344jTz
+
+
 Open 5173 port in SG of EC2
 
 
 
 # Links
 https://medium.com/@sumbul.first/generative-ai-enabled-web-app-81820cbe25d6
+
