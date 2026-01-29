@@ -129,9 +129,17 @@ sudo systemctl restart apache2
 
 
 ## Problemas
-Si no instala Plug-in. Añadir en wp-config-php
+Si no instala Plug-in. Añadir en wp-config-php. Para que no de error los plug-in de ftp y los descargue directamente y no de problemas de memoria.
 ```
 define('FS_METHOD', 'direct');
+define('WP_MEMORY_LIMIT', '256M');
+```
+Si el plug-in utiliza algunas extensions de PHP especificas. Por ejemplo Elementor Website Builder
+```
+sudo apt update
+sudo apt install php8.3-gd php8.3-bcmath php8.3-intl php8.3-imagick php8.3-xml php8.3-zip php8.3-mbstring
+```
+```
 sudo systemctl restart apache2
 ```
 
@@ -159,6 +167,7 @@ https://dev.to/pixeline/how-to-use-redis-with-wordpress-docker-compose-55fk
 https://bobcares.com/blog/installation-failed-could-not-create-directory-error-in-wordpress/
 https://stackoverflow.com/questions/47146634/how-to-install-ssl-on-aws-ec2-wordpress-site
 ```
+
 
 
 
