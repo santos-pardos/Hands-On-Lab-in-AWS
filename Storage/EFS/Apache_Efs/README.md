@@ -22,13 +22,17 @@ df -h
 sudo nano /etc/httpd/conf/httpd.conf
 change DocumentRoot "/var/www/html"  to DocumentRoot "/var/www/html/efs"
 sudo systemctl restart httpd
-(sudo service httpd restart)
 cd /var/www/html/efs
-copy a html website o write one small html code.
-visit the Public IP to see the website
+sudo rm -f /etc/httpd/conf.d/welcome.conf
+echo "<h1>Mi web desde el disco de 10GB</h1>" | sudo tee /var/www/html/efs/index.html
+sudo chown -R apache:apache /var/www/html/efs
+sudo chmod -R 755 /var/www/html/efs
+sudo systemctl restart httpd
+sudo httpd -S | grep "Main DocumentRoot"
 ```
 
 ## Links
 ```
 https://www.tecmint.com/change-root-directory-of-apache-web-server/
 ```
+
