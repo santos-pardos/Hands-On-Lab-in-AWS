@@ -1,4 +1,5 @@
-
+## Web
+![alt text](web.png)
 ## Arquitectura
 ![alt text](examen.png)
 ## LAMBDA. Cambios en tiempo de ejecución Lambda. Cambiar 3 a 10 segundos
