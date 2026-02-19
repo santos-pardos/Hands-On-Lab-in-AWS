@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subir C.V. – Oferta de Trabajo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ... (Mantenemos tu estilo CSS original que es excelente) ... */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #0d0d0d; --surface: #161616; --border: #2a2a2a; --accent: #c8a97e; --accent-light: #e8d5b5; --text: #f0ece4; --muted: #888; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; overflow: hidden; }
+    .card { position: relative; background: var(--surface); border: 1px solid var(--border); padding: 3.5rem 3rem; max-width: 480px; width: 100%; animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .label-tag { font-family: 'DM Sans', sans-serif; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.6rem; }
+    .label-tag::before { content: ''; width: 20px; height: 1px; background: var(--accent); }
+    h1 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 2.4rem; line-height: 1.15; color: var(--text); margin-bottom: 0.6rem; }
+    h1 em { font-style: italic; color: var(--accent-light); }
+    .subtitle { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 2.5rem; }
+    .divider { border: none; border-top: 1px solid var(--border); margin-bottom: 2.5rem; }
+    .drop-zone { border: 1px dashed #3a3a3a; padding: 2.5rem 1.5rem; text-align: center; cursor: pointer; transition: border-color 0.25s, background 0.25s; margin-bottom: 1.5rem; position: relative; }
+    .drop-zone:hover, .drop-zone.drag-over { border-color: var(--accent); background: rgba(200,169,126,0.04); }
+    .drop-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .drop-icon { width: 40px; height: 40px; margin: 0 auto 1rem; color: var(--accent); }
+    .drop-title { font-size: 0.9rem; color: var(--text); margin-bottom: 0.3rem; }
+    .drop-hint { font-size: 0.75rem; color: var(--muted); }
+    .file-name { font-size: 0.78rem; color: var(--accent); margin-top: 0.8rem; min-height: 1em; letter-spacing: 0.03em; }
+    .btn { width: 100%; padding: 0.95rem 2rem; background: var(--accent); color: #0d0d0d; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.2s, transform 0.15s; }
+    .btn:hover { background: var(--accent-light); }
+    .btn:disabled { background: #444; color: #888; cursor: not-allowed; }
+    .footer-note { margin-top: 1.8rem; font-size: 0.72rem; color: #555; text-align: center; letter-spacing: 0.02em; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="label-tag">Proceso de selección</div>
+  <h1>Suba su <em>C.V.</em></h1>
+  <p class="subtitle">Adjunte su currículum para la oferta de trabajo.</p>
+  <hr class="divider">
+
+  <form id="uploadForm">
+    <div class="drop-zone" id="dropZone">
+      <input type="file" name="file" id="fileInput" accept=".pdf,.doc,.docx" required>
+      <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      <p class="drop-title">Arrastre su archivo aquí</p>
+      <p class="drop-hint">PDF, DOC, DOCX</p>
+      <div class="file-name" id="fileName"></div>
+    </div>
+
+    <button type="submit" id="submitBtn" class="btn">Enviar candidatura</button>
+  </form>
+
+  <p class="footer-note">Sus datos serán tratados de forma confidencial.</p>
+</div>
+
+<script>
+  const input = document.getElementById('fileInput');
+  const fileName = document.getElementById('fileName');
+  const dropZone = document.getElementById('dropZone');
+  const form = document.getElementById('uploadForm');
+  const btn = document.getElementById('submitBtn');
+
+  // !!! REEMPLAZA ESTA URL CON TU INVOKE URL REAL DE API GATEWAY !!!
+  const API_ENDPOINT = "https://hgr2cnrwsb.execute-api.us-east-1.amazonaws.com/prod/examenfinal";
+
+  // Actualizar nombre del archivo al seleccionar
+  input.addEventListener('change', () => {
+    if (input.files[0]) fileName.textContent = '✓ ' + input.files[0].name;
+  });
+
+  // Manejo del envío vía Fetch
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    if (!input.files[0]) return;
+
+    // Estado visual de carga
+    btn.textContent = "Procesando...";
+    btn.disabled = true;
+
+    const formData = new FormData();
+    formData.append("file", input.files[0]);
+
+    try {
+      const response = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        body: formData,
+        // IMPORTANTE: No pongas headers de Content-Type, 
+        // el navegador lo hace solo al usar FormData e incluye el boundary.
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("¡Éxito! " + data);
+        form.reset();
+        fileName.textContent = "";
+      } else {
+        alert("Error del servidor: " + (data.details || data.error || JSON.stringify(data)));
+      }
+
+    } catch (error) {
+      console.error("Error:", error);
+      alert("No se pudo conectar con el servidor. Revisa la consola.");
+    } finally {
+      btn.textContent = "Enviar candidatura";
+      btn.disabled = false;
+    }
+  });
+
+  // Drag and Drop Logic
+  ['dragover', 'dragleave', 'drop'].forEach(evt => {
+    dropZone.addEventListener(evt, e => {
+      e.preventDefault();
+      if (evt === 'dragover') dropZone.classList.add('drag-over');
+      else dropZone.classList.remove('drag-over');
+      
+      if (evt === 'drop' && e.dataTransfer.files[0]) {
+        input.files = e.dataTransfer.files;
+        fileName.textContent = '✓ ' + e.dataTransfer.files[0].name;
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
