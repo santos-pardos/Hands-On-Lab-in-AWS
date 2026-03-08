@@ -13,7 +13,7 @@ sudo systemctl start docker
 sudo systemctl enable docker
 sudo usermod -aG docker $USER
 ```
-(salir ssh y volver a entrar)
+(close ssh session. enter again)
 
 ```
 sudo curl -s https://api.github.com/repos/docker/compose/releases/latest | grep browser_download_url | grep docker-compose-linux-x86_64 | cut -d '"' -f 4 | wget -qi -
@@ -63,4 +63,5 @@ The actual log will also be at /etc/odoo/odoo.log inside the container
 ```
 https://medium.com/@rajeshpachaikani/deploying-odoo-in-minutes-with-docker-compose-61a4d07b8877
 ```
+
 
