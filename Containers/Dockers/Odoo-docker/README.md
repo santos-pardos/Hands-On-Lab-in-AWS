@@ -28,7 +28,11 @@ curl -L https://github.com/docker/buildx/releases/download/v0.17.0/buildx-v0.17.
 chmod +x ~/.docker/cli-plugins/docker-buildx
 docker buildx version
 ```
-
+### Clone Git Repository
+```
+sudo dnf install git -y
+git clone (this repositiry)
+```
 
 ### Launch
 ```
@@ -63,5 +67,6 @@ The actual log will also be at /etc/odoo/odoo.log inside the container
 ```
 https://medium.com/@rajeshpachaikani/deploying-odoo-in-minutes-with-docker-compose-61a4d07b8877
 ```
+
 
 
