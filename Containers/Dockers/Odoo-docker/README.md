@@ -61,12 +61,16 @@ sudo chown -R $USER:$USER addons config sessions
 docker logs <container_name>
 The actual log will also be at /etc/odoo/odoo.log inside the container
 ```
-
+### DdBeaver
+```
+docker run -d --name cloudbeaver --rm -ti -p 80:8978 -v /opt/cloudbeaver/workspace dbeaver/cloudbeaver:latest
+```
 
 ###  Links
 ```
 https://medium.com/@rajeshpachaikani/deploying-odoo-in-minutes-with-docker-compose-61a4d07b8877
 ```
+
 
 
 
