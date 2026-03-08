@@ -1,0 +1,64 @@
+## Odoo Installation - Docker
+
+### Ubuntu
+```
+sudo apt update
+sudo apt install docker.io docker-compose
+```
+
+## Install Docker , Docker-Compose AMI Linux 2023
+```
+sudo dnf install docker -y
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker $USER
+(salir ssh y volver a entrar)
+```
+```
+sudo curl -s https://api.github.com/repos/docker/compose/releases/latest | grep browser_download_url | grep docker-compose-linux-x86_64 | cut -d '"' -f 4 | wget -qi -
+sudo chmod +x docker-compose-linux-x86_64
+sudo mv docker-compose-linux-x86_64 /usr/local/bin/docker-compose
+docker-compose --version
+```
+```
+mkdir -p ~/.docker/cli-plugins
+curl -L https://github.com/docker/buildx/releases/download/v0.17.0/buildx-v0.17.0.linux-amd64 \
+  -o ~/.docker/cli-plugins/docker-buildx
+chmod +x ~/.docker/cli-plugins/docker-buildx
+docker buildx version
+```
+
+
+### Launch
+```
+docker-compose up -d
+```
+```
+docker-compose build --no-cache && docker compose up
+```
+
+### Access
+```
+http://public-ip:8069
+```
+Note: Open the 8069 port in the SG in EC2
+
+### Stop
+```
+docker-compose up -d
+```
+
+### Tips
+```
+sudo chown -R $USER:$USER addons config sessions
+```
+```
+docker logs <container_name>
+The actual log will also be at /etc/odoo/odoo.log inside the container
+```
+
+
+###  Links
+```
+https://medium.com/@rajeshpachaikani/deploying-odoo-in-minutes-with-docker-compose-61a4d07b8877
+```
