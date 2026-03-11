@@ -59,13 +59,14 @@ curl localhost:3000
 ## Option A Install Nginx Reverse Proxy
 ```
 sudo apt install nginx
-systemctl status nginx
-systemctl enable nginx
+sudo systemctl status nginx
+sudo systemctl enable nginx
 sudo nano /etc/nginx/nginx.conf
 (pega el fichero del repositorio)
 
 
 
 NOTE: Open SG port 80
+
 
 
