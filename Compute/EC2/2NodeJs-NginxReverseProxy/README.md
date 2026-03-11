@@ -63,7 +63,7 @@ sudo systemctl status nginx
 sudo systemctl enable nginx
 sudo nano /etc/nginx/nginx.conf
 (pega el fichero del repositorio)
-
+```
 
 
 NOTE: Open SG port 80
@@ -78,4 +78,5 @@ sudo -E bash nodesource_setup.sh
 
 sudo apt install -y nodejs
 ```
+
 
