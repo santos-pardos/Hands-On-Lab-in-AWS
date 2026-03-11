@@ -68,5 +68,14 @@ sudo nano /etc/nginx/nginx.conf
 
 NOTE: Open SG port 80
 
+## Node 20
+```
+sudo apt update
+sudo apt install -y curl
 
+curl -fsSL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh
+sudo -E bash nodesource_setup.sh
+
+sudo apt install -y nodejs
+```
 
