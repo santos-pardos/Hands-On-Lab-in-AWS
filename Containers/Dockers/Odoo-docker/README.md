@@ -65,11 +65,29 @@ The actual log will also be at /etc/odoo/odoo.log inside the container
 ```
 docker run -d --name cloudbeaver --rm -ti -p 80:8978 -v /opt/cloudbeaver/workspace dbeaver/cloudbeaver:latest
 ```
-
+### PSQL
+```
+docker-compose ps
+docker-compose logs db
+docker-compose exec db ss -lnt
+docker-compose exec db psql -U odoo -d postgres
+docker-compose exec db bash
+psql -U odoo -d postgres
+\du               usuarios
+\l                bases de datos
+\dt               tables
+\dt *.*
+\c nombre_bd_odoo cambia de bbdd
+\d nombre-tabla   estructura tabla
+\dt res_*
+\dt ir_*
+\dt sale_*
 ###  Links
+```
 ```
 https://medium.com/@rajeshpachaikani/deploying-odoo-in-minutes-with-docker-compose-61a4d07b8877
 ```
+
 
 
 
