@@ -66,6 +66,7 @@ git clone https://github.com/santos-pardos/Hands-On-Lab-in-AWS.git
 
 ### Launch
 ```
+cd Hands-On-Lab-in-AWS/Containers/Dockers/Odoo-docker/
 docker-compose up -d
 ```
 ```
