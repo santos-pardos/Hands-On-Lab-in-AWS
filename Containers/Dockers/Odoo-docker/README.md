@@ -1,6 +1,6 @@
 ## Odoo Installation - Docker
 
-### Ubuntu
+### Install Docker - Ubuntu
 ```
 # Add Docker's official GPG key:
 sudo apt update
@@ -33,7 +33,7 @@ newgrp docker
 
 
 
-## Install Docker , Docker-Compose AMI Linux 2023
+## Install Docker - Docker-Compose - AMI Linux 2023
 ```
 sudo dnf install docker -y
 sudo systemctl start docker
