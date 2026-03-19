@@ -1,6 +1,6 @@
 ## Odoo Installation - Docker
 
-### Install Docker
+### 1. Install Docker
 #### Ubuntu
 ```
 # Add Docker's official GPG key:
@@ -60,12 +60,12 @@ docker buildx version
 ```
 sudo dnf install git -y
 ```
-### Clone Git Repository
+### 2. Clone Git Repository
 ```
 git clone https://github.com/santos-pardos/Hands-On-Lab-in-AWS.git
 ```
 
-### Launch
+### 3. Launch
 ```
 cd Hands-On-Lab-in-AWS/Containers/Dockers/Odoo-docker/
 docker-compose up -d
@@ -74,18 +74,18 @@ docker-compose up -d
 docker-compose build --no-cache && docker compose up
 ```
 
-### Access
+### 4. Access
 ```
 http://public-ip:8069
 ```
 Note: Open the 8069 port in the SG in EC2
 
-### Stop
+### 5. Stop
 ```
-docker-compose up -d
+docker-compose down
 ```
 
-### Tips
+### 6. Tips
 ```
 sudo chown -R $USER:$USER addons config sessions
 ```
@@ -93,11 +93,11 @@ sudo chown -R $USER:$USER addons config sessions
 docker logs <container_name>
 The actual log will also be at /etc/odoo/odoo.log inside the container
 ```
-### DdBeaver
+### 7. DdBeaver
 ```
 docker run -d --name cloudbeaver --rm -ti -p 80:8978 -v /opt/cloudbeaver/workspace dbeaver/cloudbeaver:latest
 ```
-### PSQL
+### 8. PSQL
 ```
 docker-compose ps
 docker-compose logs db
