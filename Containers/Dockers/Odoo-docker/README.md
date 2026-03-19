@@ -56,10 +56,12 @@ curl -L https://github.com/docker/buildx/releases/download/v0.17.0/buildx-v0.17.
 chmod +x ~/.docker/cli-plugins/docker-buildx
 docker buildx version
 ```
-### Clone Git Repository
 ```
 sudo dnf install git -y
-git clone (this repositiry)
+```
+### Clone Git Repository
+```
+git clone https://github.com/santos-pardos/Hands-On-Lab-in-AWS.git
 ```
 
 ### Launch
