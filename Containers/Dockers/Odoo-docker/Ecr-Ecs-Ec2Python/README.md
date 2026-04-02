@@ -1,3 +1,7 @@
+## Ayuda
+
+Hay que cambiar las IPs en el código odoo3.py
+Coge el usuario Administrador, el primero de contactos de odoo.
 ```
 docker build --no-cache -t api-pdf-odoo .
 ```
