@@ -1,0 +1,16 @@
+```
+{
+  "contacto": {
+    "nombre": "Empresa Sistemas L2",
+    "email": "info@sistemas.com"
+  },
+  "producto": {
+    "nombre": "Teclado Inalámbrico Curso",
+    "precio_venta": 45.0,
+    "coste": 39.0,
+    "tipo": "consu",
+    "referencia": "TEC-CURSO-01",
+    "codigo_barras": "8412345678901"
+  }
+}
+```
