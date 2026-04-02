@@ -23,17 +23,7 @@ curl -X POST https://ci6oe0r1lb.execute-api.us-east-1.amazonaws.com/prod/pedido 
 }'
 ```
 
-
-¿Qué tenemos ahora mismo configurado? 
-
-    Action type: Use action name -> SendMessage
-
-    HTTP Headers: Content-Type -> 'application/x-www-form-urlencoded'
-
-    Mapping Template (application/json): Action=SendMessage&QueueUrl=https://sqs.us-east-1.amazonaws.com/658620698452/odoo&MessageBody=$util.urlEncode($input.body)
-
-
-
+## API GW - Edit integration request
 ```
 AWS Region
 us-east-1
@@ -74,3 +64,12 @@ Generate template
 Template body
 Action=SendMessage&QueueUrl=https://sqs.us-east-1.amazonaws.com/658620698452/odoo&MessageBody=$util.urlEncode($input.body)
 ```
+
+¿Qué tenemos ahora mismo configurado? 
+
+    Action type: Use action name -> SendMessage
+
+    HTTP Headers: Content-Type -> 'application/x-www-form-urlencoded'
+
+    Mapping Template (application/json): Action=SendMessage&QueueUrl=https://sqs.us-east-1.amazonaws.com/658620698452/odoo&MessageBody=$util.urlEncode($input.body)
+
