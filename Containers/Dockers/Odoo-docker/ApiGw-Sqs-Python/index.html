@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integración AWS SQS - Odoo</title>
+    <style>
+        :root {
+            --primary: #714B67; /* Color corporativo de Odoo */
+            --primary-hover: #5a3c52;
+            --bg: #f4f5f7;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --border: #e0e0e0;
+            --success: #28a745;
+            --error: #dc3545;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(113, 75, 103, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        #status-message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 6px;
+            display: none;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .success { background-color: #d4edda; color: var(--success); border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: var(--error); border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Nuevo Pedido e Inventario</h2>
+    <form id="odooForm">
+        
+        <div class="section-title">Datos del Cliente</div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="c_nombre">Nombre o Empresa *</label>
+                <input type="text" id="c_nombre" required placeholder="Ej. Sistemas L2">
+            </div>
+            <div class="form-group">
+                <label for="c_email">Correo Electrónico</label>
+                <input type="email" id="c_email" placeholder="info@sistemas.com">
+            </div>
+        </div>
+
+        <br>
+
+        <div class="section-title">Datos del Producto</div>
+        <div class="form-group">
+            <label for="p_nombre">Nombre del Producto *</label>
+            <input type="text" id="p_nombre" required placeholder="Ej. Teclado Inalámbrico">
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="p_precio">Precio Venta (€) *</label>
+                <input type="number" id="p_precio" step="0.01" required placeholder="45.00">
+            </div>
+            <div class="form-group">
+                <label for="p_coste">Coste (€)</label>
+                <input type="number" id="p_coste" step="0.01" placeholder="39.00">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="p_referencia">Referencia Interna (SKU)</label>
+                <input type="text" id="p_referencia" placeholder="TEC-001">
+            </div>
+            <div class="form-group">
+                <label for="p_tipo">Tipo en Odoo</label>
+                <select id="p_tipo">
+                    <option value="consu">Consumible</option>
+                    <option value="product">Almacenable</option>
+                    <option value="service">Servicio</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" id="submitBtn">Enviar a AWS SQS</button>
+    </form>
+
+    <div id="status-message"></div>
+</div>
+
+<script>
+    document.getElementById('odooForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Evita que la página se recargue
+
+        const btn = document.getElementById('submitBtn');
+        const statusDiv = document.getElementById('status-message');
+        
+        // ⚠️ IMPORTANTE: Pon aquí tu URL de API Gateway
+        const API_URL = 'https://ci6oe0r1lb.execute-api.us-east-1.amazonaws.com/prod/pedido';
+
+        // Construir el JSON exacto que espera tu Worker en Python
+        const payload = {
+            contacto: {
+                nombre: document.getElementById('c_nombre').value,
+                email: document.getElementById('c_email').value
+            },
+            producto: {
+                nombre: document.getElementById('p_nombre').value,
+                precio_venta: parseFloat(document.getElementById('p_precio').value) || 0.0,
+                coste: parseFloat(document.getElementById('p_coste').value) || 0.0,
+                tipo: document.getElementById('p_tipo').value,
+                referencia: document.getElementById('p_referencia').value,
+                codigo_barras: "" // Lo dejamos vacío de momento o podrías añadir un campo en el HTML
+            }
+        };
+
+        // UI: Mostrar estado de carga
+        btn.disabled = true;
+        btn.textContent = 'Enviando...';
+        statusDiv.style.display = 'none';
+        statusDiv.className = '';
+
+        // Enviar la petición POST
+        fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => {
+            if (response.ok) {
+                statusDiv.textContent = '¡Datos enviados correctamente a la cola SQS!';
+                statusDiv.classList.add('success');
+                document.getElementById('odooForm').reset(); // Limpiar formulario
+            } else {
+                throw new Error('La API respondió con error: ' + response.status);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            statusDiv.textContent = 'Error al enviar los datos. Revisa la consola y los CORS de AWS.';
+            statusDiv.classList.add('error');
+        })
+        .finally(() => {
+            // Restaurar botón
+            btn.disabled = false;
+            btn.textContent = 'Enviar a AWS SQS';
+            statusDiv.style.display = 'block';
+        });
+    });
+</script>
+
+</body>
+</html>
