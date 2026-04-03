@@ -13,7 +13,7 @@ docker run -dp 5000:5000 api-pdf-odoo
 ```
 Crear contenedor .py
 Lanzar el contenedor puerto 5000
-Cambiar la IP en el fichero odoo3.py
+Cambiar la IP en el fichero odoo3.py de odoo y generador pdf
 Mirar en usuario administrator de Odoo el PDF
 ```
 
