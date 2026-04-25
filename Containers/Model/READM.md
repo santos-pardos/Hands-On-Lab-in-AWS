@@ -1,10 +1,10 @@
-## LLMs in Docker
+# LLMs in Docker
 ```
 docker model pull ai/llama3.2:1B-Q4_0
 docker model run ai/llama3.2:1B-Q4_0
 docker model run ai/llama3.2:1B-Q4_0 "Explica qué es Docker Model Runner"
 ```
-# Docker Compose
+## Docker Compose
 ```
 services:
   model:
@@ -28,7 +28,7 @@ services:
 ```
 
 
-# LInks 
+## LInks 
 ```
 https://www.paradigmadigital.com/dev/ejecutando-llms-local-docker/
 ```
