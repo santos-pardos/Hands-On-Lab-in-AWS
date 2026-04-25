@@ -3,6 +3,11 @@
 docker model pull ai/llama3.2:1B-Q4_0
 docker model run ai/llama3.2:1B-Q4_0
 docker model run ai/llama3.2:1B-Q4_0 "Explica qué es Docker Model Runner"
+docker ps
+docker model list
+docker model status
+docker model unload ai/llama3.2:1B-Q4_0
+
 ```
 ```
 curl -s http://localhost:12434/engines/v1/chat/completions \
