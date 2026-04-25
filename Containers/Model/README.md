@@ -98,4 +98,6 @@ curl http://localhost:12434/engines/v1/chat/completions \
 ## LInks 
 ```
 https://www.paradigmadigital.com/dev/ejecutando-llms-local-docker/
+https://www.glukhov.org/es/llm-hosting/docker-model-runner/docker-model-runner-cheatsheet/
+
 ```
