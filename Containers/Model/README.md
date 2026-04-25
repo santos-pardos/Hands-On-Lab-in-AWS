@@ -42,6 +42,27 @@ curl -s http://localhost:12434/engines/v1/chat/completions \
 docker model ps
 ```
 
+## Gemma
+```
+docker model search gemma
+```
+```
+docker model pull ai/gemma3
+```
+```
+docker model run ai/gemma3
+```
+```
+curl http://localhost:12434/engines/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "ai/gemma:2b",
+    "messages": [
+      {"role": "user", "content": "hola"}
+    ]
+  }'
+```
+
 ## LInks 
 ```
 https://www.paradigmadigital.com/dev/ejecutando-llms-local-docker/
