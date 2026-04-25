@@ -18,7 +18,8 @@ services:
     command: >
       --chat
 ```
-```curl http://localhost:8080/v1/chat/completions \
+```
+curl http://localhost/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
         "model": "llama-1b",
