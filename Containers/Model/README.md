@@ -19,7 +19,28 @@ curl -s http://localhost:12434/engines/v1/chat/completions \
     ]
   }' | jq -r '.choices[0].message.content'
 ```
-
+## Steps
+```
+docker model ps
+```
+# Precalentamiento
+```
+docker model run llama3.2:1B-Q4_0 "hola"
+```
+```
+curl -s http://localhost:12434/engines/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "llama3.2:1B-Q4_0",
+    "messages": [
+      {"role": "user", "content": "ping"}
+    ],
+    "max_tokens": 1
+  }'
+```
+```
+docker model ps
+```
 
 ## LInks 
 ```
