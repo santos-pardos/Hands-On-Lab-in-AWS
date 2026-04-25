@@ -1,0 +1,11 @@
+services:
+  model:
+    image: ai/llama3.2:1B-Q4_0
+    container_name: llama-1b
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    ports:
+      - "8080:8080"
+    command: >
+      --chat
