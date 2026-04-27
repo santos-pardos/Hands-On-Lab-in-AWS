@@ -1,6 +1,6 @@
 ## Swarm commands 
 ```
-sudo yum install docker -y
+sudo dnf install docker -y
 sudo service docker start
 sudo usermod -a -G docker ec2-user
 sudo chkconfig docker on
