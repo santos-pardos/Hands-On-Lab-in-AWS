@@ -4,7 +4,9 @@ sudo yum install docker -y
 sudo service docker start
 sudo usermod -a -G docker ec2-user
 sudo chkconfig docker on
-(Close the ssh session and enter again to execute docker with your user (ec2-user))
+newgrp docker
+```
+```
 docker swarm init --advertise-addr manager_private_ip
 docker swarm join --token SWMTKN_token manager_private_ip
 (docker swarm join --token SWMTKN-1-0umz9m4m6109ddm4qkate0wbz9n9uq4h7e6j1uous53t0saabz-evd4avwxrecruuntxs2xipyzk 172.31.83.127:2377)
