@@ -110,23 +110,6 @@ sudo nano wp-config.php
 ![](images/15.png)
 
 
-## Redis
-Instalación Elasticache - Redis - Demo
-
-![](images/19.png)
-![](images/18.png)
-
-Instalación cambiando el wp-config.php
-
-![](images/16.png)
-
-```
-define('WP_REDIS_HOST', 'demo-0001-001.lamigo.0001.use1.cache.amazonaws.com:6379');
-define('WP_REDIS_PORT', '6379');
-sudo systemctl restart apache2
-```
-![](images/17.png)
-
 
 ## Problemas
 Si no instala Plug-in. Añadir en wp-config-php. Para que no de error los plug-in de ftp y los descargue directamente y no de problemas de memoria.
