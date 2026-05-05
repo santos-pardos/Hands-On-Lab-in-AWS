@@ -1,15 +1,18 @@
-![](Arquitecture.png)
+# Architecture
+![](Architecture.png)
+```
+```
+
 # Odoo - 2 Tier - EC2 - RDS
-
+```
 En este laboratorio vamos a realizar la instalación de un wordpress , en una EC2 Ubuntu y una BBDD RDS Mysql en cluster.
-
-## VPC
-
+```
+# VPC
+```
 * Crear VPC 10.0.0.0/16
-
 * Crear subredes publicas 10.0.1.0/24 10.0.2.0/24 y privadas 10.0.3.0/24 10.0.4.0/24
-
-## EC2   (Odoo User: admin   / Password: admin)
+```
+# EC2   (Odoo User: admin   / Password: admin)
 ```
 #!/bin/bash
 set -eux
