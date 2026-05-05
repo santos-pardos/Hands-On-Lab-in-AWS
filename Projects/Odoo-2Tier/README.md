@@ -1,5 +1,5 @@
 ![](Arquitecture.png)
-# RETO - Despliegue de un Wordpress
+# Odoo - 2 Tier - EC2 - RDS
 
 En este laboratorio vamos a realizar la instalación de un wordpress , en una EC2 Ubuntu y una BBDD RDS Mysql en cluster.
 
