@@ -13,6 +13,7 @@
 bbdd: odoo
 user: odoo
 password: A123456b
+DB subnet group: 2 subredes privadas
 ```
 # EC2   (Odoo User: admin   / Password: admin)
 ```
