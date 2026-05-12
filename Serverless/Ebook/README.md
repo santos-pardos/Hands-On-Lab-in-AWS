@@ -10,4 +10,4 @@ wget https://s3.eu-west-1.amazonaws.com/www.profesantos.cloud/Ebook_Serverless.z
 ![High Level Design](ebook2.png)
 ![High Level Design](ebook_web.png)
 
-## AWS Academy - SES doesn't run. Use SNS
+
