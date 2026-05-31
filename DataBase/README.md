@@ -1,4 +1,4 @@
-## RDS
+## RDS - App AWS
 ```
 RDS:  MySQL - Username: main -  Master password: lab-password  -  Initial database name: lab
 ```
