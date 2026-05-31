@@ -13,3 +13,6 @@ wget https://aws-tc-largeobjects.s3.us-west-2.amazonaws.com/CUR-TF-100-RSDBAS-3-
 unzip lab-app-php7.zip -d /var/www/html/
 chown apache:root /var/www/html/rds.conf.php
 ```
+
+
+RDS:  MySQL - Username: main -  Master password: lab-password  -  Initial database name: lab
