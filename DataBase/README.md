@@ -1,3 +1,7 @@
+## RDS
+```
+RDS:  MySQL - Username: main -  Master password: lab-password  -  Initial database name: lab
+```
 ## User-Data - App AWS
 ```
 #!/bin/bash -ex
@@ -15,4 +19,4 @@ chown apache:root /var/www/html/rds.conf.php
 ```
 
 
-RDS:  MySQL - Username: main -  Master password: lab-password  -  Initial database name: lab
+
