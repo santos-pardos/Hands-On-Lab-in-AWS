@@ -1,0 +1,106 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: >
+  AWS Academy Learner Lab - Code Server sobre Amazon Linux 2023.
+
+Parameters:
+
+  InstanceType:
+    Type: String
+    Default: t3.small
+    AllowedValues:
+      - t3.micro
+      - t3.small
+      - t3.medium
+    Description: Tipo de instancia EC2.
+
+  SubnetId:
+    Type: AWS::EC2::Subnet::Id
+    Description: Selecciona una subnet publica del Lab VPC.
+
+  LabSecurityGroupId:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: Selecciona el Security Group del laboratorio.
+
+  EditorPassword:
+    Type: String
+    NoEcho: true
+    MinLength: 8
+    Description: Password para acceder a Code Server.
+
+  LatestAmiId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64
+
+Resources:
+
+  CodeServerIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref LabSecurityGroupId
+      IpProtocol: tcp
+      FromPort: 8080
+      ToPort: 8080
+      CidrIp: 0.0.0.0/0
+      Description: Code Server
+
+  CodeEditorInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceType
+      ImageId: !Ref LatestAmiId
+
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: "0"
+          SubnetId: !Ref SubnetId
+          GroupSet:
+            - !Ref LabSecurityGroupId
+
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 25
+            VolumeType: gp3
+            DeleteOnTermination: true
+
+      Tags:
+        - Key: Name
+          Value: AWS-Academy-CodeServer
+
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          set -x
+
+          dnf update -y
+
+          VERSION=$(curl -fsSLI             -o /dev/null             -w '%{url_effective}'             https://github.com/coder/code-server/releases/latest             | sed 's|.*/v||')
+
+          curl -fL             -o /tmp/code-server.rpm             https://github.com/coder/code-server/releases/download/v${!VERSION}/code-server-${!VERSION}-amd64.rpm
+
+          dnf install -y /tmp/code-server.rpm
+
+          mkdir -p /home/ec2-user/.config/code-server
+
+          cat > /home/ec2-user/.config/code-server/config.yaml <<EOF
+          bind-addr: 0.0.0.0:8080
+          auth: password
+          password: ${EditorPassword}
+          cert: false
+          EOF
+
+          chown -R ec2-user:ec2-user /home/ec2-user/.config
+
+          systemctl enable code-server@ec2-user
+          systemctl start code-server@ec2-user
+
+Outputs:
+
+  CodeServerURL:
+    Description: URL para acceder a VS Code Server
+    Value: !Sub "http://${CodeEditorInstance.PublicIp}:8080"
+
+  PublicIP:
+    Description: IP publica de la instancia
+    Value: !GetAtt CodeEditorInstance.PublicIp
