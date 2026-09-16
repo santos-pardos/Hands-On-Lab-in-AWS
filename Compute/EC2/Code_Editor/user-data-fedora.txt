@@ -1,40 +1,147 @@
 #!/bin/bash
 set -e
+set -x
 
-# Herramientas necesarias
-dnf install -y curl git libcap
+# Guardar log del User Data
+exec > /var/log/code-server-install.log 2>&1
 
+# -------------------------------------------------------
+# Variables
+# -------------------------------------------------------
+
+EDITOR_PASSWORD='1234!'
+
+# -------------------------------------------------------
+# Actualizar Amazon Linux 2023
+# -------------------------------------------------------
+
+dnf update -y
+
+# -------------------------------------------------------
+# Instalar Nginx
+# -------------------------------------------------------
+
+dnf install -y nginx
+
+# -------------------------------------------------------
 # Obtener última versión de code-server
+# Exactamente como en el CloudFormation que funciona
+# -------------------------------------------------------
+
 VERSION=$(curl -fsSLI \
   -o /dev/null \
   -w '%{url_effective}' \
   https://github.com/coder/code-server/releases/latest \
   | sed 's|.*/v||')
 
-# Descargar code-server
+# -------------------------------------------------------
+# Descargar RPM de code-server
+# -------------------------------------------------------
+
 curl -fL \
   -o /tmp/code-server.rpm \
   "https://github.com/coder/code-server/releases/download/v${VERSION}/code-server-${VERSION}-amd64.rpm"
 
-# Instalar
+# -------------------------------------------------------
+# Instalar code-server
+# -------------------------------------------------------
+
 dnf install -y /tmp/code-server.rpm
 
-# Permitir que Node pueda utilizar puertos <1024
-setcap 'cap_net_bind_service=+ep' /usr/lib/code-server/lib/node
+# -------------------------------------------------------
+# Configurar code-server
+#
+# IMPORTANTE:
+# Solo escucha en localhost.
+# Nginx será el único que salga a Internet.
+# -------------------------------------------------------
 
-# Crear configuración
 mkdir -p /home/ec2-user/.config/code-server
 
-cat > /home/ec2-user/.config/code-server/config.yaml <<'EOF'
-bind-addr: 0.0.0.0:80
+cat > /home/ec2-user/.config/code-server/config.yaml <<EOF
+bind-addr: 127.0.0.1:8080
 auth: password
-password: Password1234!
+password: ${EDITOR_PASSWORD}
 cert: false
 EOF
 
-# Permisos
 chown -R ec2-user:ec2-user /home/ec2-user/.config
 
-# Arrancar automáticamente
-systemctl daemon-reload
-systemctl enable --now code-server@ec2-user
+# -------------------------------------------------------
+# Activar code-server
+# Mismo servicio que en tu CloudFormation
+# -------------------------------------------------------
+
+systemctl enable code-server@ec2-user
+systemctl start code-server@ec2-user
+
+
+# -------------------------------------------------------
+# Configurar Nginx
+#
+# Reemplazamos nginx.conf para no depender de
+# la configuración por defecto del paquete.
+# -------------------------------------------------------
+
+cat > /etc/nginx/nginx.conf <<'EOF'
+
+user nginx;
+worker_processes auto;
+
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    sendfile on;
+
+    server {
+
+        listen 80;
+        listen [::]:80;
+
+        server_name _;
+
+        location / {
+
+            proxy_pass http://127.0.0.1:8080;
+
+            proxy_http_version 1.1;
+
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+
+            # Necesario para WebSockets de code-server
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+
+            # Mantener sesiones largas
+            proxy_read_timeout 86400;
+            proxy_send_timeout 86400;
+        }
+    }
+}
+
+EOF
+
+# -------------------------------------------------------
+# Validar configuración de Nginx
+# -------------------------------------------------------
+
+nginx -t
+
+# -------------------------------------------------------
+# Activar Nginx
+# -------------------------------------------------------
+
+systemctl enable nginx
+systemctl restart nginx
