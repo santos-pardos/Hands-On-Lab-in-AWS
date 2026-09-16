@@ -1,0 +1,43 @@
+#!/bin/bash
+set -e
+
+# Actualizar repositorios
+apt-get update -y
+
+# Herramientas necesarias
+apt-get install -y curl git ca-certificates libcap2-bin
+
+# Obtener última versión de code-server
+VERSION=$(curl -fsSLI \
+  -o /dev/null \
+  -w '%{url_effective}' \
+  https://github.com/coder/code-server/releases/latest \
+  | sed 's|.*/v||')
+
+# Descargar code-server
+curl -fL \
+  -o /tmp/code-server.deb \
+  "https://github.com/coder/code-server/releases/download/v${VERSION}/code-server_${VERSION}_amd64.deb"
+
+# Instalar
+apt-get install -y /tmp/code-server.deb
+
+# Permitir que Node pueda utilizar puertos <1024
+setcap 'cap_net_bind_service=+ep' /usr/lib/code-server/lib/node
+
+# Crear configuración
+mkdir -p /home/ubuntu/.config/code-server
+
+cat > /home/ubuntu/.config/code-server/config.yaml <<'EOF'
+bind-addr: 0.0.0.0:80
+auth: password
+password: Password1234!
+cert: false
+EOF
+
+# Permisos
+chown -R ubuntu:ubuntu /home/ubuntu/.config
+
+# Arrancar automáticamente
+systemctl daemon-reload
+systemctl enable --now code-server@ubuntu
