@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frases bonitas con IA</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #e0f2fe, #f0fdf4);
+        }
+
+        .container {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #1e293b;
+        }
+
+        .description {
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            font-size: 17px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        button:disabled {
+            background: #94a3b8;
+            cursor: wait;
+        }
+
+        #respuesta {
+            margin-top: 30px;
+            padding: 20px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: #f8fafc;
+            color: #334155;
+            font-size: 20px;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .modelo {
+            margin-top: 25px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>✨ Frases bonitas con IA</h1>
+
+    <p class="description">
+        Escribe un tema y Llama 3.2 generará una frase bonita.
+    </p>
+
+    <input
+        type="text"
+        id="tema"
+        placeholder="Ejemplo: amistad, familia, naturaleza..."
+        autofocus
+    >
+
+    <button id="boton">
+        Generar frase
+    </button>
+
+    <div id="respuesta">
+        Escribe un tema para comenzar.
+    </div>
+
+    <div class="modelo">
+        Llama 3.2 1B · Docker Model Runner
+    </div>
+
+</div>
+
+<script>
+
+const tema = document.getElementById("tema");
+const respuesta = document.getElementById("respuesta");
+const boton = document.getElementById("boton");
+
+async function generarFrase() {
+
+    const texto = tema.value.trim();
+
+    if (!texto) {
+        respuesta.textContent = "Escribe primero un tema.";
+        return;
+    }
+
+    boton.disabled = true;
+    respuesta.textContent = "🤖 Llama está pensando...";
+
+    const prompt =
+        "Escribe una única frase bonita, breve, original y positiva " +
+        "sobre el siguiente tema: " + texto +
+        ". Responde solamente con la frase, sin explicaciones.";
+
+    try {
+
+        const response = await fetch(
+            "/model-api/engines/v1/chat/completions",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    model: "llama3.2:1B-Q4_0",
+
+                    messages: [
+                        {
+                            role: "user",
+                            content: prompt
+                        }
+                    ]
+                })
+            }
+        );
+
+        if (!response.ok) {
+            const errorText = await response.text();
+
+            throw new Error(
+                "HTTP " + response.status + " - " + errorText
+            );
+        }
+
+        const data = await response.json();
+
+        if (
+            !data.choices ||
+            !data.choices[0] ||
+            !data.choices[0].message
+        ) {
+            throw new Error(
+                "La respuesta del modelo no tiene el formato esperado."
+            );
+        }
+
+        const frase =
+            data.choices[0].message.content.trim();
+
+        respuesta.textContent = "💡 " + frase;
+
+    } catch (error) {
+
+        console.error("ERROR:", error);
+        respuesta.textContent = "❌ Error: " + error.message;
+
+    } finally {
+
+        boton.disabled = false;
+    }
+}
+
+boton.addEventListener("click", generarFrase);
+
+tema.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        generarFrase();
+    }
+});
+
+</script>
+
+</body>
+</html>
