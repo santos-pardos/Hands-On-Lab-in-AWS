@@ -1,43 +1,123 @@
 #!/bin/bash
 set -e
+set -x
 
+# Guardar log del User Data
+exec > /var/log/code-server-install.log 2>&1
+
+# -------------------------------------------------------
+# Variables
+# -------------------------------------------------------
+
+EDITOR_PASSWORD='1234!'
+
+# -------------------------------------------------------
 # Actualizar repositorios
+# -------------------------------------------------------
+
 apt-get update -y
 
-# Herramientas necesarias
-apt-get install -y curl git ca-certificates libcap2-bin
+# -------------------------------------------------------
+# Instalar dependencias y Nginx
+# -------------------------------------------------------
 
+apt-get install -y curl nginx ca-certificates
+
+# -------------------------------------------------------
 # Obtener última versión de code-server
+# -------------------------------------------------------
+
 VERSION=$(curl -fsSLI \
   -o /dev/null \
   -w '%{url_effective}' \
   https://github.com/coder/code-server/releases/latest \
   | sed 's|.*/v||')
 
-# Descargar code-server
+# -------------------------------------------------------
+# Descargar paquete DEB de code-server
+# -------------------------------------------------------
+
 curl -fL \
   -o /tmp/code-server.deb \
   "https://github.com/coder/code-server/releases/download/v${VERSION}/code-server_${VERSION}_amd64.deb"
 
-# Instalar
+# -------------------------------------------------------
+# Instalar code-server
+# -------------------------------------------------------
+
 apt-get install -y /tmp/code-server.deb
 
-# Permitir que Node pueda utilizar puertos <1024
-setcap 'cap_net_bind_service=+ep' /usr/lib/code-server/lib/node
+# -------------------------------------------------------
+# Configurar code-server
+# -------------------------------------------------------
 
-# Crear configuración
 mkdir -p /home/ubuntu/.config/code-server
 
-cat > /home/ubuntu/.config/code-server/config.yaml <<'EOF'
-bind-addr: 0.0.0.0:80
+cat > /home/ubuntu/.config/code-server/config.yaml <<EOF
+bind-addr: 127.0.0.1:8080
 auth: password
-password: Password1234!
+password: ${EDITOR_PASSWORD}
 cert: false
 EOF
 
-# Permisos
 chown -R ubuntu:ubuntu /home/ubuntu/.config
 
-# Arrancar automáticamente
-systemctl daemon-reload
-systemctl enable --now code-server@ubuntu
+# -------------------------------------------------------
+# Activar code-server
+# -------------------------------------------------------
+
+systemctl enable code-server@ubuntu
+systemctl start code-server@ubuntu
+
+# -------------------------------------------------------
+# Configurar Nginx
+# -------------------------------------------------------
+
+rm -f /etc/nginx/sites-enabled/default
+
+cat > /etc/nginx/sites-available/code-server <<'EOF'
+server {
+
+    listen 80;
+    listen [::]:80;
+
+    server_name _;
+
+    location / {
+
+        proxy_pass http://127.0.0.1:8080;
+
+        proxy_http_version 1.1;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # WebSockets necesarios para code-server
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        proxy_read_timeout 86400;
+        proxy_send_timeout 86400;
+    }
+}
+EOF
+
+# -------------------------------------------------------
+# Activar configuración de Nginx
+# -------------------------------------------------------
+
+ln -sf \
+  /etc/nginx/sites-available/code-server \
+  /etc/nginx/sites-enabled/code-server
+
+# Validar configuración
+nginx -t
+
+# -------------------------------------------------------
+# Arrancar Nginx
+# -------------------------------------------------------
+
+systemctl enable nginx
+systemctl restart nginx
