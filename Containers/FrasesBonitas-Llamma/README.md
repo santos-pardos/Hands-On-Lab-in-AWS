@@ -1,5 +1,7 @@
 # Docker Model Runner + Llama 3.2 + Nginx + HTML en Ubuntu
 
+![Frases bonitas con IA](frases.png)
+
 Este laboratorio deja funcionando una página web accesible por HTTP que pide a un modelo Llama local una frase bonita sobre un tema.
 
 Arquitectura final:
