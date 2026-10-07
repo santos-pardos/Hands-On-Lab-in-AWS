@@ -451,8 +451,13 @@ Recargar Nginx:
 ```bash
 sudo systemctl reload nginx
 ```
-Parar Docker Model Runner
+Parar servicio liberas RAM
 ```bash
+docker model unload llama3.2:1B-Q4_0
 docker model stop-runner
-docker ps
 ```
+Arrancas modelo y servicio
+
+```bash
+docker model unload llama3.2:1B-Q4_0
+docker mo
