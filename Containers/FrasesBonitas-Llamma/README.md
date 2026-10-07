@@ -58,67 +58,26 @@ sudo apt upgrade -y
 Instalar las dependencias:
 
 ```bash
-sudo apt install -y ca-certificates curl
-```
+sudo apt update && sudo apt upgrade -y
 
-Crear el directorio para las claves:
-
-```bash
+sudo apt install ca-certificates curl
 sudo install -m 0755 -d /etc/apt/keyrings
-```
-
-Añadir la clave oficial de Docker:
-
-```bash
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
-  -o /etc/apt/keyrings/docker.asc
-```
-
-Dar permisos de lectura:
-
-```bash
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
-```
 
-Añadir el repositorio oficial:
-
-```bash
-sudo tee /etc/apt/sources.list.d/docker.sources <<EOF_DOCKER
+sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
 Types: deb
 URIs: https://download.docker.com/linux/ubuntu
-Suites: \$(. /etc/os-release && echo "\${UBUNTU_CODENAME:-\$VERSION_CODENAME}")
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
 Components: stable
-Architectures: \$(dpkg --print-architecture)
+Architectures: $(dpkg --print-architecture)
 Signed-By: /etc/apt/keyrings/docker.asc
-EOF_DOCKER
-```
+EOF
 
-Actualizar repositorios:
-
-```bash
 sudo apt update
-```
 
-Instalar Docker Engine:
-
-```bash
-sudo apt install -y \
-  docker-ce \
-  docker-ce-cli \
-  containerd.io \
-  docker-buildx-plugin \
-  docker-compose-plugin
-```
-
-Añadir el usuario actual al grupo Docker:
-
-```bash
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo usermod -aG docker $USER
-```
-
-Aplicar el nuevo grupo en la sesión actual:
-
-```bash
 newgrp docker
 ```
 
