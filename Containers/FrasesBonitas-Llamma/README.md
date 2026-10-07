@@ -451,3 +451,8 @@ Recargar Nginx:
 ```bash
 sudo systemctl reload nginx
 ```
+Parar Docker Model Runner
+```bash
+docker model stop-runner
+docker ps
+```
