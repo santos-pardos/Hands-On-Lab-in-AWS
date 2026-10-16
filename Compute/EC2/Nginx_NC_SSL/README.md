@@ -62,7 +62,11 @@ sudo /opt/certbot/bin/pip install certbot certbot-nginx
 sudo ln -s /opt/certbot/bin/certbot /usr/bin/certbot
 sudo certbot --nginx
 ```
-
+### Test
+```
+curl -I -H "Host: demo.profesantos.cloud" http://localhost
+curl -Ik --resolve demo.profesantos.cloud:443:127.0.0.1 https://demo.profesantos.cloud
+```
 ### Links
 
 https://dev.to/0xfedev/how-to-install-nginx-as-reverse-proxy-and-configure-certbot-on-amazon-linux-2023-2cc9
