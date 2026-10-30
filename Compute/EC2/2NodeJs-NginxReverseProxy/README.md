@@ -15,7 +15,7 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-  res.send("Hola mundo con Express . Puerto 3000. 🚀");
+  res.send("Hola mundo con Express . Puerto 3000. ");
 });
 
 app.listen(3000, () => {
@@ -34,7 +34,7 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-  res.send("Hola mundo con Express . Puerto 4000.  🚀");
+  res.send("Hola mundo con Express . Puerto 4000.  ");
 });
 
 app.listen(4000, () => {
