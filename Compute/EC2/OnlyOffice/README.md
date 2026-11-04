@@ -1,6 +1,5 @@
 # Instalación de ONLYOFFICE Workspace Community en AWS
 
-**2MI · Ofimática** | Práctica guiada
 
 *Amazon Linux 2023 · t3.large · Instalación con Docker*
 
