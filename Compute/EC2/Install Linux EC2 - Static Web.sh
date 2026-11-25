@@ -65,6 +65,19 @@ rm index.html
 wget https://sanvalero-static-webs.s3.eu-west-1.amazonaws.com/breakout.zip
 unzip breakout.zip
 
+#!/bin/bash
+dnf install -y httpd git
+cd /tmp
+git clone --depth 1 --filter=blob:none --sparse https://github.com/santos-pardos/website-templates.git
+cd website-templates
+git sparse-checkout set coffee-shop-free-html5-template
+cp -r coffee-shop-free-html5-template/* /var/www/html/
+TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+ID=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id)
+AZ=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/availability-zone)
+echo "<h1>La Ficha: te atiende el servidor $ID en la zona $AZ</h1>" > /var/www/html/servidor.html
+systemctl enable --now httpd
+
 
 #!/bin/bash
 dnf update -y
