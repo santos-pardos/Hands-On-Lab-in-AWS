@@ -23,7 +23,7 @@ systemctl start httpd
 
 #!/bin/bash
 #Install Apache Web Server and PHP
-yum install -y httpd mysql php
+sudo dnf install -y httpd git php8.3 php8.3-fpm php8.3-pdo php8.3-mysqlnd mariadb105
 #Download Lab files
 wget https://aws-tc-largeobjects.s3.us-west-2.amazonaws.com/CUR-TF-100-RESTRT-1/267-lab-NF-build-vpc-web-server/s3/lab-app.zip
 unzip lab-app.zip -d /var/www/html/
