@@ -21,15 +21,18 @@ rm -rf jupiter-main main.zip
 systemctl enable httpd 
 systemctl start httpd
 
-#!/bin/bash
-#Install Apache Web Server and PHP
-sudo dnf install -y httpd git php8.3 php8.3-fpm php8.3-pdo php8.3-mysqlnd mariadb105
-#Download Lab files
-wget https://aws-tc-largeobjects.s3.us-west-2.amazonaws.com/CUR-TF-100-RESTRT-1/267-lab-NF-build-vpc-web-server/s3/lab-app.zip
-unzip lab-app.zip -d /var/www/html/
-#Turn on web server
-chkconfig httpd on
-service httpd start
+#!/bin/bash -ex
+# Updated to use Amazon Linux 2023
+dnf -y update
+dnf -y install httpd php php-fpm php-mysqli mariadb105
+/usr/bin/systemctl enable httpd
+/usr/bin/systemctl enable php-fpm
+/usr/bin/systemctl start httpd
+/usr/bin/systemctl start php-fpm
+cd /var/www/html
+wget https://aws-tc-largeobjects.s3.us-west-2.amazonaws.com/CUR-TF-100-RSDBAS-3-124627/160-lab-DF-database-server/s3/lab-app-php7.zip
+unzip lab-app-php7.zip -d /var/www/html/
+chown apache:root /var/www/html/rds.conf.php
 
 #!/bin/bash
 yum update -y
